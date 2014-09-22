@@ -154,3 +154,5 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+Easy/App_Data/aspnet-Easy-20140918105420.mdf
+Easy/App_Data/aspnet-Easy-20140918105420_log.ldf
