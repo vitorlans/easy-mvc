@@ -10,6 +10,7 @@ namespace Easy.Controllers
     {
         public ActionResult Index()
         {
+            string v = "Console";
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
             return View();
