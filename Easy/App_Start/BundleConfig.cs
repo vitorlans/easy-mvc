@@ -23,7 +23,11 @@ namespace Easy
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
+                                         "~/Content/css/plugins/morris.css",
+                                         "~/Content/css/bootstrap.css",
+                                         "~/Content/css/bootstrap.mim.css",
+                                         "~/Content/css/sb-admin.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
