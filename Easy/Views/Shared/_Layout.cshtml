@@ -9,17 +9,6 @@
 
     <title>Pagina Principal</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/sb-admin.css" rel="stylesheet">
-
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/ripples.css" rel="stylesheet">
-    <link href="css/material-wfont.css" rel="stylesheet">
-    <link href="css/snackbar.min.css" rel="stylesheet">
-
      @Styles.Render("~/Content/css")
      @Scripts.Render("~/bundles/modernizr")
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -197,9 +186,8 @@
     @RenderSection("scripts", required: false)
 
     @RenderSection("featured", required: false)
-      <section class="content-wrapper main-content clear-fix">
-         @RenderBody()
-      </section>
+    @RenderBody()
+
 </body>
 
 </html>

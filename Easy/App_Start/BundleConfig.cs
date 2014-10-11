@@ -18,16 +18,25 @@ namespace Easy
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryboot").Include(
+                        "~/Scripts/bootstrap.min.js",
+                        "~/Scripts/ripples.min.js",
+                        "~/Scripts/material.min.js",
+                        "~/Scripts/snackbar.min.js",
+                        "~/Scripts/jquery.nouislider.min.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
-                                         "~/Content/css/plugins/morris.css",
+            bundles.Add(new StyleBundle("~/Content/css").Include(
                                          "~/Content/css/bootstrap.css",
                                          "~/Content/css/bootstrap.mim.css",
-                                         "~/Content/css/sb-admin.css"));
+                                         "~/Content/css/sb-admin.css",
+                                         "~/Content/css/ripples.css",
+                                         "~/Content/css/material-wfont.css",
+                                         "~/Content/css/snackbar.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

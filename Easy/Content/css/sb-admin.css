@@ -7,8 +7,8 @@
 /* Global Styles */
 
 body {
-    margin-top: 100px;
     background-color: #222;
+    margin-top: 50px;
 }
 
 @media(min-width:768px) {
@@ -32,15 +32,13 @@ body {
     line-height: normal;
 }
 
-@media(min-width:768px) {
-    #wrapper {
+#wrapper {
         padding-left: 225px;
     }
 
     #page-wrapper {
         padding: 10px;
     }
-}
 
 /* Top Navigation */
 
@@ -111,9 +109,7 @@ ul.alert-dropdown {
 }
 
 /* Side Navigation */
-
-@media(min-width:768px) {
-    .side-nav {
+.side-nav {
         position: fixed;
         top: 51px;
         left: 225px;
@@ -122,7 +118,7 @@ ul.alert-dropdown {
         border: none;
         border-radius: 0;
         overflow-y: auto;
-        background-color: #222;
+        background-color: #3B007F;
     }
 
     .side-nav>li>a {
@@ -134,7 +130,6 @@ ul.alert-dropdown {
         outline: none;
         background-color: #000 !important;
     }
-}
 
 .side-nav>li>ul {
     padding: 0;
