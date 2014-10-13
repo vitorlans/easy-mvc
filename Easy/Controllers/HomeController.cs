@@ -29,5 +29,11 @@ namespace Easy.Controllers
 
             return View();
         }
+
+        public ActionResult Tarefas()
+        {
+
+            return View();
+        }
     }
 }
