@@ -34,6 +34,7 @@ namespace Easy
                                          "~/Content/css/bootstrap.css",
                                          "~/Content/css/bootstrap.mim.css",
                                          "~/Content/css/sb-admin.css",
+                                         "~/Content/css/sidebar.css",
                                          "~/Content/css/ripples.css",
                                          "~/Content/css/material-wfont.css",
                                          "~/Content/css/snackbar.min.css"));
