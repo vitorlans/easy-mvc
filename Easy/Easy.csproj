@@ -192,6 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\component.css" />
+    <Content Include="Content\css\demo.css" />
+    <Content Include="Content\css\normalize.css" />
     <Content Include="Content\css\sidebar.css" />
     <Content Include="Content\css\material-wfont.css" />
     <Content Include="Content\css\material.css" />

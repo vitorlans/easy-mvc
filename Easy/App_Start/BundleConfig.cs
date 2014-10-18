@@ -37,7 +37,10 @@ namespace Easy
                                          "~/Content/css/sidebar.css",
                                          "~/Content/css/ripples.css",
                                          "~/Content/css/material-wfont.css",
-                                         "~/Content/css/snackbar.min.css"));
+                                         "~/Content/css/snackbar.min.css",
+                                         "~/Content/css/component.css",
+                                         "~/Content/css/demo.css",
+                                         "~/Content/css/normalize.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
