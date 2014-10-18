@@ -23,7 +23,7 @@ namespace Easy.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Contatos()
         {
             ViewBag.Message = "Your contact page.";
 
