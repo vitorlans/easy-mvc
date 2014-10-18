@@ -11,31 +11,16 @@
 <br />
 
 <div class="list-group">
-    @* Loop enquanto ouver contatos no bd repitir a linha abaixo *@
+    @foreach (var item in Model) {
     <div class="list-group-item">
         <div class="row-picture">
             <img class="circle" src="~/Content/img/contato.png" alt="icon">
         </div>
         <div class="row-content">
-            <h3> @Html.ActionLink("Vitor Hugo Santos", "Detalhes", new {  id=1})  </h3>
+            <h3> @Html.ActionLink(item.Nome, "Detalhes", new {  id=item.IdUser})  </h3>
         </div>
     </div>
     <div class="list-group-separator"></div>
-    @* ate aqui *@
-    <div class="list-group-item">
-        <div class="row-picture">
-            <img class="circle" src="~/Content/img/contato.png" alt="icon">
-        </div>
-        <div class="row-content">
-            <h3><a class="" href="~/Contatos/Detalhes">Sebastião Purcini</a></h3>
-        </div>
-    </div>
-    <div class="list-group-separator"></div><div class="list-group-item">
-        <div class="row-picture">
-            <img class="circle" src="~/Content/img/contato.png" alt="icon">
-        </div>
-        <div class="row-content">
-            <h3><a class="" href="~/Contatos/Detalhes">Nathan Bernardes</a></h3>
-        </div>
-    </div>
+    }
+ 
 </div>
