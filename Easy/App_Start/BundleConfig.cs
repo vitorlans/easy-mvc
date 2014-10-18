@@ -18,12 +18,12 @@ namespace Easy
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryboot").Include(
-                        "~/Scripts/bootstrap.min.js",
-                        "~/Scripts/ripples.min.js",
-                        "~/Scripts/material.min.js",
-                        "~/Scripts/snackbar.min.js",
-                        "~/Scripts/jquery.nouislider.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/easy").Include(
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/ripples.js",
+                        "~/Scripts/material.js",
+                        "~/Scripts/snackbar.js",
+                        "~/Scripts/jquery.nouislider.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
