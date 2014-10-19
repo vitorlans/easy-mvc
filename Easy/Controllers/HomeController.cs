@@ -23,9 +23,15 @@ namespace Easy.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Contatos()
         {
             ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        public ActionResult Tarefas()
+        {
 
             return View();
         }

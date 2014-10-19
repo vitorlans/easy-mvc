@@ -182,23 +182,35 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ContatosController.cs" />
+    <Compile Include="Controllers\EventosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TarefasController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Connection.cs" />
+    <Compile Include="Models\DAOTarefas.cs" />
+    <Compile Include="Models\Tarefas.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\component.css" />
+    <Content Include="Content\css\demo.css" />
+    <Content Include="Content\css\normalize.css" />
+    <Content Include="Content\css\sidebar.css" />
     <Content Include="Content\css\material-wfont.css" />
     <Content Include="Content\css\material.css" />
     <Content Include="Content\css\ripples.css" />
     <Content Include="Content\css\roboto.css" />
     <Content Include="Content\css\sb-admin.css" />
     <Content Include="Content\css\snackbar.min.css" />
-    <Content Include="Content\font\Material-Design.svg" />
+    <Content Include="Content\css\fonts\Material-Design.svg" />
+    <Content Include="Content\img\contato.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -255,25 +267,25 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\font\Material-Design.eot" />
-    <Content Include="Content\font\Material-Design.ttf" />
-    <Content Include="Content\font\Material-Design.woff" />
-    <Content Include="Content\font\roboto\robotobold.ttf" />
-    <Content Include="Content\font\roboto\robotobolditalic.ttf" />
-    <Content Include="Content\font\roboto\robotocondesedbold.ttf" />
-    <Content Include="Content\font\roboto\robotocondesedbolditalic.ttf" />
-    <Content Include="Content\font\roboto\robotocondeseditalic.ttf" />
-    <Content Include="Content\font\roboto\robotocondesedlight.ttf" />
-    <Content Include="Content\font\roboto\robotocondesedlightitalic.ttf" />
-    <Content Include="Content\font\roboto\robotocondesedregular.ttf" />
-    <Content Include="Content\font\roboto\robotoitalic.ttf" />
-    <Content Include="Content\font\roboto\robotolight.ttf" />
-    <Content Include="Content\font\roboto\robotolightitalic.ttf" />
-    <Content Include="Content\font\roboto\robotomedium.ttf" />
-    <Content Include="Content\font\roboto\robotomediumitalic.ttf" />
-    <Content Include="Content\font\roboto\robotoregular.ttf" />
-    <Content Include="Content\font\roboto\robotothin.ttf" />
-    <Content Include="Content\font\roboto\robotothinitalic.ttf" />
+    <Content Include="Content\css\fonts\Material-Design.eot" />
+    <Content Include="Content\css\fonts\Material-Design.ttf" />
+    <Content Include="Content\css\fonts\Material-Design.woff" />
+    <Content Include="Content\css\fonts\roboto\robotobold.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotobolditalic.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotocondesedbold.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotocondesedbolditalic.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotocondeseditalic.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotocondesedlight.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotocondesedlightitalic.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotocondesedregular.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotoitalic.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotolight.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotolightitalic.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotomedium.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotomediumitalic.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotoregular.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotothin.ttf" />
+    <Content Include="Content\css\fonts\roboto\robotothinitalic.ttf" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -284,7 +296,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
-    <Content Include="Scripts\jquery.nouislider.min.js" />
+    <Content Include="Scripts\jquery.nouislider.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -293,10 +305,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
-    <Content Include="Scripts\material.min.js" />
+    <Content Include="Scripts\material.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\ripples.min.js" />
-    <Content Include="Scripts\snackbar.min.js" />
+    <Content Include="Scripts\ripples.js" />
+    <Content Include="Scripts\snackbar.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -330,13 +342,19 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Contatos\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+<<<<<<< HEAD
     <Content Include="Views\Compromisso.cshtml" />
+=======
+    <Content Include="Views\Contatos\Add.cshtml" />
+    <Content Include="Views\Contatos\Detalhes.cshtml" />
+    <Content Include="Views\Tarefas\Index.cshtml" />
+>>>>>>> 1f5d792c6e0865cd87b642b9b89a925bd56eac8c
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

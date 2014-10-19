@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Easy.Models.Usuario>
+@{
+    ViewBag.Title = "Contact";
+}
+<br />
+<div class="row">
+              <div class="col-md-12">
+              <h1>Contatos</h1><a href="~/Contatos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add"></a>
+              </div>
+            </div>
+<br />
+
+<div class="list-group">
+    @foreach (var item in Model) {
+    <div class="list-group-item">
+        <div class="row-picture">
+            <img class="circle" src="~/Content/img/contato.png" alt="icon">
+        </div>
+        <div class="row-content">
+            <h3> @Html.ActionLink(item.Nome, "Detalhes", new {  id=item.IdUser})  </h3>
+        </div>
+    </div>
+    <div class="list-group-separator"></div>
+    }
+ 
+</div>

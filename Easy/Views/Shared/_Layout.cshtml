@@ -9,17 +9,6 @@
 
     <title>Pagina Principal</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/sb-admin.css" rel="stylesheet">
-
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/ripples.css" rel="stylesheet">
-    <link href="css/material-wfont.css" rel="stylesheet">
-    <link href="css/snackbar.min.css" rel="stylesheet">
-
      @Styles.Render("~/Content/css")
      @Scripts.Render("~/bundles/modernizr")
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -32,25 +21,22 @@
 </head>
 
 <body>
-
-    <div id="wrapper">
-
-        <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">SB Admin</a>
-            </div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <a class="navbar-brand" href="/Home">Easy Peoples</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+           <li><a href="#menu-toggle" id="menu-toggle" ><i class="icon-material-apps"></i></a></li>
+           <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i>Notificações <b class="caret"></b></a>
                     <ul class="dropdown-menu message-dropdown">
                         <li class="message-preview">
                             <a href="#">
@@ -86,7 +72,7 @@
                             <a href="#">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                        <img class="media-object" src="" alt="">
                                     </span>
                                     <div class="media-body">
                                         <h5 class="media-heading"><strong>Sebá Purcini</strong>
@@ -103,7 +89,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i>Alertas <b class="caret"></b></a>
                     <ul class="dropdown-menu alert-dropdown">
                         <li>
                             <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
@@ -144,62 +130,71 @@
                         </li>
                     </ul>
                 </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i>Página Inicial</a>
-                    </li>
-                    <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i>Compromissos</a>
-                    </li>
-                    <li>
-                        <a href="tables.html"><i class="fa fa-fw fa-table"></i>Tarefas</a>
-                    </li>
-                    <li>
-                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i>Calendário</a>
-                    </li>
-                   <!-- <li>
-                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
-                    </li>
-                    <li>
-                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
-                    </li>-->
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Contatos <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">
-                            <li>
-                                <a href="#">Visualizar Contatos</a>
-                            </li>
-                            <li>
-                                <a href="#">Adicionar Contatos</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </nav>
-    <!-- jQuery Version 1.11.0 -->
-    <script src="Scripts/jquery-1.11.0.js"></script>
+          </ul>
 
-    <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/ripples.min.js"></script>
-    <script src="Scripts/material.min.js"></script>
-    <script src="Scripts/snackbar.min.js"></script>
-    <script src="Scripts/jquery.nouislider.min.js"></script>
+
+        </div>
+      </div>
+      </div>
+     <div class="container-fluid">
+    <div id="wrapper">
+      <div id="sidebar-wrapper"> 
+             <ul class="sidebar-nav"> 
+                 <li class="sidebar-brand"> 
+                     <a href="#"> 
+                        &nbsp;
+                     </a> 
+                 </li> 
+                 <li> 
+                     <a href="/Home"><p style="font-size:large">Página Inicial</p></a> 
+                 </li> 
+                 <li class="cl-effect-2"> 
+                            <a href="#"><span data-hover="Compromissos">Compromissos</span></a> 
+                 </li> 
+                 <li class="cl-effect-2">
+                            <a href="/Tarefas"><span data-hover="Tarefas">Tarefas</span></a>
+                 </li> 
+                 <li class="cl-effect-2"> 
+                            <a href="#"><span data-hover="Calendário">Calendário</span></a> 
+                 </li> 
+                 <li  class="cl-effect-2"> 
+                            <a href="#"><span data-hover="About">About</span></a> 
+                 </li> 
+                 <li class="cl-effect-2">
+                            <a href="/Contatos"><span data-hover="Contact">Contact</span></a> 
+                 </li> 
+             </ul> 
+         </div> 
+        </div>
+</div>      
+      
+    
 
     @Scripts.Render("~/bundles/jquery")
-    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/easy")
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+    @RenderSection("scripts", required: false)      
 
-    @RenderSection("featured", required: false)
-      <section class="content-wrapper main-content clear-fix">
-         @RenderBody()
-      </section>
+  <div id="page-content-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+           &nbsp;
+          </div>
+          <div class="col-lg-9">
+               @RenderSection("featured", required: false)
+               @RenderBody()
+          </div>
+        </div>
+      </div>
+    </div>
+
 </body>
 
 </html>
