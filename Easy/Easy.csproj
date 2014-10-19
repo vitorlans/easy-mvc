@@ -191,6 +191,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Connection.cs" />
+    <Compile Include="Models\DAOTarefas.cs" />
+    <Compile Include="Models\Tarefas.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -345,9 +348,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Tarefas\Index.cshtml" />
     <Content Include="Views\Contatos\Add.cshtml" />
     <Content Include="Views\Contatos\Detalhes.cshtml" />
+    <Content Include="Views\Tarefas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

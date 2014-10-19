@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Easy.Models;
 
 namespace Easy.Controllers
 {
@@ -13,7 +14,11 @@ namespace Easy.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            DAOTarefas daoTaf = new DAOTarefas();
+
+            var listTaf = daoTaf.ListaTarefas();
+ 
+            return View(listTaf);
         }
 
     }
