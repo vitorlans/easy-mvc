@@ -348,9 +348,13 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+<<<<<<< HEAD
+    <Content Include="Views\Compromisso.cshtml" />
+=======
     <Content Include="Views\Contatos\Add.cshtml" />
     <Content Include="Views\Contatos\Detalhes.cshtml" />
     <Content Include="Views\Tarefas\Index.cshtml" />
+>>>>>>> 1f5d792c6e0865cd87b642b9b89a925bd56eac8c
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
