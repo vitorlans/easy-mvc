@@ -31,12 +31,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2  control-label" for="inputDefault">Data de Início</label>
-                            <div class="col-lg-10">        
-                                    @Html.TextBoxFor(model => model.DtInicio, new { @class="form-control", id="inputDefault" })
-                                    @Html.ValidationMessageFor(model => model.DtInicio)
+                            <label for="inputDefault" class="col-lg-2 control-label">Data de Início</label>
+                             <div class="col-lg-10"> 
+                                <div class="controls input-append date form_date" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                     @Html.TextBoxFor(model => model.DtInicio, new { @class="form-control dtIni", id="inputDefault", @readonly=true, @size="40px" })
+                                     @Html.ValidationMessageFor(model => model.DtInicio)
+                                    <span class="add-on"><i class="icon-material-close btClose1"></i></span>
+					                <span class="add-on"><i class="icon-th icon-material-today"></i></span>
+                                </div>
+				            <input type="hidden" id="dtp_input2" value="" /><br/>
                             </div>
-                        </div> 
+                        </div>
                         <div class="form-group">
                             <label class="col-lg-2  control-label" for="inputDefault">Data de Término</label>
                             <div class="col-lg-10">        
@@ -60,7 +65,7 @@
                                 <button formaction="/Tarefas" class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
-                    </fieldset>
+                  </fieldset>
                 }
             </div>
         </div>
@@ -72,9 +77,43 @@
 }
 
 <script type="text/javascript">
-  $(function() {
-    $('#datetimepicker1').datetimepicker({
-      language: 'pt-BR'
+
+    $(".btClose1").click(function()
+    {
+        $(".dtIni").val("");
     });
+
+    $(".btClose2").click(function () {
+        $(".dtFim").val("");
+    });
+
+  $('.form_datetime').datetimepicker({
+      //language:  'fr',
+      weekStart: 1,
+      todayBtn: 1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      forceParse: 0,
+      showMeridian: 1
   });
+        $('.form_date').datetimepicker({
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+        $('.form_time').datetimepicker({
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 1,
+            minView: 0,
+            maxView: 1,
+            forceParse: 0
+        });
 </script>

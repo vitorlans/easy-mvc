@@ -18,10 +18,11 @@ namespace Easy
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/easy").Include(
-                        "~/Scripts/bootstrap.js",
+            bundles.Add(new ScriptBundle("~/bundles/easy").Include(                       
+                       "~/Scripts/bootstrap.js",
+                       "~/Scripts/material.js",
+                        "~/Scripts/bootstrap-datetimepicker.js",
                         "~/Scripts/ripples.js",
-                        "~/Scripts/material.js",
                         "~/Scripts/snackbar.js",
                         "~/Scripts/jquery.nouislider.js"));
 
@@ -32,7 +33,7 @@ namespace Easy
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                                          "~/Content/css/bootstrap.css",
-                                         "~/Content/css/bootstrap.mim.css",
+                                         "~/Content/css/bootstrap.min.css",
                                          "~/Content/css/sb-admin.css",
                                          "~/Content/css/sidebar.css",
                                          "~/Content/css/ripples.css",
@@ -40,7 +41,8 @@ namespace Easy
                                          "~/Content/css/snackbar.min.css",
                                          "~/Content/css/component.css",
                                          "~/Content/css/demo.css",
-                                         "~/Content/css/normalize.css"));
+                                         "~/Content/css/normalize.css",
+                                         "~/Content/css/bootstrap-datetimepicker.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

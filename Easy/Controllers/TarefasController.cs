@@ -15,7 +15,6 @@ namespace Easy.Controllers
         public ActionResult Index()
         {
             DAOTarefas daoTaf = new DAOTarefas();
-
             var listTaf = daoTaf.ListaTarefas();
  
             return View(listTaf);
