@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Easy.Controllers
 {
-    public class EventosController : Controller
+    public class CompromissosController : Controller
     {
         //
         // GET: /Eventos/
@@ -15,6 +15,9 @@ namespace Easy.Controllers
         {
             return View();
         }
-
+        public ActionResult Add()
+        {
+            return View();
+        }
     }
 }
