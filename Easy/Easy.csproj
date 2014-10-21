@@ -351,6 +351,7 @@
     <Content Include="Views\Contatos\Add.cshtml" />
     <Content Include="Views\Contatos\Detalhes.cshtml" />
     <Content Include="Views\Tarefas\Index.cshtml" />
+    <Content Include="Views\Tarefas\AdicionarTarefa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

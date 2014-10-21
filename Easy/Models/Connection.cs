@@ -9,7 +9,7 @@ namespace Easy.Models
 {
     public abstract class Connection
     {
-        private static string strConn = "Data Source=DSEBA-PC;Initial Catalog=projetopi;User ID=sa;Password=12345";
+        private static string strConn = "Data Source=localhost;Initial Catalog=projetopi;User ID=sa;Password=12345";
         private static SqlConnection conn;
 
         public Connection()

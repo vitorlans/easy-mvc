@@ -21,5 +21,10 @@ namespace Easy.Controllers
             return View(listTaf);
         }
 
+        public ActionResult AdicionarTarefa()
+        {
+            return View();
+        }
+
     }
 }

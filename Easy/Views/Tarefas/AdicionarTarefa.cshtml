@@ -1,0 +1,80 @@
+﻿@model Easy.Models.Tarefas
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "AdicionarTarefa";
+
+    List<SelectListItem> listaPrior = new List<SelectListItem>();
+    listaPrior.Add(new SelectListItem { Text = "Baixa", Value = "B", Selected=true });
+    listaPrior.Add(new SelectListItem { Text = "Média", Value = "M" });
+    listaPrior.Add(new SelectListItem { Text = "Alta", Value = "A" });
+}
+
+<div class="bs-docs-section">
+    <div class="row" style="">
+        <div class="col-lg-9">
+            <div class="well bs-component">
+
+                @using (Html.BeginForm("Index", "Tarefas", null, FormMethod.Post, new { @class="form-horizontal"})) {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    <fieldset>
+                        <legend>Informações da Tarefa</legend>
+
+                        <div class="form-group">
+                            <label for="textArea" class="col-lg-2 control-label">Descrição</label>
+                            <div class="col-lg-10">
+                                @Html.TextAreaFor(model => model.Descricao, new {@class="form-control", rows="3" , id="textArea", @maxlength="100" })
+                                @Html.ValidationMessageFor(model => model.Descricao)
+                                <span class="help-block">A descrição da Tarefa deve ser breve, contendo no máximo 100 caracteres.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2  control-label" for="inputDefault">Data de Início</label>
+                            <div class="col-lg-10">        
+                                    @Html.TextBoxFor(model => model.DtInicio, new { @class="form-control", id="inputDefault" })
+                                    @Html.ValidationMessageFor(model => model.DtInicio)
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="col-lg-2  control-label" for="inputDefault">Data de Término</label>
+                            <div class="col-lg-10">        
+                                    @Html.TextBoxFor(model => model.DtFim, new { @class="form-control", id="inputDefault" })
+                                    @Html.ValidationMessageFor(model => model.DtFim)
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <label for="select" class="col-lg-2 control-label">Prioridade</label>
+                            <div class="col-lg-10">
+                                @Html.DropDownListFor(model => model.Prioridade, listaPrior, new {@class ="form-control" })
+                                @Html.ValidationMessageFor(model => model.Prioridade)
+                            </div>
+                       </div>
+                       <br />
+                       <br />
+                       <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="submit" class="btn btn-primary">Adicionar</button>
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+  $(function() {
+    $('#datetimepicker1').datetimepicker({
+      language: 'pt-BR'
+    });
+  });
+</script>
