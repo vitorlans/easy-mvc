@@ -25,5 +25,20 @@ namespace Easy.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult AdicionarTarefa(Tarefas tar)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            else
+            {
+                
+            }
+
+            return View();
+        }
+
     }
 }

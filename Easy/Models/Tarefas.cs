@@ -8,12 +8,17 @@ namespace Easy.Models
 {
     public class Tarefas
     {
+        [Required(ErrorMessage = "Deve ser informada a Descrição da Tarefa.")]
         [Display(Name = "Descrição")]
         public string   Descricao   { get; set; }
+
+        [Required(ErrorMessage = "A Data de Início da Tarefa deve ser informada.")]
         [Display(Name = "Data de Início")]
         public string   DtInicio    { get; set; }
+
         [Display(Name = "Data de Término")]
         public string   DtFim       { get; set; }
+
         public string   Prioridade  { get; set; }
         public string   Status      { get; set; }
         public Usuario  Criador     { get; set; }
