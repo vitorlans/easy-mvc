@@ -34,7 +34,11 @@
 
     if (DateTime.Parse(item.DtFim) < dt)
     {
-       classe = "warning";
+        classe = "warning";
+    }
+    else
+    {
+        classe = "";
     }
 
     <tr class ="@classe">

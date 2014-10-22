@@ -1178,6 +1178,9 @@ a.text-warning:hover {
 }
 .text-danger {
   color: #a94442;
+  font-weight: bold;
+  font-size: 13px;
+  font-style: italic;
 }
 a.text-danger:hover {
   color: #843534;
