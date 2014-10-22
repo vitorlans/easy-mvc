@@ -19,5 +19,9 @@ namespace Easy.Controllers
         {
             return View();
         }
+        public ActionResult EditarCompromisso()
+        {
+            return View();
+        }
     }
 }
