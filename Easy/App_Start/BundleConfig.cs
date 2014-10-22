@@ -39,7 +39,7 @@ namespace Easy
                                          "~/Content/css/sidebar.css",
                                          "~/Content/css/ripples.css",
                                          "~/Content/css/material-wfont.css",
-                                         "~/Content/css/snackbar.min.css",
+                                         "~/Content/css/snackbar.css",
                                          "~/Content/css/component.css",
                                          "~/Content/css/demo.css",
                                          "~/Content/css/normalize.css",
