@@ -6245,3 +6245,11 @@ button.close {
     font-size: 20px;
     font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.color_button {
+    background-color: #9f38c2;
+}
+
+.texto2 {
+    color: #fff;
+}

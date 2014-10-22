@@ -41,7 +41,7 @@
         classe = "";
     }
 
-    <tr class ="@classe">
+    <tr class ="">
         <td>
             <div class="checkbox">
                 <label>
@@ -50,11 +50,13 @@
             </div>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Descricao)
-            <br />
-            <div>
-                Data de Início : @Html.DisplayFor(modelItem => item.DtInicio)<br />
-                Data de Término: @Html.DisplayFor(modelItem => item.DtFim)
+            <div class=" well">
+                    @Html.DisplayFor(modelItem => item.Descricao)
+            </div>
+        </td>
+        <td>
+            <div class="btn-group color_button" style="margin-left:0%">
+                <button type="button" class="btn btn-default"><i class="texto2 icon-material-create"></i></button>
             </div>
         </td>
         <!--<td>
