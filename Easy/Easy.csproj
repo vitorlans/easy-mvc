@@ -357,6 +357,7 @@
     <Content Include="Views\Tarefas\AdicionarTarefa.cshtml" />
     <Content Include="Views\Compromissos\Add.cshtml" />
     <Content Include="Views\Compromissos\Index.cshtml" />
+    <Content Include="Views\Compromissos\EditarCompromisso.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
