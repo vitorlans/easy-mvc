@@ -9,10 +9,10 @@ namespace Easy.Models
 {
     public class DAOTarefas
     {
-        List<Tarefas> lsTaf;
-
         public List<Tarefas> ListaTarefas()
         {
+            List<Tarefas> lsTaf;
+
             lsTaf = new List<Tarefas>();
 
             //DEVERÁ SER APLICADA A CLAUSULA WHERE PELO ID DO USUARIO LOGADO
@@ -49,6 +49,29 @@ namespace Easy.Models
 
             Connection.Desconectar();
             return lsTaf;
+        }
+
+        public void AddTarefa(Tarefas tar)
+        {
+            if (tar != null)
+            {
+                try
+                {
+                    SqlCommand sqlExec = new SqlCommand("INSERT INTO TBTAREFAS VALUES("+
+                                                                                        "'"+tar.Descricao+"',"+
+                                                                                        "'"+Convert.ToDateTime(tar.DtInicio)+"',"+
+                                                                                        "'"+Convert.ToDateTime(tar.DtFim)+"'," +
+                                                                                        "'"+tar.Prioridade+"',"+
+                                                                                        "'A',"+
+                                                                                        "1,"+
+                                                                                        "2, null)", Connection.Conectar());
+                    sqlExec.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                }
+            }
+
         }
     }
 }

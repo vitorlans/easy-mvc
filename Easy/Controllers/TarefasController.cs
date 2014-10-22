@@ -30,14 +30,16 @@ namespace Easy.Controllers
         {
             if (ModelState.IsValid)
             {
+                DAOTarefas daoTaf = new DAOTarefas();
 
+                daoTaf.AddTarefa(tar);
             }
             else
             {
                 
             }
 
-            return View();
+            return RedirectToAction("Index", "Tarefas");
         }
 
     }
