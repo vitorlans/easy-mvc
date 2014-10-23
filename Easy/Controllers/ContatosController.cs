@@ -12,11 +12,11 @@ namespace Easy.Controllers
         //
         // GET: /Contatos/
 
-        public ActionResult Index(Usuario user)
+        public ActionResult Index(Usuario user, string login)
         {
             DAOUsuario DUser = new DAOUsuario();
 
-            var lista = DUser.ListaUsuarios();
+            var lista = DUser.ListaUsuarios("1");
             return View(lista);
         }
 

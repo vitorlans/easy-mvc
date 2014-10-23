@@ -8,79 +8,87 @@ namespace Easy.Models
 {
     public class DAOUsuario
     {
- 
-        public List<Usuario> ListaUsuarios()
+
+        public List<Usuario> ListaUsuarios(string login)
         {
+
+            var meusContatos = MeusContatos(login);
+            
             List<Usuario> lista = new List<Usuario>();
 
             try
-            {
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS", Connection.Conectar());
-                SqlDataReader dr = sqlExec.ExecuteReader();
-
-                while (dr.Read())
+            {   var x = 0;
+                foreach (var i in meusContatos)
                 {
-                    lista.Add
-                        (
-                        new Usuario
-                        {
-                            IdUser = int.Parse(dr["IDUSER"].ToString()),
-                            Nome = dr["NOME"].ToString(),
-                            Sobrenome = dr["SOBRENOME"].ToString(),
-                            Senha = dr["SENHA"].ToString(),
-                            Endereco = dr["ENDERECO"].ToString(),
-                            Bairro = dr["BAIRRO"].ToString(),
-                            Cidade = dr["CIDADE"].ToString(),
-                            Cep = dr["CEP"].ToString(),
-                            Telefone = dr["TELEFONE"].ToString(),
-                            UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
-                            LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                            Status = dr["STATUS"].ToString(),
-                            DataCriacao = dr["DT_CRIACAO"].ToString(),
-                            Imagem = dr["IMAGEM"].ToString(),
+                    
+                    SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IdUser=" + meusContatos[x].IdUser2.ToString(), Connection.Conectar());
+                    SqlDataReader dr = sqlExec.ExecuteReader();
 
-                        }
-                        );
+                    while (dr.Read())
+                    {
+                        lista.Add
+                            (
+                            new Usuario
+                            {
+                                IdUser = int.Parse(dr["IDUSER"].ToString()),
+                                Nome = dr["NOME"].ToString(),
+                                Sobrenome = dr["SOBRENOME"].ToString(),
+                                Senha = dr["SENHA"].ToString(),
+                                Endereco = dr["ENDERECO"].ToString(),
+                                Bairro = dr["BAIRRO"].ToString(),
+                                Cidade = dr["CIDADE"].ToString(),
+                                Cep = dr["CEP"].ToString(),
+                                Telefone = dr["TELEFONE"].ToString(),
+                                UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
+                                LiberaConvite = dr["LIBERACONVITE"].ToString(),
+                                Status = dr["STATUS"].ToString(),
+                                DataCriacao = dr["DT_CRIACAO"].ToString(),
+                                Imagem = dr["IMAGEM"].ToString(),
+
+                            }
+                            );
+                    }
+                    x++;
                 }
-
             }
             catch { }
 
             return lista;
         }
 
-        public Usuario RecuperaUsuario(string id) {
+        public Usuario RecuperaUsuario(string id)
+        {
 
             Usuario user = new Usuario();
             try
             {
-            SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IDUSER="+id, Connection.Conectar());
-            SqlDataReader dr = sqlExec.ExecuteReader();
-            
-            while (dr.Read())
-                {
-                  user =
-                        (
-                        new Usuario
-                        {
-                            IdUser = int.Parse(dr["IDUSER"].ToString()),
-                            Nome = dr["NOME"].ToString(),
-                            Sobrenome = dr["SOBRENOME"].ToString(),
-                            Email = dr["EMAIL"].ToString(),
-                            Senha = dr["SENHA"].ToString(),
-                            Endereco = dr["ENDERECO"].ToString(),
-                            Bairro = dr["BAIRRO"].ToString(),
-                            Cidade = dr["CIDADE"].ToString(),
-                            Cep = dr["CEP"].ToString(),
-                            Telefone = dr["TELEFONE"].ToString(),
-                            UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
-                            LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                            Status = dr["STATUS"].ToString(),
-                            DataCriacao = dr["DT_CRIACAO"].ToString(),
-                            Imagem = dr["IMAGEM"].ToString(),
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IDUSER=" + id, Connection.Conectar());
+                SqlDataReader dr = sqlExec.ExecuteReader();
 
-                        }
-                        );
+                while (dr.Read())
+                {
+                    user =
+                          (
+                          new Usuario
+                          {
+                              IdUser = int.Parse(dr["IDUSER"].ToString()),
+                              Nome = dr["NOME"].ToString(),
+                              Sobrenome = dr["SOBRENOME"].ToString(),
+                              Email = dr["EMAIL"].ToString(),
+                              Senha = dr["SENHA"].ToString(),
+                              Endereco = dr["ENDERECO"].ToString(),
+                              Bairro = dr["BAIRRO"].ToString(),
+                              Cidade = dr["CIDADE"].ToString(),
+                              Cep = dr["CEP"].ToString(),
+                              Telefone = dr["TELEFONE"].ToString(),
+                              UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
+                              LiberaConvite = dr["LIBERACONVITE"].ToString(),
+                              Status = dr["STATUS"].ToString(),
+                              DataCriacao = dr["DT_CRIACAO"].ToString(),
+                              Imagem = dr["IMAGEM"].ToString(),
+
+                          }
+                          );
                 }
 
 
@@ -90,43 +98,62 @@ namespace Easy.Models
 
         }
 
-        public void CriarUsuario(Usuario user, string login) {
+        public void CriarUsuario(Usuario user, string login)
+        {
 
             user.DataCriacao = DateTime.Now.ToString();
             user.Status = "A";
             user.Senha = Usuario.GerarSenha();
 
-        string strInserir = "insert into TBUSUARIOS values (@nome, null, @email, @senha, @endereco, @bairro, @cidade, @cep, @telefone, @usuariosistema, @liberaconvite, @status, @datacriacao, null)";
+            try
+            {
+                if (VerificaExistencia(user) == false)
+                {
 
 
-        try
+                    string strInserir = "insert into TBUSUARIOS values (@nome, @sobrenome, @email, @senha, @endereco, @bairro, @cidade, @cep, @telefone, @usuariosistema, @liberaconvite, @status, @datacriacao, @imagem)";
+
+                    SqlCommand inserirUsuario = new SqlCommand(strInserir, Connection.Conectar());
+
+
+
+                    inserirUsuario.Parameters.AddWithValue("nome", user.Nome);
+                    inserirUsuario.Parameters.AddWithValue("sobrenome", (object)user.Sobrenome ?? DBNull.Value);
+                    inserirUsuario.Parameters.AddWithValue("email", user.Email);
+                    inserirUsuario.Parameters.AddWithValue("senha", user.Senha);
+                    inserirUsuario.Parameters.AddWithValue("endereco", (object)user.Endereco ?? DBNull.Value);
+                    inserirUsuario.Parameters.AddWithValue("bairro", (object)user.Bairro ?? DBNull.Value);
+                    inserirUsuario.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
+                    inserirUsuario.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
+                    inserirUsuario.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
+                    inserirUsuario.Parameters.AddWithValue("usuariosistema", user.UsuarioSistema);
+                    inserirUsuario.Parameters.AddWithValue("liberaconvite", user.LiberaConvite);
+                    inserirUsuario.Parameters.AddWithValue("status", user.Status);
+                    inserirUsuario.Parameters.AddWithValue("datacriacao", user.DataCriacao);
+                    inserirUsuario.Parameters.AddWithValue("imagem", (object)user.Imagem ?? DBNull.Value);
+
+
+
+                    inserirUsuario.ExecuteNonQuery();
+                    VinculaUsuario(user, login);
+
+                }
+                else
+                {
+                    VinculaUsuario(user, login);
+                }
+            }
+            catch (SqlException) { }
+
+        }
+
+
+
+        private void VinculaUsuario(Usuario user, string login)
         {
-            SqlCommand inserirUsuario = new SqlCommand(strInserir, Connection.Conectar());
 
-
-
-            inserirUsuario.Parameters.Add(new SqlParameter("nome", user.Nome));
-            //inserirUsuario.Parameters.Add(new SqlParameter("sobrenome", user.Sobrenome));
-            inserirUsuario.Parameters.Add(new SqlParameter("email", user.Email));
-            inserirUsuario.Parameters.Add(new SqlParameter("senha", user.Senha));
-            inserirUsuario.Parameters.Add(new SqlParameter("endereco", user.Endereco));
-            inserirUsuario.Parameters.Add(new SqlParameter("bairro", user.Bairro));
-            inserirUsuario.Parameters.Add(new SqlParameter("cidade", user.Cidade));
-            inserirUsuario.Parameters.Add(new SqlParameter("cep", user.Cep));
-            inserirUsuario.Parameters.Add(new SqlParameter("telefone", user.Telefone));
-            inserirUsuario.Parameters.Add(new SqlParameter("usuariosistema", user.UsuarioSistema));
-            inserirUsuario.Parameters.Add(new SqlParameter("liberaconvite", user.LiberaConvite));
-            inserirUsuario.Parameters.Add(new SqlParameter("status", user.Status));
-            inserirUsuario.Parameters.Add(new SqlParameter("datacriacao", user.DataCriacao));
-            //inserirUsuario.Parameters.Add(new SqlParameter("imagem", user.Imagem));
-
-
-            inserirUsuario.ExecuteNonQuery();
-
-
-            SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" + user.Email, Connection.Conectar());
+            SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" + "'" + user.Email + "'", Connection.Conectar());
             SqlDataReader dr = sqlExec.ExecuteReader();
-            Usuario UserID = new Usuario();
             while (dr.Read())
             {
                 user =
@@ -139,30 +166,56 @@ namespace Easy.Models
 
             }
 
-            string strInserir2 = "insert into TBUSUAUSUA values (@iduser, @iduser2)";
+            string strInserir2 = "insert into VUSUAUSUA values (@iduser, @iduser2)";
 
 
-        
+
             SqlCommand inserirUsuario2 = new SqlCommand(strInserir2, Connection.Conectar());
 
 
+            inserirUsuario2.Parameters.AddWithValue("iduser", login);
+            inserirUsuario2.Parameters.AddWithValue("iduser2", user.IdUser);
 
-            inserirUsuario2.Parameters.Add(new SqlParameter("iduser", login));
-            inserirUsuario2.Parameters.Add(new SqlParameter("iduser2", user.IdUser));
+            inserirUsuario2.ExecuteNonQuery();
 
-            inserirUsuario.ExecuteNonQuery();
-
-            //fim do try
         }
 
-        catch (SqlException)
+
+
+        private bool VerificaExistencia(Usuario user)
         {
-        }
-           
-        }
-         
-   }
 
+            SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" + "'" + user.Email + "'", Connection.Conectar());
+            SqlDataReader dr = sqlExec.ExecuteReader();
+            if (dr.Read())
+                return true;
+
+            else
+                return false;
+
+        }
+
+
+        private List<VinculoUsuario> MeusContatos(string login)
+        {
+             List<VinculoUsuario> lista = new List<VinculoUsuario>();
+            SqlCommand sqlExec = new SqlCommand("SELECT * FROM VUSUAUSUA where IDUSER=" + login, Connection.Conectar());
+            SqlDataReader dr = sqlExec.ExecuteReader();
+            while (dr.Read()) 
+            {
+                lista.Add
+                        (
+                        new VinculoUsuario
+                        {
+                            IdUser = int.Parse(dr["IDUSER"].ToString()),
+                            IdUser2 = int.Parse(dr["IDUSER2"].ToString()),
+                        });
+            }
+
+            return lista;
+        }
+    }
+}
        
       
 
@@ -204,4 +257,4 @@ namespace Easy.Models
         //}
 
 
-    }
+    

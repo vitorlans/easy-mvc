@@ -10,7 +10,6 @@
                     <form class="form-horizontal" style="" method="post">
                       <fieldset>
                         <legend>Detalhes Contato</legend>
-                         @Html.ValidationSummary(true)
                         <div class="form-group">
                           <label for="inputNome" class="col-lg-2 control-label">Nome</label>
                           <div class="col-lg-10">
@@ -28,9 +27,17 @@
                           <div class="col-lg-10">
                              @Html.TextBoxFor(model => model.Email, new { @id="inputEmail", @placeholder="Email", @class = "form-control", @type="email" })
                               <div class="checkbox">
-                              <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist">Usuario do Sistema</label>
+                                 @if ( Html.ViewData.Model.UsuarioSistema == "S")
+                                  { ViewBag.V1 = "checked";  }
+                                else 
+                                  { ViewBag.V1 = ""; }
+                                  @if ( Html.ViewData.Model.LiberaConvite == "S")
+                                  { ViewBag.V2 = "checked";  }
+                                else 
+                                  { ViewBag.V2 = ""; }
+                              <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist" @ViewBag.V1>Usuario do Sistema</label>
                                   <div class="checkbox">
-                              <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv">Permissão - Envio de Convite</label>
+                              <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv" @ViewBag.V2>Permissão - Envio de Convite</label>
                             </div>
                             </div>
                             </div>
@@ -82,6 +89,7 @@
                         <div class="form-group">
                           <div class="col-lg-10 col-lg-offset-2">
                             <button type="submit" class="btn btn-primary">Atualizar Dados</button>
+                            <button type="submit" class="btn btn-warning">Apagar Contato</button>
                           </div>
                         </div>
                       </fieldset>

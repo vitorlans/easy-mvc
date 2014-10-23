@@ -52,4 +52,12 @@ namespace Easy.Models
         }
 
     }
+
+    public class VinculoUsuario {
+
+        public int IdUser { get; set; }
+        public int IdUser2 { get; set; }
+
+       
+    }
 }
