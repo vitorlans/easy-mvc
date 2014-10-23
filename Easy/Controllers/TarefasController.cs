@@ -34,10 +34,12 @@ namespace Easy.Controllers
 
                 daoTaf.AddTarefa(tar);
                 Session["AddTarefa"] = 1;
+                Session.Timeout = 1;
             }
             else
             {
-                Session["AddTarefa"] = 0; 
+                Session["AddTarefa"] = 0;
+                Session.Timeout = 1;
             }
 
             return RedirectToAction("Index", "Tarefas");
