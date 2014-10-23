@@ -194,6 +194,7 @@
     <Compile Include="Models\Compromissos.cs" />
     <Compile Include="Models\Connection.cs" />
     <Compile Include="Models\DAOTarefas.cs" />
+    <Compile Include="Models\DAOUsuario.cs" />
     <Compile Include="Models\Tarefas.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

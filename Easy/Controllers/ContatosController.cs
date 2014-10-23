@@ -14,7 +14,9 @@ namespace Easy.Controllers
 
         public ActionResult Index(Usuario user)
         {
-            var lista = user.ContatosLTotal();
+            DAOUsuario DUser = new DAOUsuario();
+
+            var lista = DUser.ListaUsuarios();
             return View(lista);
         }
 
@@ -31,42 +33,39 @@ namespace Easy.Controllers
             if (CheckUserSist == null)
             {
 
-                user.UsuarioSistema = false;
+                user.UsuarioSistema = "N";
             }
             else
             {
 
-                user.UsuarioSistema = true;
+                user.UsuarioSistema = "S";
             }
 
             if (CheckEnvConv == null)
             {
-                user.LiberaConvite = false;
+                user.LiberaConvite = "N";
             }
             else
             {
 
-                user.LiberaConvite = true;
+                user.LiberaConvite = "S";
             }
 
             
+
+            DAOUsuario DUser = new DAOUsuario();
+
+            DUser.CriarUsuario(user, "1");
+
             return View();
 
         }
         public ActionResult Detalhes(string id)
         {
+            DAOUsuario DUser = new DAOUsuario();
 
-            Usuario user = new Usuario();
-            user.UsuarioSistema = true;
-            user.Nome = "Vitor Santos";
-            user.Sobrenome = "Silva";
-            user.Telefone = "19 3582-5664";
-            user.Email = "vitor_hs@live.com";
-            user.Endereco = "Mauricio Affonso Moreno";
-            user.Cidade = "Santa Rita do Passa Quatro";
-            user.Bairro="Vila Norte";
-            user.Cep="13670000";
-            user.LiberaConvite=true;
+            var user = DUser.RecuperaUsuario(id);
+            
 
             return View(user);
 
