@@ -4,8 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Gerenciamento de Tarefas";
     string classe = "";
+    int valida = int.Parse(Session["AddTarefa"].ToString());
 }
 
+<input id="hidValida" value="@valida" type="hidden"/>
 <h2>Index</h2>
     <a href="~/Tarefas/AdicionarTarefa" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add"></a>
 <div class="bs-docs-section">
@@ -96,6 +98,12 @@
             $(".fullScreen, .form-horizontal").fadeOut("fast");
         });
     });
-</script>
 
-</div>
+    if($("#hidValida").val() == 1)
+    {
+        $(document).ready(function () {
+            $.snackbar({ content: "A Tarefa foi cadastrada com Sucesso. Verifique as informações.", timeout: 9000 });
+        });
+    }
+
+</script>
