@@ -4,9 +4,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Gerenciamento de Tarefas";
     string classe = "";
+    int valida = 0;
+        
+    if(Session["AddTarefa"] != null)
+    {
+         valida = int.Parse(Session["AddTarefa"].ToString());
+    }
+
+    Session.Clear();
 }
 
-<h2>Index</h2>
+<input id="hidValida" value="@valida" type="hidden"/>
+<h2>Gerenciamento de Tarefas</h2>
     <a href="~/Tarefas/AdicionarTarefa" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add"></a>
 <div class="bs-docs-section">
 <div class="row" style="">
@@ -41,7 +50,7 @@
         classe = "";
     }
 
-    <tr class ="@classe">
+    <tr class ="">
         <td>
             <div class="checkbox">
                 <label>
@@ -50,11 +59,13 @@
             </div>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Descricao)
-            <br />
-            <div>
-                Data de Início : @Html.DisplayFor(modelItem => item.DtInicio)<br />
-                Data de Término: @Html.DisplayFor(modelItem => item.DtFim)
+            <div class=" well">
+                    @Html.DisplayFor(modelItem => item.Descricao)
+            </div>
+        </td>
+        <td>
+            <div class="btn-group color_button" style="margin-left:0%">
+                <button id="@item.IdTarefa" type="button" class="btn btn-default"><i class="texto2 icon-material-create"></i></button>
             </div>
         </td>
         <!--<td>
@@ -73,7 +84,6 @@
         </td>-->
 
     </tr>
-    
 }
 
 </table>
@@ -82,18 +92,26 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $(".openBox").click(function () {
-            var windowName = $(this).attr("name"),
-                 height = ($(window).height() - $('.form-horizontal').outerHeight()) / 2;
-            $(".fullScreen").fadeIn("fast");
-            $("#" + windowName).css("margin-top", height + "px").fadeIn("fast");
-        });
 
-        $(".button").click(function () {
-            $(".fullScreen, .form-horizontal").fadeOut("fast");
+    if($("#hidValida").val() == 1)
+    {
+        $(document).ready(function () {
+            $.snackbar({ content: "A Tarefa foi Cadastrada com Sucesso. Verifique as informações.", timeout: 8000 });
         });
+    }
+
+    $(document).ready(function () {
+        $(".HideComentario").hide();
+    });;
+
+    $("#btCom").click(function () {
+        var x = $("#btCom").val();
+        $("#"+x).slideToggle();
     });
+
 </script>
 
-</div>
+@{
+    
+    Session["AddTarefa"] = 0;
+}

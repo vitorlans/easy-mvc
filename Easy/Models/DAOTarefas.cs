@@ -19,7 +19,7 @@ namespace Easy.Models
 
             try
             {
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS ORDER BY DT_FIM", Connection.Conectar());
                 SqlDataReader dr = sqlExec.ExecuteReader();
 
                 while (dr.Read())
@@ -28,6 +28,7 @@ namespace Easy.Models
                     (
                         new Tarefas
                         {
+                            IdTarefa = int.Parse(dr["IdTare"].ToString()),
                             Descricao = dr["Descricao"].ToString(),
                             DtInicio = Convert.ToDateTime(dr["Dt_Inicio"].ToString()).ToShortDateString(),
                             DtFim = Convert.ToDateTime(dr["Dt_Fim"].ToString()).ToShortDateString(),

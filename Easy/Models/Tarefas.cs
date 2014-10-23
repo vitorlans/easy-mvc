@@ -8,6 +8,8 @@ namespace Easy.Models
 {
     public class Tarefas
     {
+        public int IdTarefa { get; set; }
+
         [Required(ErrorMessage = "Deve ser informada a Descrição da Tarefa.")]
         [Display(Name = "Descrição")]
         public string   Descricao   { get; set; }
