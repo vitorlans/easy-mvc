@@ -17,7 +17,7 @@ namespace Easy.Models
             {
                 try
                 {
-                    SqlCommand sqlTerminarCompromisso = new SqlCommand("Update Compromissos set status = T where idcomp = ?", Connection.Conectar());
+                    SqlCommand sqlTerminarCompromisso = new SqlCommand("Update TBCompromissos set status = T where idcomp = ?", Connection.Conectar());
                 }
                 catch (SqlException sqlExcp)
                 {
@@ -35,7 +35,7 @@ namespace Easy.Models
             {
                 try
                 {
-                    SqlCommand sqlComando = new SqlCommand("Update Compromissos set status = C where idcomp = ?", Connection.Conectar());
+                    SqlCommand sqlComando = new SqlCommand("Update TBCompromissos set status = C where idcomp = ?", Connection.Conectar());
                 }
                 catch (SqlException sqlExcp)
                 {
@@ -48,6 +48,7 @@ namespace Easy.Models
         }
         public List<Compromissos> ListarCompromissosData()
         {
+            DAOUsuario DUser = new DAOUsuario();
             List<Compromissos> ListaComp;
             ListaComp = new List<Compromissos>();
 
@@ -67,6 +68,7 @@ namespace Easy.Models
                             DataInicio = DateTime.Parse(dr["Dt_Inicio"].ToString()),
                             DataTermino = DateTime.Parse(dr["Dt_Termino"].ToString()),
                             Status = (dr["Status"].ToString()),
+                            Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString())
 
                         }
                         );
