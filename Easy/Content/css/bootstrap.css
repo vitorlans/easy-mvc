@@ -6247,7 +6247,7 @@ button.close {
 }
 
 .color_button {
-    background-color: #9f38c2;
+    background-color: #9f38c2 !important;
 }
 
 .texto2 {
