@@ -13,10 +13,7 @@ namespace Easy.Models
         public void TerminarCompromisso(Compromissos Compromisso, Usuario Usuario)
         {
             //Somente o criador do compromisso poderá alterar o status do mesmo
-            if (Compromisso.Usuario.IdUser != Usuario.IdUser)
-            {
-            }
-            else
+            if (Compromisso.Usuario.IdUser == Usuario.IdUser)
             {
                 try
                 {
@@ -34,10 +31,7 @@ namespace Easy.Models
         public void CancelarCompromisso(Compromissos Compromisso, Usuario Usuario)
         {
             //Somente o criador do compromisso poderá alterar o status do mesmo
-            if (Compromisso.Usuario.IdUser != Usuario.IdUser)
-            {
-            }
-            else
+            if (Compromisso.Usuario.IdUser == Usuario.IdUser)
             {
                 try
                 {
@@ -59,7 +53,7 @@ namespace Easy.Models
 
             try
             {
-                SqlCommand sqlComando = new SqlCommand("Select * from Compromissos order by data", Connection.Conectar());
+                SqlCommand sqlComando = new SqlCommand("Select * from TBCompromissos order by data", Connection.Conectar());
                 SqlDataReader dr = sqlComando.ExecuteReader();
 
                 while(dr.Read())
@@ -85,6 +79,13 @@ namespace Easy.Models
             {
             }
             return ListaComp;
+        }
+        public void AddCompromisso(Compromissos Compromisso)
+        {
+
+        }
+        public void EditarCompromisso(Compromissos Compromisso,Usuario Usuario)
+        {
         }
     }
 }
