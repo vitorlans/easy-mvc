@@ -11,6 +11,6 @@ namespace Easy.Models
         public int IdEmpresa { get; set; }
         public string CnpjEmpresa { get; set; }
         public string NomeEmpresa { get; set; }
-        public Boolean StatusEmpresa { get; set; }
+        public string StatusEmpresa { get; set; }
     }
 }
