@@ -20,6 +20,7 @@ namespace Easy.Controllers
         {
             return View();
         }
+        [HttpPost]
         public ActionResult Add(Compromissos Compromisso)
         {
             if (ModelState.IsValid)
