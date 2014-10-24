@@ -166,7 +166,7 @@ namespace Easy.Models
 
             }
 
-            string strInserir2 = "insert into VUSUAUSUA values (@iduser, @iduser2)";
+            string strInserir2 = "insert into VUSUACONT values (@iduser, @iduser2)";
 
 
 
@@ -199,7 +199,7 @@ namespace Easy.Models
         private List<VinculoUsuario> MeusContatos(string login)
         {
              List<VinculoUsuario> lista = new List<VinculoUsuario>();
-            SqlCommand sqlExec = new SqlCommand("SELECT * FROM VUSUAUSUA where IDUSER=" + login, Connection.Conectar());
+            SqlCommand sqlExec = new SqlCommand("SELECT * FROM VUSUACONT where IDUSER=" + login, Connection.Conectar());
             SqlDataReader dr = sqlExec.ExecuteReader();
             while (dr.Read()) 
             {
