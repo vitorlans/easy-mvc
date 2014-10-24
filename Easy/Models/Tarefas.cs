@@ -25,6 +25,6 @@ namespace Easy.Models
         public string   Status      { get; set; }
         public Usuario  Criador     { get; set; }
         public Usuario  Relacionado { get; set; }
-        public string   Empresa     { get; set; }//ALTERAR PARA CLASSE EMPRESA
+        public Empresas Empresa     { get; set; }//ALTERAR PARA CLASSE EMPRESA
     }
 }

@@ -370,6 +370,7 @@
     <Content Include="Views\Compromissos\Add.cshtml" />
     <Content Include="Views\Compromissos\Index.cshtml" />
     <Content Include="Views\Compromissos\EditarCompromisso.cshtml" />
+    <Content Include="Views\Tarefas\EditTarefa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -9,6 +9,42 @@ namespace Easy.Models
 {
     public class DAOTarefas
     {
+
+        public Tarefas SelecionaTarefaId(int id)
+        {
+            Tarefas tar = new Tarefas();
+
+            try
+            {
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDTARE = '"+id+"' ", Connection.Conectar());
+                SqlDataReader dr = sqlExec.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    tar.IdTarefa = int.Parse(dr["IDTARE"].ToString());
+                    tar.Descricao = dr["DESCRICAO"].ToString();
+                    tar.DtInicio = dr["DT_INICIO"].ToString();
+                    tar.DtFim = dr["DT_FIM"].ToString();
+                    tar.Prioridade = dr["PRIORIDADE"].ToString();
+                    tar.Status = dr["STATUS"].ToString();
+                    tar.Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) };
+                    tar.Relacionado = new Usuario { IdUser = int.Parse(dr["IDUSERDEST"].ToString()) };
+                    tar.Empresa = new Empresas { IdEmpresa = int.Parse(dr["IDEMPR"].ToString()) };
+
+                }
+
+            }
+            catch (SqlException sqlE)
+            {
+            }
+            catch (Exception e)
+            {
+            }
+
+            Connection.Desconectar();
+            return tar;
+        }
+
         public List<Tarefas> ListaTarefas()
         {
             List<Tarefas> lsTaf;
