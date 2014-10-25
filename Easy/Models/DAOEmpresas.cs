@@ -8,7 +8,7 @@ namespace Easy.Models
 {
     public class DAOEmpresas
     {
-        public Empresas RecuperarEmpresa(string IdEmpresa)
+        public Empresas RecuperarEmpresaId(string IdEmpresa)
         {
             Empresas Empresa = new Empresas();
             try

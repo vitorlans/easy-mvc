@@ -70,7 +70,7 @@ namespace Easy.Models
                             DataTermino = DateTime.Parse(dr["DT_TERMINO"].ToString()),
                             Status = (dr["STATUS"].ToString()),
                             Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString()),
-                            Empresa = DEmpresa.RecuperarEmpresa(dr["IDEMPR"].ToString())
+                            Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
                         }
                         );
                 }

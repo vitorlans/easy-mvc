@@ -1,6 +1,32 @@
-﻿@{
+﻿@model IEnumerable<Easy.Models.Compromissos>
+
+@{
     ViewBag.Title = "Index";
 }
 
 <h2>Próximos Compromissos</h2>
 <a href="~/Compromissos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add" title="Adicionar Compromisso"></a>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdComp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataTermino)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+</table>
