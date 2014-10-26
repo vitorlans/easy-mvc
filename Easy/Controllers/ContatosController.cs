@@ -20,6 +20,31 @@ namespace Easy.Controllers
             return View(lista);
         }
 
+        [HttpPost]
+        public ActionResult Index(string pesquisa, string tipo)
+        {
+
+            if (pesquisa == "")
+            {
+                return View();
+            }
+            else
+            {
+
+                if (tipo == "0")
+                {
+                    return View();
+                }
+                else
+                {
+
+                    return View();
+
+                }
+
+            }
+        }
+
         public ActionResult Add() {
 
             return View();

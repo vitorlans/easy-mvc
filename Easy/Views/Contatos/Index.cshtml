@@ -10,6 +10,20 @@
             </div>
 <br />
 
+@using (Html.BeginForm("Index", "Contatos", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+               <div style="width:50%">
+                   <input type="search"  class="form-control" placeholder="Pesquisa" name="pesquisa" />
+               </div>
+    <br />
+               <div>
+                   <input type ="submit" class="btn btn-success color_button" value="Pesquisar" />
+               </div>
+               
+
+                
+}
+<br />
 <div class="list-group ">
     @foreach (var item in Model) {
     <div class="list-group-item ">

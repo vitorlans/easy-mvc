@@ -11,8 +11,10 @@ namespace Easy.Models
         public int IdComp {get;set;}
         public string Titulo {get;set;}
         public string Descricao {get;set;}
-        public DateTime DataInicio {get;set;}
-        public DateTime DataTermino {get;set;}
+        [Required(ErrorMessage = "A Data de Início do Compromisso deve ser informada.")]
+        public string DataInicio {get;set;}
+        [Required(ErrorMessage = "A Data de Início do Compromisso deve ser informada.")]
+        public string DataTermino {get;set;}
         //Status será inserido como (T)erminado, (C)ancelado ou em (A)ndamento
         public string Status {get;set;}
         public Usuario Usuario {get;set;}
