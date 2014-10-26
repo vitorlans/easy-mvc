@@ -22,7 +22,7 @@ namespace Easy.Models
         public string   DtFim       { get; set; }
 
         public string   Prioridade  { get; set; }
-        public string   Status      { get; set; }
+        public bool   Status      { get; set; }
         public Usuario  Criador     { get; set; }
         public Usuario  Relacionado { get; set; }
         public Empresas Empresa     { get; set; }//ALTERAR PARA CLASSE EMPRESA

@@ -6239,7 +6239,7 @@ button.close {
     display: none;
 }
 
-/*---- TIPOS DE TEXTO ----*/
+/*---- TIPOS DE TEXTO E OUTRAS ADAPATACOES----*/
 
 .texto1 {
     font-size: 20px;
@@ -6252,4 +6252,20 @@ button.close {
 
 .texto2 {
     color: #fff;
+}
+
+.texto-amarelo {
+    color: #fce914;
+}
+
+
+/* --------------DIVS ---------------*/
+
+.div-simples {
+   
+    margin-top: -16px;
+    padding: 2px 4px;
+    text-align: right;
+    border-radius: 3px;
+    color: #777;
 }

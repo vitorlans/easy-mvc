@@ -62,8 +62,20 @@
         </td>
         <td>
             <div class=" well">
-                    @Html.DisplayFor(modelItem => item.Descricao)
+                @Html.DisplayFor(modelItem => item.Descricao)&nbsp&nbsp&nbsp
             </div>
+            @if(item.Prioridade == "A")
+            {
+                <div title="Prioridade Alta" class="div-simples"> @item.DtInicio - @item.DtFim &nbsp <i class="text-danger mdi-image-assistant-photo"></i></div>
+            }
+            else if (item.Prioridade == "M")
+            {
+                <div title="Prioridade Média" class="div-simples"> @item.DtInicio - @item.DtFim &nbsp <i class="texto-amarelo mdi-image-assistant-photo"></i></div>
+            }
+            else
+            {
+                <div title="Prioridade Baixa" class="div-simples"> @item.DtInicio - @item.DtFim &nbsp <i class="text-success mdi-image-assistant-photo"></i></div>
+            }
         </td>
         <td>
            <form action="~/Tarefas/EditTarefa" method="post">
