@@ -46,12 +46,18 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-
         public ActionResult EditTarefa(int id)
         {
             DAOTarefas tar = new DAOTarefas();
 
             return View(tar.SelecionaTarefaId(id));
+        }
+
+        [HttpPost]
+        public ActionResult AtualizaTarefa(Tarefas tar)
+        {
+
+            return RedirectToAction("Index", "Tarefas");
         }
 
     }

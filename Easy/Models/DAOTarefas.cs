@@ -110,5 +110,44 @@ namespace Easy.Models
             }
 
         }
+
+        public void AtualizaTarefa(Tarefas tar)
+        {
+            if (tar != null)
+            {
+                try
+                {
+                    SqlCommand sqlExec = new SqlCommand
+                    (
+                        "UPDATE TBTAREFAS SET "
+                                            + "DESCRICAO = @desc"
+                                            + "DT_INICIO = @ini"
+                                            + "DT_FIM = @fim"
+                                            + "PRIORIDADE @prior"
+                                            + "STATUS = @status"
+                                            + "IDUSER = @criador"
+                                            + "IDUSERDEST = @relac"
+                                            + "IDEMPR = @emp"
+                                            + "WHERE IDTARE = @id"
+                    );
+
+                    sqlExec.Parameters.AddWithValue("desc", tar.Descricao);
+                    sqlExec.Parameters.AddWithValue("ini", tar.DtInicio);
+                    sqlExec.Parameters.AddWithValue("fim", (object)tar.DtFim ?? DBNull.Value);
+                    sqlExec.Parameters.AddWithValue("prior", tar.Prioridade);
+                    sqlExec.Parameters.AddWithValue("status", tar.Status);
+                    sqlExec.Parameters.AddWithValue("criador", tar.Criador);
+                    sqlExec.Parameters.AddWithValue("relac", tar.Relacionado);
+                    sqlExec.Parameters.AddWithValue("relac", tar.Empresa);
+
+                    sqlExec.Parameters.AddWithValue("id", tar.IdTarefa);
+
+                    sqlExec.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                }
+            }
+        }
     }
 }

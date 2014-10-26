@@ -15,10 +15,11 @@
         <div class="col-lg-9">
             <div class="well bs-component">
 
-    @using (Html.BeginForm("AdicionarTarefa", "Tarefas", null, FormMethod.Post, new { @class="form-horizontal"})) {
+    @using (Html.BeginForm("AtualizaTarefa", "Tarefas", null, FormMethod.Post, new { @class="form-horizontal"})) {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
 
+                    @Html.HiddenFor(model => model.IdTarefa)
                     <fieldset>
                         <legend>Informações da Tarefa</legend>
 
@@ -65,8 +66,8 @@
                        <br />
                        <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
-                                <input type="submit" class="btn btn-primary" value="Adicionar" />
-                                <button formaction="/Tarefas" class="btn btn-default">Cancelar</button>
+                                <input type="submit" class="btn btn-primary" value="Atualizar Tarefa" />
+                                <button formaction="/Tarefas" class="btn btn-default">Apagar Tarefa</button>
                             </div>
                         </div>
                   </fieldset>
