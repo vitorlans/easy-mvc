@@ -66,8 +66,8 @@ namespace Easy.Models
                             IdComp = int.Parse(dr["IDCOMP"].ToString()),
                             Titulo = dr["TITULO"].ToString(),
                             Descricao = dr["DESCRICAO"].ToString(),
-                            DataInicio = DateTime.Parse(dr["DT_INICIO"].ToString()),
-                            DataTermino = DateTime.Parse(dr["DT_TERMINO"].ToString()),
+                            DataInicio = Convert.ToDateTime(dr["DT_INICIO"].ToString()).ToShortDateString(),
+                            DataTermino = Convert.ToDateTime(dr["DT_TERMINO"].ToString()).ToShortDateString(),
                             Status = (dr["STATUS"].ToString()),
                             Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString()),
                             Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
@@ -87,17 +87,16 @@ namespace Easy.Models
         {
             try
             {
-                SqlCommand sqlExec = new SqlCommand("INSERT INTO TBCOMPROMISSOS VALUES (@IDCOMP, @TITULO, @DESCRICAO, @DT_INICIO, @DT_FIM, @STATUS, @ID_USER, @IDEMPR)", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("INSERT INTO TBCOMPROMISSOS VALUES (@IDCOMP, @TITULO, @DESCRICAO, @DT_INICIO, @DT_FIM, @STATUS, @IDUSER, '1')", Connection.Conectar());
 
                 sqlExec.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
                 sqlExec.Parameters.AddWithValue("TITULO", Compromisso.Titulo);
                 sqlExec.Parameters.AddWithValue("DESCRICAO", Compromisso.Descricao);
-                sqlExec.Parameters.AddWithValue("DT_INICIO", Compromisso.DataInicio);
-                sqlExec.Parameters.AddWithValue("DT_TERMINO", Compromisso.DataTermino);
-                sqlExec.Parameters.AddWithValue("DT_FIM", Compromisso.DataTermino);
+                sqlExec.Parameters.AddWithValue("DT_INICIO", Convert.ToDateTime(Compromisso.DataInicio));
+                sqlExec.Parameters.AddWithValue("DT_FIM", Convert.ToDateTime(Compromisso.DataTermino));
                 sqlExec.Parameters.AddWithValue("STATUS", Compromisso.Status);
-                sqlExec.Parameters.AddWithValue("IDUSER", Compromisso.Status);
-                sqlExec.Parameters.AddWithValue("IDEMPR", Compromisso.Empresa);
+                sqlExec.Parameters.AddWithValue("IDUSER", Compromisso.Usuario.IdUser);
+                //sqlExec.Parameters.AddWithValue("IDEMPR", Compromisso.Empresa.IdEmpresa);
 
                 sqlExec.ExecuteNonQuery();
             }
