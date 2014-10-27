@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Recuperar";
+}
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+@model Easy.Models.Usuario
+
+<h1>Recuperar a Senha?</h1>
+<p>&nbsp;</p>
+
+    <div class="bs-docs-section">
+        <div class="row" style="">
+            <div class="col-lg-9">
+                <div class="well bs-component">
+                    <form id="form-login" name="form-login" method="get" action="javascript:function()">
+                        <fieldset>
+                            <legend></legend>
+                            <br />
+                            <div class="form-group">
+                                <label for="inputEnd" class="col-lg-2 control-label">Email</label>
+                                <div class="col-lg-10">
+                                    @Html.TextBoxFor(model => model.Email, new { @name = "inputEmail", @id = "inputEmail", @placeholder = "Email", @class = "form-control", @type = "text" })
+                                </div>
+                            </div>
+    
+
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button id="botao-entrar" type="submit" class="btn btn-primary color_button">Enviar</button>
+                </div>
+                
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -68,6 +68,20 @@ namespace Easy.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Recuperar() {
+
+            return View();
+        }
+        
+        [HttpPost]
+        public ActionResult Recuperar(string email)
+        {
+            DAOUsuario DUser = new DAOUsuario();
+            DUser.RecuperaUsuarioEmail(email);
+
+            return View();
+        }
+
         public ActionResult Index()
         {
             return View();
