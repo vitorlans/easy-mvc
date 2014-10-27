@@ -15,8 +15,7 @@ namespace Easy.Controllers
         public ActionResult Index()
         {
             DAOCompromissos daoCompromisso = new DAOCompromissos();
-            daoCompromisso.ListarCompromissosData();
-            var listaComp = daoCompromisso;
+            var listaComp = daoCompromisso.ListarCompromissosData();
             return View(listaComp);
         }
         public ActionResult Add()

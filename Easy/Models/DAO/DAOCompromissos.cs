@@ -55,7 +55,7 @@ namespace Easy.Models
 
             try
             {
-                SqlCommand sqlComando = new SqlCommand("Select * from TBCompromissos order by data", Connection.Conectar());
+                SqlCommand sqlComando = new SqlCommand("Select * from TBCompromissos order by dt_inicio", Connection.Conectar());
                 SqlDataReader dr = sqlComando.ExecuteReader();
 
                 while(dr.Read())
