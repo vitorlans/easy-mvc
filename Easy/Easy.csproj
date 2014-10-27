@@ -365,9 +365,9 @@
     <Content Include="Views\Compromissos\Add.cshtml" />
     <Content Include="Views\Compromissos\EditarCompromisso.cshtml" />
     <Content Include="Views\Tarefas\EditTarefa.cshtml" />
-    <Content Include="Views\Compromissos\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\Recuperar.cshtml" />
+    <Content Include="Views\Compromissos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

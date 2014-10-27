@@ -13,7 +13,7 @@
         valida = int.Parse(Session["Add"].ToString());
     }
 
-    Session.Clear();
+    Session.Remove("Add");
 }
 
 <h2>Próximos Compromissos</h2>
@@ -41,7 +41,36 @@
         <th></th>
     </tr>
 
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdComp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Titulo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descricao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DataInicio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DataTermino)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
 </table>
+
 <script>
 
     if($("#hidValida").val() == 1)
@@ -71,3 +100,4 @@
     
     Session["Add"] = 0;
 }
+
