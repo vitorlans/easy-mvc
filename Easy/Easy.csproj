@@ -198,6 +198,7 @@
     <Compile Include="Models\DAOTarefas.cs" />
     <Compile Include="Models\DAOUsuario.cs" />
     <Compile Include="Models\Empresas.cs" />
+    <Compile Include="Models\EnvioEmail.cs" />
     <Compile Include="Models\Notas.cs" />
     <Compile Include="Models\Tarefas.cs" />
     <Compile Include="Models\Usuario.cs" />

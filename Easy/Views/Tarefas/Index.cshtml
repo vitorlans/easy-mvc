@@ -11,8 +11,7 @@
          valida = int.Parse(Session["AddTarefa"].ToString());
     }
 
-    Session.Clear();
-}
+    Session.Remove("AddTarefa");
 
 <input id="hidValida" value="@valida" type="hidden"/>
 <h2>Gerenciamento de Tarefas</h2>

@@ -56,8 +56,11 @@ namespace Easy.Controllers
         [HttpPost]
         public ActionResult AtualizaTarefa(Tarefas tar)
         {
+            EnvioEmail email = new EnvioEmail();
             DAOTarefas daoTaf = new DAOTarefas();
+
             daoTaf.AtualizaTarefa(tar);
+            email.EnviarTarefaAtualizada(tar);
 
             return RedirectToAction("Index", "Tarefas");
         }
