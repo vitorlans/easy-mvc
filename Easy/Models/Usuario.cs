@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Easy.Models;
+using System.Web.Mvc;
 using System.Web;
+using System.Web.UI;
 
 namespace Easy.Models
 {
@@ -25,33 +28,63 @@ namespace Easy.Models
         public string DataCriacao {get;set;}
         public string Imagem { get; set; }
 
+        public static bool AutenticarUsuario(string email, string senha) { 
+        
+            DAOUsuario DUser = new DAOUsuario();
 
-        //Definido variável com os caracteres utilizados na geração da senha
-        private const string SenhaCaracteresValidos = "abcdefghijklmnopqrstuvwxyz1234567890@#!?";
+            var result = DUser.AutenticarUsuarioDB(email, senha);
+            if (result == true)
+            {
+                var user = DUser.RecuperaUsuarioEmail(email);
 
-        public static string GerarSenha()
+                Autenticacao.RegistraCookieAutenticacao(user);
+
+                return true;
+
+            }
+            else {
+
+                return false;
+            }
+        }
+
+
+
+        public static Usuario VerificaSeOUsuarioEstaLogado()
         {
-            //Aqui eu defino o número de caracteres que a senha terá
-            int tamanho = 8;
-
-            //Aqui pego o valor máximo de caracteres para gerar a senha
-            int valormaximo = SenhaCaracteresValidos.Length;
-
-            //Criamos um objeto do tipo randon
-            Random random = new Random(DateTime.Now.Millisecond);
-
-            //Criamos a string que montaremos a senha
-            StringBuilder senha = new StringBuilder(tamanho);
-
-            //Fazemos um for adicionando os caracteres a senha
-            for (int i = 0; i < tamanho; i++)
-                senha.Append(SenhaCaracteresValidos[random.Next(0, valormaximo)]);
-
-            //retorna a senha
-            return senha.ToString();
+            DAOUsuario DUser = new DAOUsuario();
+            var Usuario = HttpContext.
+            Current.
+            Request.
+            Cookies["UserCookieAuthentication"];
+            if (Usuario == null)
+            {
+                return null;
+            }
+            else
+            {
+                string IDUsuario = Criptografia.Descriptografar(Usuario.Values["IDUSER"]);
+                var UsuarioRetornado = DUser.RecuperaUsuario(IDUsuario);
+                return UsuarioRetornado;
+            }
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public class VinculoUsuario {
 

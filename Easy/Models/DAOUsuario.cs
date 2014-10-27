@@ -13,14 +13,15 @@ namespace Easy.Models
         {
 
             var meusContatos = MeusContatos(login);
-            
+
             List<Usuario> lista = new List<Usuario>();
 
             try
-            {   var x = 0;
+            {
+                var x = 0;
                 foreach (var i in meusContatos)
                 {
-                    
+
                     SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IdUser=" + meusContatos[x].IdUser2.ToString(), Connection.Conectar());
                     SqlDataReader dr = sqlExec.ExecuteReader();
 
@@ -98,12 +99,54 @@ namespace Easy.Models
 
         }
 
+        public Usuario RecuperaUsuarioEmail(string email)
+        {
+
+            Usuario user = new Usuario();
+            try
+            {
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" +"'"+email+"'", Connection.Conectar());
+                SqlDataReader dr = sqlExec.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    user =
+                          (
+                          new Usuario
+                          {
+                              IdUser = int.Parse(dr["IDUSER"].ToString()),
+                              Nome = dr["NOME"].ToString(),
+                              Sobrenome = dr["SOBRENOME"].ToString(),
+                              Email = dr["EMAIL"].ToString(),
+                              Senha = dr["SENHA"].ToString(),
+                              Endereco = dr["ENDERECO"].ToString(),
+                              Bairro = dr["BAIRRO"].ToString(),
+                              Cidade = dr["CIDADE"].ToString(),
+                              Cep = dr["CEP"].ToString(),
+                              Telefone = dr["TELEFONE"].ToString(),
+                              UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
+                              LiberaConvite = dr["LIBERACONVITE"].ToString(),
+                              Status = dr["STATUS"].ToString(),
+                              DataCriacao = dr["DT_CRIACAO"].ToString(),
+                              Imagem = dr["IMAGEM"].ToString(),
+
+                          }
+                          );
+                }
+
+
+            }
+            catch { }
+            return user;
+
+        }
+
         public void CriarUsuario(Usuario user, string login)
         {
 
             user.DataCriacao = DateTime.Now.ToString();
             user.Status = "A";
-            user.Senha = Usuario.GerarSenha();
+            user.Senha = Criptografia.GerarSenha();
 
             try
             {
@@ -198,10 +241,10 @@ namespace Easy.Models
 
         private List<VinculoUsuario> MeusContatos(string login)
         {
-             List<VinculoUsuario> lista = new List<VinculoUsuario>();
+            List<VinculoUsuario> lista = new List<VinculoUsuario>();
             SqlCommand sqlExec = new SqlCommand("SELECT * FROM VUSUACONT where IDUSER=" + login, Connection.Conectar());
             SqlDataReader dr = sqlExec.ExecuteReader();
-            while (dr.Read()) 
+            while (dr.Read())
             {
                 lista.Add
                         (
@@ -214,47 +257,55 @@ namespace Easy.Models
 
             return lista;
         }
+
+
+        public bool AutenticarUsuarioDB(string email, string senha)
+        {
+
+            try
+            {
+
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=@email and SENHA=@senha and USUARIOSISTEMA='S'", Connection.Conectar());
+                sqlExec.Parameters.AddWithValue("email", (object)email ?? DBNull.Value);
+                sqlExec.Parameters.AddWithValue("senha", (object)senha ?? DBNull.Value);
+
+                SqlDataReader dr = sqlExec.ExecuteReader();
+                if (dr.Read())
+                {
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+   
        
-      
-
-        //public void Update(Cidade cid)
-        //{
-
-        //    string strUpdate = "UPDATE Cidades SET NOME_CIDADE= ?, IMAGEM=?, DESCRICAO=?, STATUS=?, GUIA=? WHERE COD_CIDADE=" + cid.CodigoCidade;
-
-        //    try
-        //    {
-        //        OleDbCommand updateCidade = new OleDbCommand(strUpdate, Conexao.getConexao());
-
-        //        OleDbParameter paramNome = new OleDbParameter("NOME_CIDADE", OleDbType.VarChar);
-        //        OleDbParameter paramImagem = new OleDbParameter("IMAGEM", OleDbType.VarChar);
-        //        OleDbParameter paramDescri = new OleDbParameter("DESCRICAO", OleDbType.VarChar);
-        //        OleDbParameter paramStatus = new OleDbParameter("STATUS", OleDbType.Integer);
-        //        OleDbParameter paramGuia = new OleDbParameter("GUIA", OleDbType.Integer);
-
-
-        //        paramNome.Value = cid.NomeCidade;
-        //        paramImagem.Value = cid.Imagem;
-        //        paramDescri.Value = cid.Descricao;
-        //        paramStatus.Value = cid.Status;
-        //        paramGuia.Value = cid.Guia;
-
-
-        //        updateCidade.Parameters.Add(paramNome);
-        //        updateCidade.Parameters.Add(paramImagem);
-        //        updateCidade.Parameters.Add(paramDescri);
-        //        updateCidade.Parameters.Add(paramStatus);
-        //        updateCidade.Parameters.Add(paramGuia);
-
-        //        updateCidade.ExecuteNonQuery();
-
-        //    }
-        //    catch (OleDbException)
-        //    {
-        //    }
-        //}
-
+  
 
     

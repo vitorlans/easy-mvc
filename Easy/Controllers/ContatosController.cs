@@ -7,7 +7,7 @@ using Easy.Models;
 
 namespace Easy.Controllers
 {
-    public class ContatosController : Controller
+    public class ContatosController : BaseController
     {
         //
         // GET: /Contatos/
