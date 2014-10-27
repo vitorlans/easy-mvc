@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewBag.Title</title>
+
+     @Styles.Render("~/Content/css")
+     @Scripts.Render("~/bundles/modernizr")
+     @RenderSection("calendariocss", false)
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+       <a class="navbar-brand mdi-navigation-arrow-back" href="#menu-toggle" id="menu-toggle"></a>
+       <a class="navbar-brand" href="/Home">Easy Peoples</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+           <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i>Notificações <b class="caret"></b></a>
+                    <ul class="dropdown-menu message-dropdown">
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Sebá Purcini</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Sebá Purcini</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Sebá Purcini</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-footer">
+                            <a href="#">Read All New Messages</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i>Alertas <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">View All</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Sebá Purcini <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Perfil </a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Configurações </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/Login/Deslogar"><i class="fa fa-fw fa-power-off"></i> Sair </a>
+                        </li>
+                    </ul>
+                </li>
+          </ul>
+
+
+        </div>
+      </div>
+      </div>
+     <div class="container-fluid">
+    <div id="wrapper">
+      <div id="sidebar-wrapper"> 
+             <ul class="sidebar-nav"> 
+                 <li class="sidebar-brand"> 
+                     <a href="#"> 
+                     </a> 
+                 </li>
+
+                 <li > 
+                    <nav class="cl-effect-21">
+                    <a href="/Compromissos"><span data-hover="Compromissos"><i class="mdi-notification-event-note texto1"> Compromissos</i></span></a> 
+                    </nav>
+                 </li>
+                 <br /> 
+                 <li>
+                     <nav class="cl-effect-21">
+                        <a href="/Tarefas"><span data-hover="Tarefas"><i class="mdi-action-today texto1"> Tarefas</i></span></a>
+                     </nav>
+                 </li>
+                 <br /> 
+                 <li>
+                     <nav class="cl-effect-21"> 
+                        <a href="/Calendario"><span data-hover="Calendário"><i class="mdi-hardware-watch texto1"> Calendário</i></span></a> 
+                     </nav>
+                 </li>
+                 <br />
+                 <li>
+                    <nav class="cl-effect-21">
+                        <a href="/Contatos"><span data-hover="Contatos"><i class="mdi-social-people texto1"> Contatos</i></span></a> 
+                    </nav>
+                 </li>
+             </ul> 
+         </div> 
+        </div>
+</div>      
+      
+    
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/easy")
+
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+    </script>
+    @RenderSection("scripts", required: false)      
+
+  <div id="page-content-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+           &nbsp;
+          </div>
+          <div class="col-lg-9">
+               @RenderSection("featured", required: false)
+               @RenderBody()
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
+
+

@@ -1,0 +1,100 @@
+﻿@model Easy.Models.Usuario
+@{
+    ViewBag.Title = "Detalhes";
+}
+
+<div class="bs-docs-section">
+              <div class="row" style="">
+                <div class="col-lg-9">
+                  <div class="well bs-component">
+                    <form class="form-horizontal" style="" method="post">
+                      <fieldset>
+                        <legend>Detalhes Contato</legend>
+                        <div class="form-group">
+                          <label for="inputNome" class="col-lg-2 control-label">Nome</label>
+                          <div class="col-lg-10">
+                          @Html.TextBoxFor(model => model.Nome, new { @id="inputNome", @maxlength = "50", @placeholder="Nome", @class = "form-control" })
+                           </div>
+                        </div>
+                          <div class="form-group">
+                          <label for="inputSobrenome" class="col-lg-2 control-label">Sobrenome</label>
+                          <div class="col-lg-10">
+                          @Html.TextBoxFor(model => model.Sobrenome, new { @id="inputSobrenome", @maxlength = "50", @placeholder="Sobrenome", @class = "form-control" })
+                           </div>
+                        </div>
+                          <div class="form-group">
+                          <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                          <div class="col-lg-10">
+                             @Html.TextBoxFor(model => model.Email, new { @id="inputEmail", @placeholder="Email", @class = "form-control", @type="email" })
+                              <div class="checkbox">
+                                 @if ( Html.ViewData.Model.UsuarioSistema == "S")
+                                  { ViewBag.V1 = "checked";  }
+                                else 
+                                  { ViewBag.V1 = ""; }
+                                  @if ( Html.ViewData.Model.LiberaConvite == "S")
+                                  { ViewBag.V2 = "checked";  }
+                                else 
+                                  { ViewBag.V2 = ""; }
+                              <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist" @ViewBag.V1>Usuario do Sistema</label>
+                                  <div class="checkbox">
+                              <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv" @ViewBag.V2>Permissão - Envio de Convite</label>
+                            </div>
+                            </div>
+                            </div>
+                          </div>    
+        
+                        <br />
+                         <h4>Adicionais</h4>
+                          <hr />
+
+                          <div class="form-group">
+                          <label for="inputEnd" class="col-lg-2 control-label">Endereço</label>
+                          <div class="col-lg-10">
+                             @Html.TextBoxFor(model => model.Endereco, new { @id="inputEnd", @placeholder="Endereço", @class = "form-control", @type="text" })
+                          </div>
+                        </div>
+                          
+                          <div class="form-group">
+                          <label for="inputBairro" class="col-lg-2 control-label">Bairro</label>
+                          <div class="col-lg-10">
+                             @Html.TextBoxFor(model => model.Bairro, new { @id="inputBairro", @placeholder="Bairro", @class = "form-control", @type="text" })
+                          </div>
+                        </div>
+
+                          <div class="form-group">
+                          <label for="inputCid" class="col-lg-2 control-label">Cidade</label>
+                          <div class="col-lg-10">
+                             @Html.TextBoxFor(model => model.Cidade, new { @id="inputCidade", @placeholder="Cidade", @class = "form-control", @type="text" })
+                          </div>
+                        </div>
+
+                             <div class="form-group">
+                          <label for="inputCep" class="col-lg-2 control-label">Cep</label>
+                          <div class="col-lg-10">
+                             @Html.TextBoxFor(model => model.Cep, new { @id="inputCep", @class = "form-control", @type="text" })
+                          </div>
+                        </div>
+
+                          <div class="form-group">
+                          <label for="inputTelefone" class="col-lg-2 control-label">Telefone</label>
+                          <div class="col-lg-10">
+                             @Html.TextBoxFor(model => model.Telefone, new { @id="inputTel", @class = "form-control", @type="tel" })
+                          </div>
+                        </div>
+
+          
+                                  
+
+                       
+                        <div class="form-group">
+                          <div class="col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-primary">Atualizar Dados</button>
+                            <button type="submit" class="btn btn-warning">Apagar Contato</button>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+                </div>
+              </div>
+ </div> 
