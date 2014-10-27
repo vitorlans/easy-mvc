@@ -12,6 +12,7 @@
     }
 
     Session.Remove("AddTarefa");
+}
 
 <input id="hidValida" value="@valida" type="hidden"/>
 <h2>Gerenciamento de Tarefas</h2>
@@ -113,6 +114,11 @@
     {
         $(document).ready(function () {
             $.snackbar({ content: "A Tarefa foi Cadastrada com Sucesso. Verifique as informações.", timeout: 8000 });
+        });
+    }
+    else if ($("#hidValida").val() == 2) {
+        $(document).ready(function () {
+            $.snackbar({ content: "A Tarefa foi Alterada com Sucesso. Verifique as informações.", timeout: 8000 });
         });
     }
 

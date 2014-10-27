@@ -7,7 +7,7 @@ using Easy.Models;
 
 namespace Easy.Controllers
 {
-    public class TarefasController : Controller
+    public class TarefasController : BaseController
     {
         //
         // GET: /Tarefas/
@@ -60,8 +60,9 @@ namespace Easy.Controllers
             DAOTarefas daoTaf = new DAOTarefas();
 
             daoTaf.AtualizaTarefa(tar);
-            email.EnviarTarefaAtualizada(tar);
+            //email.EnviarTarefaAtualizada(tar);
 
+            Session["AddTarefa"] = 2;
             return RedirectToAction("Index", "Tarefas");
         }
 

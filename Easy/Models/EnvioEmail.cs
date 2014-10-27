@@ -5,6 +5,7 @@ using System.Web;
 using System.Net.Mail;
 using System.Data.SqlClient;
 using System.Net;
+using System.Text;
 
 namespace Easy.Models
 {
@@ -24,38 +25,21 @@ namespace Easy.Models
             while (dr.Read())
             {
 
-                MailAddress remetente = new MailAddress("easypeoplespi@gmail.com");
-                MailAddress destinatario = new MailAddress(dr["destinatario"].ToString());
+                //MailAddress remetente = new MailAddress("easypeoplespi@gmail.com");
+                //MailAddress destinatario = new MailAddress(dr["destinatario"].ToString());
 
-                MailMessage msg = new MailMessage(remetente, destinatario);
+                SmtpClient cliente = new SmtpClient("smtp.gmail.com", 587);
 
-                msg.Priority = MailPriority.Normal;
+                cliente.EnableSsl = true;
 
-                msg.IsBodyHtml = true;
+                MailMessage msg = new MailMessage("easystemspi@gmail.com", dr["destinatario"].ToString(), "Teste", "TEstando envio de Email..");
 
-                msg.Subject = "Alteração Realizada em Tarefa";
+                msg.Priority = MailPriority.High;
 
-                msg.Body = "Foram realizadas alteraçõoes em Tarefa. Segue abaixo as mudanças:";
+                cliente.Credentials = new NetworkCredential("easystemspi@gmail.com", "chavemestra");
 
-                msg.SubjectEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
-                msg.BodyEncoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
 
-                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-                NetworkCredential cred = new NetworkCredential("easypeoplespi@gmail.com", "chavemestra4");
-                smtp.Credentials = cred;
-
-                smtp.Host = "localhost";
-                smtp.Port = 25;
-
-                smtp.EnableSsl = true;
-
-                try
-                {
-                    smtp.Send(msg);
-                }
-                catch (Exception e)
-                {
-                }
+                cliente.Send(msg);
             }
         }
     }
