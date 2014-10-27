@@ -32,9 +32,18 @@ namespace Easy.Controllers
                 UrlAceita = "http://facebook.com",
                 UrlRejeita = "http://google.com"
             };
+            try
+            {
 
-            email.Send();
-            return RedirectToAction("Index", "Home");
+                email.Send();
+                return RedirectToAction("Index", "Home");
+
+            }
+            catch {
+
+                return RedirectToAction("Index", "Calendario");
+
+            }
         }
 
         public ActionResult EmailCompromissoPreview()
