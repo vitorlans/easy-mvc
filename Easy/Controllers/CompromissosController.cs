@@ -14,7 +14,10 @@ namespace Easy.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            DAOCompromissos daoCompromisso = new DAOCompromissos();
+            daoCompromisso.ListarCompromissosData();
+            var listaComp = daoCompromisso;
+            return View(listaComp);
         }
         public ActionResult Add()
         {
@@ -25,6 +28,13 @@ namespace Easy.Controllers
         {
             if (ModelState.IsValid)
             {
+                string login = Compromisso.Usuario.Email;
+                DAOUsuario daoUsuario = new DAOUsuario();
+                Compromisso.Usuario = daoUsuario.RecuperaUsuarioEmail(login);
+                Compromisso.Status = "A";
+                //retirar qdo obter o id da empresa
+                DAOEmpresas daoEmpresa = new DAOEmpresas();
+                Compromisso.Empresa = daoEmpresa.RecuperarEmpresaId("1");
                 DAOCompromissos daoCompromisso = new DAOCompromissos();
                 daoCompromisso.AddCompromisso(Compromisso);
                 Session["AddCompromisso"] = 1;
