@@ -88,16 +88,16 @@ namespace Easy.Models
         {
             try
             {
-                SqlCommand sqlExec = new SqlCommand("INSERT INTO TBCOMPROMISSOS VALUES (@IDCOMP, @TITULO, @DESCRICAO, @DT_INICIO, @DT_FIM, @STATUS, @IDUSER, '1')", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("INSERT INTO TBCOMPROMISSOS VALUES (@TITULO, @DESCRICAO, @DT_INICIO, @DT_FIM, @STATUS, @IDUSER, @IDEMPR)", Connection.Conectar());
 
-                sqlExec.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
+                //sqlExec.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
                 sqlExec.Parameters.AddWithValue("TITULO", Compromisso.Titulo);
                 sqlExec.Parameters.AddWithValue("DESCRICAO", Compromisso.Descricao);
                 sqlExec.Parameters.AddWithValue("DT_INICIO", Convert.ToDateTime(Compromisso.DataInicio));
                 sqlExec.Parameters.AddWithValue("DT_FIM", Convert.ToDateTime(Compromisso.DataTermino));
                 sqlExec.Parameters.AddWithValue("STATUS", Compromisso.Status);
                 sqlExec.Parameters.AddWithValue("IDUSER", Compromisso.Usuario.IdUser);
-                //sqlExec.Parameters.AddWithValue("IDEMPR", Compromisso.Empresa.IdEmpresa);
+                sqlExec.Parameters.AddWithValue("IDEMPR", (object)Compromisso.Empresa.IdEmpresa ?? DBNull.Value);
 
                 sqlExec.ExecuteNonQuery();
             }

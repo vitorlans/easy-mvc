@@ -31,7 +31,7 @@ namespace Easy.Models
                 }
             }
             catch { }
-
+            Connection.Desconectar();
             return Empresa;
         }
     }
