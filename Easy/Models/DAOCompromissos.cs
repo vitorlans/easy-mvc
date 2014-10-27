@@ -81,6 +81,7 @@ namespace Easy.Models
             catch(Exception erro)
             {
             }
+            Connection.Desconectar();
             return ListaComp;
         }
         public void AddCompromisso(Compromissos Compromisso)
@@ -103,6 +104,7 @@ namespace Easy.Models
             catch (SqlException sqlEx)
             {
             }
+            Connection.Desconectar();
         }
         public void EditarCompromisso(Compromissos Compromisso,Usuario Usuario)
         {
