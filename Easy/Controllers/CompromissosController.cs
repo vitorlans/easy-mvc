@@ -15,8 +15,7 @@ namespace Easy.Controllers
         public ActionResult Index()
         {
             DAOCompromissos daoCompromisso = new DAOCompromissos();
-            daoCompromisso.ListarCompromissosData();
-            var listaComp = daoCompromisso;
+            var listaComp = daoCompromisso.ListarCompromissosData();
             return View(listaComp);
         }
         public ActionResult Add()
@@ -47,9 +46,19 @@ namespace Easy.Controllers
             }
             return RedirectToAction("Index", "Compromissos");
         }
-        public ActionResult EditarCompromisso()
+        [HttpPost]
+        public ActionResult EditarCompromisso(int id)
         {
-            return View();
+            DAOCompromissos daoCompromisso = new DAOCompromissos();
+            return View(daoCompromisso.SelecionarCompromissoId(id));
+        }
+        [HttpPost]
+        public ActionResult EditarCompromisso(Compromissos Compromisso)
+        {
+            DAOCompromissos dCompromisso = new DAOCompromissos();
+            Usuario Usuario = new Usuario();
+            dCompromisso.EditarCompromisso(Compromisso, Usuario);
+            return RedirectToAction("Index", "Compromissos");
         }
     }
 }

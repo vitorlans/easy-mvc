@@ -40,6 +40,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Postal">
+      <HintPath>..\packages\Postal.Mvc4.1.2.0\lib\net40\Postal.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\packages\RazorEngine.3.3.0\lib\net40\RazorEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -50,6 +56,15 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -91,16 +106,8 @@
     <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -182,8 +189,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CalendarioController.cs" />
     <Compile Include="Controllers\CompromissosController.cs" />
     <Compile Include="Controllers\ContatosController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\TarefasController.cs" />
@@ -191,14 +200,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Autenticacao.cs" />
+    <Compile Include="Models\Calendario\Calendario.cs" />
+    <Compile Include="Models\Config\Autenticacao.cs" />
     <Compile Include="Models\Compromissos.cs" />
-    <Compile Include="Models\Connection.cs" />
-    <Compile Include="Models\Criptografia.cs" />
-    <Compile Include="Models\DAOCompromissos.cs" />
-    <Compile Include="Models\DAOEmpresas.cs" />
-    <Compile Include="Models\DAOTarefas.cs" />
-    <Compile Include="Models\DAOUsuario.cs" />
+    <Compile Include="Models\Config\Connection.cs" />
+    <Compile Include="Models\Config\Criptografia.cs" />
+    <Compile Include="Models\DAO\DAOCompromissos.cs" />
+    <Compile Include="Models\DAO\DAOEmpresas.cs" />
+    <Compile Include="Models\DAO\DAOTarefas.cs" />
+    <Compile Include="Models\DAO\DAOUsuario.cs" />
+    <Compile Include="Models\Email\EmailCompromisso.cs" />
+    <Compile Include="Models\Email\EmailSistema.cs" />
     <Compile Include="Models\Empresas.cs" />
     <Compile Include="Models\EnvioEmail.cs" />
     <Compile Include="Models\Notas.cs" />
@@ -213,6 +225,7 @@
     <Content Include="Content\css\demo.css" />
     <Content Include="Content\css\fonts\LICENSE.txt" />
     <Content Include="Content\css\fonts\Material-Design-Icons.svg" />
+    <Content Include="Content\css\fullcalendar.css" />
     <Content Include="Content\css\material-2.css" />
     <Content Include="Content\css\material-wfont-2.css" />
     <Content Include="Content\css\normalize.css" />
@@ -224,19 +237,34 @@
     <Content Include="Content\css\sb-admin.css" />
     <Content Include="Content\css\snackbar.css" />
     <Content Include="Content\img\contato.png" />
+    <Content Include="Content\themes\base\images\animated-overlay.gif" />
+    <Content Include="Content\themes\base\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_15_cd0a0a_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_50_3baae3_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_80_d7ebf9_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
     <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2694e8_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_3d80b3_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_72a7cf_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui-calendar.css" />
     <Content Include="Content\themes\base\jquery-ui.css" />
     <Content Include="Content\themes\base\jquery.ui.accordion.css" />
     <Content Include="Content\themes\base\jquery.ui.all.css" />
@@ -308,6 +336,12 @@
     <Content Include="Scripts\bootstrap-datetimepicker.pt-BR.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\calendariojs\fullcalendar.js" />
+    <Content Include="Scripts\calendariojs\jquery-1-11-1.js" />
+    <Content Include="Scripts\calendariojs\jquery-ui.custom.js" />
+    <Content Include="Scripts\calendariojs\lang-all.js" />
+    <Content Include="Scripts\calendariojs\lang\pt-br.js" />
+    <Content Include="Scripts\calendariojs\moment.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -363,11 +397,17 @@
     <Content Include="Views\Tarefas\Index.cshtml" />
     <Content Include="Views\Tarefas\AdicionarTarefa.cshtml" />
     <Content Include="Views\Compromissos\Add.cshtml" />
-    <Content Include="Views\Compromissos\EditarCompromisso.cshtml" />
     <Content Include="Views\Tarefas\EditTarefa.cshtml" />
-    <Content Include="Views\Compromissos\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\Recuperar.cshtml" />
+    <Content Include="Views\Compromissos\Index.cshtml" />
+    <Content Include="Views\Emails\Web.config" />
+    <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Emails\EmailCompromisso.cshtml" />
+    <Content Include="Views\Emails\EmailPreview.cshtml" />
+    <Content Include="Views\Emails\EmailSistema.cshtml" />
+    <Content Include="Views\Calendario\Index.cshtml" />
+    <Content Include="Views\Compromissos\EditarCompromisso.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

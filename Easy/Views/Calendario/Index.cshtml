@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@section calendariocss {
+    @Styles.Render("~/Content/css/calendario")
+
+}
+<br /> 
+<script>
+    $(document).ready(function () {
+        var m = moment();
+        		
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			defaultView: 'agendaDay',
+			editable: false,
+			timezone: 'America/Sao_Paulo',
+            allDaySlot: false,
+            selectable: true,
+            slotMinutes: 15,
+			eventLimit: true, // allow "more" link when too many events
+			events: 
+				{
+				    url: 'Calendario/RecuperarEventos',
+				    error: function () {
+				        $('#script-warning').show();
+				    }
+				},
+
+			dayClick: function (date) {
+			   
+			    var data = date._d;
+
+			    $.ajax({
+			        url: "/Calendario/NovoCompromisso",
+			        data: {
+			            dia: data	            
+			        },
+			        dataType: "json",
+			        type: "POST",
+			        async: true,
+			        beforeSend: function () {
+			            $("#popupEventForm").removeClass("hide")
+			        },
+			        success: function (dados) {
+			            if (dados.OK) {
+			                $("#status").html(dados.Mensagem);
+			                $("#status").removeClass("alert-info").addClass("alert-success");
+
+			                setTimeout(function () { window.location.href = dados.Local }, 5000);
+			                $("#status").show();
+			            }
+			            else {
+			                $("#status").html(dados.Mensagem);
+			                $("#status").show();
+			            }
+			        },
+			        error: function () {
+			            $("#status").html(dados.Mensagem);
+			            $("#status").show()
+			        }
+			    });
+			},
+				
+			loading: function (bool) {
+			    $('#loading').toggle(bool);
+			}
+				
+		});
+		
+	});
+
+</script>
+
+<style>
+
+	body {
+		margin: 40px 10px;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+    #script-warning {
+		display: none;
+		background: #eee;
+		border-bottom: 1px solid #ddd;
+		padding: 0 10px;
+		line-height: 40px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 12px;
+		color: red;
+	}
+
+	#loading {
+		display: none;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+
+	#calendar {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+</style>
+
+<div id='script-warning'>
+		<code>php/get-events.php</code> must be running.
+	</div>
+
+	<div id='loading'>loading...</div>
+
+	<div id='calendar'></div>
+
+<div class="modal hide">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popupEventForm" class="modal hide" style="display: none;">
+   <div class="modal-header"><h3>Add new event</h3></div>
+  <div class="modal-body">
+    <form id="EventForm" class="well">
+        <input type="hidden" id="eventID">
+        <label>Event title</label>
+        <input type="text" id="eventTitle" placeholder="Title here"><br />
+        <label>Scheduled date</label>
+        <input type="text" id="eventDate"><br />
+        <label>Scheduled time</label>
+        <input type="text" id="eventTime"><br />
+        <label>Appointment length (minutes)</label>
+        <input type="text" id="eventDuration" placeholder="15"><br />
+    </form>
+</div>
+  <div class="modal-footer">
+    <button type="button" id="btnPopupCancel" data-dismiss="modal" class="btn">Cancel</button>
+    <button type="button" id="btnPopupSave" data-dismiss="modal" class="btn btn-primary">Save event</button>
+  </div>
+</div>
+
+<form action="@Url.Action("EnviarEmailCompromisso", "Email")" method="POST">
+    <button type="submit" class="btn btn-primary">Send Email</button>
+    <a href="@Url.Action("EmailCompromissoPreview", "Email")" class="btn btn-default">Preview</a>
+</form>
+
+
+<form action="@Url.Action("EnviarEmailSistema", "Email")" method="POST">
+    <button type="submit" class="btn btn-primary">Send Email</button>
+    <a href="@Url.Action("EmailSistemaPreview", "Email")" class="btn btn-default">Preview</a>
+</form>
+
+  @Scripts.Render("~/bundles/calendariojs")

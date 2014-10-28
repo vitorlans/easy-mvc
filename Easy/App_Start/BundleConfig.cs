@@ -27,6 +27,20 @@ namespace Easy
                         "~/Scripts/snackbar.js",
                         "~/Scripts/jquery.nouislider.js"));
 
+            bundles.Add(new StyleBundle("~/Content/css/calendario").Include(
+                                        "~/Content/themes/base/jquery-ui-calendar.css",
+                                        "~/Content/css/fullcalendar.css"
+                                         ));
+
+            bundles.Add(new ScriptBundle("~/bundles/calendariojs").Include(
+                        "~/Scripts/jquery-ui-{version}.js",
+                        "~/Scripts/calendariojs/jquery-ui.custom.js",
+                        "~/Scripts/calendariojs/moment.js",
+                        "~/Scripts/calendariojs/fullcalendar.js",
+                        "~/Scripts/calendariojs/lang-all.js",
+                        "~/Scripts/calendariojs/lang/pt-br.js"
+                        ));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
