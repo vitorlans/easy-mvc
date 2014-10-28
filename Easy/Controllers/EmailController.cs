@@ -80,8 +80,19 @@ namespace Easy.Controllers
 
             };
 
-            email.Send();
-            return RedirectToAction("Index", "Home");
+            try
+            {
+
+                email.Send();
+                return RedirectToAction("Index", "Home");
+
+            }
+            catch
+            {
+
+                return RedirectToAction("Index", "Calendario");
+
+            }
         }
 
 
