@@ -48,14 +48,11 @@ namespace Easy
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                                          "~/Content/css/bootstrap.css",
-                                         "~/Content/css/bootstrap.min.css",
                                          "~/Content/css/sb-admin.css",
                                          "~/Content/css/sidebar.css",
                                          "~/Content/css/ripples.css",
-                                         "~/Content/css/material.css",
                                          "~/Content/css/material-wfont.css",
-                                         "~/Content/css/material-2.css",
-                                         "~/Content/css/material-wfont-2.css",
+                                         "~/Content/css/material-v1.css",
                                          "~/Content/css/snackbar.css",
                                          "~/Content/css/component.css",
                                          "~/Content/css/demo.css",
