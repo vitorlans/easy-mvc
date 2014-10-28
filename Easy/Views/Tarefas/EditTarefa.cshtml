@@ -92,6 +92,13 @@
                             </div>
                        </div>
                   </fieldset>
+                  <div class="form-group">
+                    <hr />
+                    <label for="select" class="col-lg-2 control-label">Comentário:</label>
+                    <div class="col-lg-10 col-lg-offset-2">
+                        @Html.TextAreaFor(model => model.Descricao, new {@class="form-control", rows="3" , id="textArea", @maxlength="200" })
+                    </div>
+                </div>
                 }
             </div>
         </div>

@@ -114,11 +114,13 @@
     {
         $(document).ready(function () {
             $.snackbar({ content: "A Tarefa foi Cadastrada com Sucesso. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
         });
     }
     else if ($("#hidValida").val() == 2) {
         $(document).ready(function () {
             $.snackbar({ content: "A Tarefa foi Alterada com Sucesso. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
         });
     }
 
