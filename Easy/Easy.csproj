@@ -211,6 +211,7 @@
     <Compile Include="Models\DAO\DAOUsuario.cs" />
     <Compile Include="Models\Email\EmailCompromisso.cs" />
     <Compile Include="Models\Email\EmailSistema.cs" />
+    <Compile Include="Models\Email\EmailTarefas.cs" />
     <Compile Include="Models\Empresas.cs" />
     <Compile Include="Models\EnvioEmail.cs" />
     <Compile Include="Models\Notas.cs" />
