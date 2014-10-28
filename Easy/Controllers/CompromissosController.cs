@@ -7,7 +7,7 @@ using Easy.Models;
 
 namespace Easy.Controllers
 {
-    public class CompromissosController : Controller
+    public class CompromissosController : BaseController
     {
         //
         // GET: /Eventos/
@@ -58,6 +58,15 @@ namespace Easy.Controllers
             DAOCompromissos dCompromisso = new DAOCompromissos();
             Usuario Usuario = new Usuario();
             dCompromisso.EditarCompromisso(Compromisso, Usuario);
+            return RedirectToAction("Index", "Compromissos");
+        }
+        [HttpPost]
+        public ActionResult ConcluirCompromisso(int id)
+        {
+            DAOCompromissos dCompromisso = new DAOCompromissos();
+            Compromissos Compromisso = new Compromissos();
+            Usuario Usuario = (Usuario)Session["Usuario"];
+            dCompromisso.TerminarCompromisso(Compromisso, Usuario);
             return RedirectToAction("Index", "Compromissos");
         }
     }

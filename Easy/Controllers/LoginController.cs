@@ -20,10 +20,6 @@ namespace Easy.Controllers
             {
                 if (Url != null)
                 {
-                    DAOUsuario DUser = new DAOUsuario();
-                    Session["Usuario"] = DUser.RecuperaUsuarioEmail(email);
-                    Session.Timeout = 1440;
-
                     return Json(new
                     {
                         OK = true,
@@ -33,10 +29,6 @@ namespace Easy.Controllers
                     JsonRequestBehavior.AllowGet);
                 }
                 else {
-
-                    DAOUsuario DUser = new DAOUsuario();
-                    Session["Usuario"] = DUser.RecuperaUsuarioEmail(email);
-                    Session.Timeout = 1440;
 
                     return Json(new
                     {

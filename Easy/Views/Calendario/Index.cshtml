@@ -45,23 +45,22 @@
 			        async: true,
 			        beforeSend: function () {
 			            $("#popupEventForm").removeClass("hide")
+			            $("#popupEventForm").show()
 			        },
 			        success: function (dados) {
 			            if (dados.OK) {
-			                $("#status").html(dados.Mensagem);
-			                $("#status").removeClass("alert-info").addClass("alert-success");
-
-			                setTimeout(function () { window.location.href = dados.Local }, 5000);
-			                $("#status").show();
+			                
+			                //setTimeout(function () { window.location.href = dados.Local }, 5000);
+			                //$("#status").show();
 			            }
 			            else {
-			                $("#status").html(dados.Mensagem);
-			                $("#status").show();
+			                //$("#status").html(dados.Mensagem);
+			                //$("#status").show();
 			            }
 			        },
 			        error: function () {
-			            $("#status").html(dados.Mensagem);
-			            $("#status").show()
+			            //$("#status").html(dados.Mensagem);
+			            //$("#status").show()
 			        }
 			    });
 			},
