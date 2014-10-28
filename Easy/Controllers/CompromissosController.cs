@@ -46,9 +46,17 @@ namespace Easy.Controllers
             }
             return RedirectToAction("Index", "Compromissos");
         }
-        public ActionResult EditarCompromisso()
+        [HttpPost]
+        public ActionResult EditarCompromisso(int id)
         {
-            return View();
+            DAOCompromissos daoCompromisso = new DAOCompromissos();
+            return View(daoCompromisso.SelecionarCompromissoId(id));
+        }
+        [HttpPost]
+        public ActionResult EditarCompromisso(Compromissos Compromisso)
+        {
+            DAOCompromissos dCompromisso = new DAOCompromissos();
+            dCompromisso.EditarCompromisso
         }
     }
 }

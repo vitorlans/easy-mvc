@@ -67,7 +67,7 @@ namespace Easy.Models
                             Titulo = dr["TITULO"].ToString(),
                             Descricao = dr["DESCRICAO"].ToString(),
                             DataInicio = Convert.ToDateTime(dr["DT_INICIO"].ToString()).ToShortDateString(),
-                            DataTermino = Convert.ToDateTime(dr["DT_TERMINO"].ToString()).ToShortDateString(),
+                            DataTermino = Convert.ToDateTime(dr["DT_FIM"].ToString()).ToShortDateString(),
                             Status = (dr["STATUS"].ToString()),
                             Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString()),
                             Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
@@ -109,6 +109,33 @@ namespace Easy.Models
         public void EditarCompromisso(Compromissos Compromisso,Usuario Usuario)
         {
 
+        }
+        public Compromissos SelecionarCompromissoId(int id)
+        {
+            Compromissos Compromisso = new Compromissos();
+            DAOEmpresas DEmpresa = new DAOEmpresas();
+            DAOUsuario DUser = new DAOUsuario();
+            try
+            {
+                SqlCommand sqlComando = new SqlCommand("SELECT * FROM TBCOMPROMISSOS WHERE IDCOMP = "+ id,Connection.Conectar());
+
+                SqlDataReader dr = sqlComando.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    Compromisso.IdComp = int.Parse(dr["IDCOMP"].ToString());
+                    Compromisso.Titulo = dr["TITULO"].ToString();
+                    Compromisso.Descricao = dr["DESCRICAO"].ToString();
+                    Compromisso.DataInicio = Convert.ToDateTime(dr["DT_INICIO"].ToString()).ToShortDateString();
+                    Compromisso.DataTermino = Convert.ToDateTime(dr["DT_FIM"].ToString()).ToShortDateString();
+                    Compromisso.Status = (dr["STATUS"].ToString());
+                    Compromisso.Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString());
+                    Compromisso.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString());
+                }
+            }
+            catch(SqlException e){}
+            Connection.Desconectar();
+            return Compromisso;
         }
     }
 }
