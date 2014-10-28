@@ -56,7 +56,9 @@ namespace Easy.Controllers
         public ActionResult EditarCompromisso(Compromissos Compromisso)
         {
             DAOCompromissos dCompromisso = new DAOCompromissos();
-            dCompromisso.EditarCompromisso
+            Usuario Usuario = new Usuario();
+            dCompromisso.EditarCompromisso(Compromisso, Usuario);
+            return RedirectToAction("Index", "Compromissos");
         }
     }
 }
