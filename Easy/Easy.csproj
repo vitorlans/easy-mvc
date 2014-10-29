@@ -390,6 +390,7 @@
     <Content Include="Views\Emails\EmailSistema.cshtml" />
     <Content Include="Views\Calendario\Index.cshtml" />
     <Content Include="Views\Compromissos\EditarCompromisso.cshtml" />
+    <Content Include="Views\Home\Empresa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
