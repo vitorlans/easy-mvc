@@ -70,8 +70,8 @@ namespace Easy.Models
                             IdComp = int.Parse(dr["IDCOMP"].ToString()),
                             Titulo = dr["TITULO"].ToString(),
                             Descricao = dr["DESCRICAO"].ToString(),
-                            DataInicio = Convert.ToDateTime(dr["DT_INICIO"].ToString()).ToShortDateString(),
-                            DataTermino = Convert.ToDateTime(dr["DT_FIM"].ToString()).ToShortDateString(),
+                            DataInicio = dr["DT_INICIO"].ToString(),
+                            DataTermino = dr["DT_FIM"].ToString(),
                             Status = (dr["STATUS"].ToString()),
                             Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString()),
                             Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
@@ -145,8 +145,8 @@ namespace Easy.Models
                     Compromisso.IdComp = int.Parse(dr["IDCOMP"].ToString());
                     Compromisso.Titulo = dr["TITULO"].ToString();
                     Compromisso.Descricao = dr["DESCRICAO"].ToString();
-                    Compromisso.DataInicio = Convert.ToDateTime(dr["DT_INICIO"].ToString()).ToShortDateString();
-                    Compromisso.DataTermino = Convert.ToDateTime(dr["DT_FIM"].ToString()).ToShortDateString();
+                    Compromisso.DataInicio = dr["DT_INICIO"].ToString();
+                    Compromisso.DataTermino = dr["DT_FIM"].ToString();
                     Compromisso.Status = (dr["STATUS"].ToString());
                     Compromisso.Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString());
                     Compromisso.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString());
