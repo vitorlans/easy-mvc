@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Easy.Models;
+using Postal;
 
 namespace Easy.Controllers
 {
@@ -65,14 +66,14 @@ namespace Easy.Controllers
             else if (tar.Prioridade == "A")
                 prior = "Alta";
 
-            EnvioEmail email = new EnvioEmail();
             DAOTarefas daoTaf = new DAOTarefas();
 
             daoTaf.AtualizaTarefa(tar);
             //email.EnviarTarefaAtualizada(tar);
-            EmailTarefas eTare = new EmailTarefas();
 
-            eTare.Para = "";
+           /* EmailTarefas eTare = new EmailTarefas();
+
+            eTare.Para = "gigabite.info@gmail.com";
             eTare.Assunto = "Alteração de Tarefa";
             eTare.Titulo = "Alteração Realizada em Tarefa";
             eTare.Descricao = "Algumas alterações foram realizadas em uma Tarefa destinada a você.\nVerifique abaixo as informações:";
@@ -80,12 +81,17 @@ namespace Easy.Controllers
             eTare.Mensagem = "Descrição: "+tar.Descricao+"\nData de Início: "+tar.DtInicio+"\nData de Término: "+tar.DtFim+"\nPrioridade: "+prior;
             eTare.UrlAceita = "";
             eTare.UrlRejeita = "";
-
-            eTare.Send();
+            
+            eTare.Send();*/
 
             Session["AddTarefa"] = 2;
             return RedirectToAction("Index", "Tarefas");
 
+        }
+
+        public ActionResult Comentarios()
+        {
+            return View();
         }
 
     }
