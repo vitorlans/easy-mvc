@@ -23,6 +23,7 @@ namespace Easy
                        "~/Scripts/material.js",
                         "~/Scripts/bootstrap-datetimepicker.js",
                         "~/Scripts/bootstrap-datetimepicker.pt-BR.js",
+                        "~/Scripts/bootstrap-modal.js",
                         "~/Scripts/ripples.js",
                         "~/Scripts/snackbar.js",
                         "~/Scripts/jquery.nouislider.js"));

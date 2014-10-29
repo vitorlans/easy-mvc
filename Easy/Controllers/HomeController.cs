@@ -15,5 +15,23 @@ namespace Easy.Controllers
 
             return View();
         }
+
+        public ActionResult Empresa() {
+
+
+
+            return View();
+        
+        }
+
+        [HttpPost]
+        public ActionResult Empresa(Empresas emp)
+        {
+            Autenticacao.RegistrarEmpresaCookie(emp);
+            Session["Empresa"] = emp;
+
+            return RedirectToAction("Index","Home");
+
+        }
     }
 }

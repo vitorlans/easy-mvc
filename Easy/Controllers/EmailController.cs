@@ -63,8 +63,6 @@ namespace Easy.Controllers
             return new EmailViewResult(email);
         }
 
-
-
         [HttpPost]
         public ActionResult EnviarEmailSistema()
         {

@@ -178,12 +178,14 @@ namespace Easy.Models
 
 
                     inserirUsuario.ExecuteNonQuery();
-                    VinculaUsuario(user, login);
+                    DAOEmpresas Demp = new DAOEmpresas();
+                    Demp.VinculaEmpresa(user);
+                    VinculaUsuario(login, user);
 
                 }
                 else
                 {
-                    VinculaUsuario(user, login);
+                    VinculaUsuario(login, user);
                 }
             }
             catch (SqlException) { }
@@ -192,7 +194,7 @@ namespace Easy.Models
 
 
 
-        private void VinculaUsuario(Usuario user, string login)
+        private void VinculaUsuario(string login, Usuario user)
         {
 
             SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" + "'" + user.Email + "'", Connection.Conectar());

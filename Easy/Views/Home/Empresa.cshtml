@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Empresa";
+}
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+    Easy.Models.DAOEmpresas Dempresa = new Easy.Models.DAOEmpresas();
+    List<SelectListItem> empresaList = new List<SelectListItem>();
+    var Usuar = Easy.Models.Usuario.VerificaSeOUsuarioEstaLogado();
+    var ListaEmp = Dempresa.ListarEmpresas(Usuar.IdUser.ToString());
+    
+    for (int x = 0; x < ListaEmp.Count(); x++)
+    {
+        empresaList.Add(new SelectListItem { Text = ListaEmp[x].NomeEmpresa.ToString(), Value = ListaEmp[x].IdEmpresa.ToString() });
+    }
+}
+@model Easy.Models.Empresas
+
+<h1>Selecione a Empresa</h1>
+<p>&nbsp;</p>
+
+    <div class="bs-docs-section">
+        <div class="row" style="">
+            <div class="col-lg-9">
+                <div class="well bs-component">
+                    <form id="form-login" name="form-login" method="post">
+                        <fieldset>
+                            <legend></legend>
+                            <br />
+                            <div class="form-group">
+                                <label for="inputEnd" class="col-lg-2 control-label">Empresa</label>
+                                <div class="col-lg-10">
+
+                                    @Html.DropDownListFor(model => model.NomeEmpresa, new SelectList(empresaList, "Value", "Text"), new { @name = "inputEmpresa", @id = "inputEmail", @class = "form-control", @type = "text" })
+                                </div>
+                            </div>
+    
+
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button id="botao-entrar" type="submit"  class="btn btn-primary color_button">Concluir</button>
+                </div>
+                
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

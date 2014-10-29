@@ -26,11 +26,35 @@ namespace Easy.Models
 
         }
 
+        public static void RegistrarEmpresaCookie(Empresas emp){
+
+            //Criando um objeto cookie
+            HttpCookie UserCookie = new HttpCookie("UserCookieEmpresa");
+
+            //Setando o ID do usuário no cookie
+            UserCookie.Values["IDEMPRESA"] = Criptografia.Criptografar(emp.IdEmpresa.ToString());
+
+
+            //Definindo o prazo de vida do cookie
+            UserCookie.Expires = DateTime.Now.AddDays(1);
+
+            //Adicionando o cookie no contexto da aplicação
+            HttpContext.Current.Response.Cookies.Add(UserCookie);            
+        
+        }
+
         public static void RemoverCookieAutenticacao()
         {
-            HttpContext.Current.Response.Cookies.Set(new HttpCookie("UserCookieAuthentication") 
+            HttpContext.Current.Response.Cookies.Add(new HttpCookie("UserCookieEmpresa") 
             { Value = string.Empty,
               Expires = DateTime.Now.AddDays(-1) }
+            );
+
+            HttpContext.Current.Response.Cookies.Add(new HttpCookie("UserCookieAuthentication")
+            {
+                Value = string.Empty,
+                Expires = DateTime.Now.AddDays(-1)
+            }
             );
      
         }

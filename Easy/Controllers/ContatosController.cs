@@ -12,11 +12,12 @@ namespace Easy.Controllers
         //
         // GET: /Contatos/
 
-        public ActionResult Index(Usuario user, string login)
+        public ActionResult Index(Usuario user)
         {
+            Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
             DAOUsuario DUser = new DAOUsuario();
 
-            var lista = DUser.ListaUsuarios("1");
+            var lista = DUser.ListaUsuarios(Logado.IdUser.ToString());
             return View(lista);
         }
 
@@ -79,8 +80,9 @@ namespace Easy.Controllers
             
 
             DAOUsuario DUser = new DAOUsuario();
+            Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
 
-            DUser.CriarUsuario(user, "1");
+            DUser.CriarUsuario(user, Logado.IdUser.ToString());
 
             return View();
 

@@ -10,14 +10,16 @@ namespace Easy.Models
     public class DAOCompromissos
     {
         //Status será inserido como (T)erminado, (C)ancelado ou em (A)ndamento
-        public void TerminarCompromisso(Compromissos Compromisso, Usuario Usuario)
+        public void TerminarCompromisso(Compromissos Compromisso, Usuario User)
         {
             //Somente o criador do compromisso poderá alterar o status do mesmo
-            if (Compromisso.Usuario.IdUser == Usuario.IdUser)
+            if (Compromisso.Usuario.IdUser == User.IdUser)
             {
                 try
                 {
-                    SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = T where idcomp = ?", Connection.Conectar());
+                    SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'T' where idcomp = @IDCOMP", Connection.Conectar());
+                    sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
+                    sqlTerminarCompromisso.ExecuteNonQuery();
                 }
                 catch (SqlException sqlExcp)
                 {
@@ -28,14 +30,16 @@ namespace Easy.Models
                 Connection.Desconectar();
             }
         }
-        public void CancelarCompromisso(Compromissos Compromisso, Usuario Usuario)
+        public void CancelarCompromisso(Compromissos Compromisso, Usuario User)
         {
             //Somente o criador do compromisso poderá alterar o status do mesmo
-            if (Compromisso.Usuario.IdUser == Usuario.IdUser)
+            if (Compromisso.Usuario.IdUser == User.IdUser)
             {
                 try
                 {
-                    SqlCommand sqlComando = new SqlCommand("Update TBCompromissos set status = C where idcomp = ?", Connection.Conectar());
+                    SqlCommand sqlComando = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'C' WHERE IDCOMP = @IDCOMP", Connection.Conectar());
+                    sqlComando.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
+                    sqlComando.ExecuteNonQuery();
                 }
                 catch (SqlException sqlExcp)
                 {
@@ -106,8 +110,24 @@ namespace Easy.Models
             }
             Connection.Desconectar();
         }
-        public void EditarCompromisso(Compromissos Compromisso,Usuario Usuario)
+        public void EditarCompromisso(Compromissos Compromisso, Usuario User)
         {
+            try
+            {
+                SqlCommand sqlExec = new SqlCommand("UPDATE TBCOMPROMISSOS SET TITULO = @TITULO, DESCRICAO = @DESCRICAO, DT_INICIO = @DT_INICIO, DT_FIM = @DT_FIM WHERE IDCOMP = @IDCOMP", Connection.Conectar());
+
+                sqlExec.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
+                sqlExec.Parameters.AddWithValue("TITULO", Compromisso.Titulo);
+                sqlExec.Parameters.AddWithValue("DESCRICAO", Compromisso.Descricao);
+                sqlExec.Parameters.AddWithValue("DT_INICIO", Convert.ToDateTime(Compromisso.DataInicio));
+                sqlExec.Parameters.AddWithValue("DT_FIM", Convert.ToDateTime(Compromisso.DataTermino));
+
+                sqlExec.ExecuteNonQuery();
+            }
+            catch (SqlException sqlEx)
+            {
+            }
+            Connection.Desconectar();
 
         }
         public Compromissos SelecionarCompromissoId(int id)
@@ -118,7 +138,6 @@ namespace Easy.Models
             try
             {
                 SqlCommand sqlComando = new SqlCommand("SELECT * FROM TBCOMPROMISSOS WHERE IDCOMP = "+ id,Connection.Conectar());
-
                 SqlDataReader dr = sqlComando.ExecuteReader();
 
                 if (dr.Read())

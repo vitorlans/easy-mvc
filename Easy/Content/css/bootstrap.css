@@ -6268,3 +6268,7 @@ button.close {
     border-radius: 3px;
     color: #777;
 }
+
+.bs-example{
+    margin: 20px;
+}

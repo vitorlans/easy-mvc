@@ -53,6 +53,7 @@ namespace Easy.Models
         //Descriptografa o cookie
         public static string Descriptografar(string valor)
         {
+        
             DESCryptoServiceProvider des;
             MemoryStream ms;
             CryptoStream cs; byte[] input;
@@ -75,7 +76,7 @@ namespace Easy.Models
             }
             catch (Exception ex)
             {
-                throw ex;
+                return null;
             }
         }
 

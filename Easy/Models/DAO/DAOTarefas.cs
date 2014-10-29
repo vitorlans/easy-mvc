@@ -10,6 +10,26 @@ namespace Easy.Models
     public class DAOTarefas
     {
 
+        public List<string> BuscaEmails(Tarefas tar)
+        {
+            List<string> emails = new List<string>();
+
+            SqlCommand sqlQuery = new SqlCommand
+                        ("SELECT"+
+                         " CRIADOR = (SELECT EMAIL FROM TBUSUARIOS WHERE IDUSER = '"+tar.Criador+"',"+
+                         " RELACIONADO = (SELECT EMAIL FROM TBUSUARIOS WHERE IDUSER = '"+tar.Relacionado+"')"
+                        );
+            SqlDataReader dr = sqlQuery.ExecuteReader();
+
+            while (dr.Read())
+            {
+                emails.Add(dr["CRIADOR"].ToString());
+                emails.Add(dr["RELACIONADO"].ToString());
+            }
+
+            return emails;
+        }
+
         public Tarefas SelecionaTarefaId(int id)
         {
             Tarefas tar = new Tarefas();

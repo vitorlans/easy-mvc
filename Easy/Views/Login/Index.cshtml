@@ -16,7 +16,7 @@
         <div class="row" style="">
             <div class="col-lg-9">
                 <div class="well bs-component">
-                    <form id="form-login" name="form-login" method="get" action="javascript:function()">
+                    <form id="form-login" name="form-login" method="post" action="javascript:function()">
                         <fieldset>
                             <legend></legend>
                             <br />
@@ -92,7 +92,7 @@
                         $("#status").html(dados.Mensagem);
                         $("#status").removeClass("alert-info").addClass("alert-success");
 
-                        setTimeout(function () { window.location.href = dados.Local }, 5000);
+                        setTimeout(function () { window.location.href = "/Home/Empresa" }, 1000);
                         $("#status").show();
                     }
                     else {
