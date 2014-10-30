@@ -30,14 +30,21 @@ namespace Easy.Models
                 Connection.Desconectar();
             }
         }
-        public void CancelarCompromisso(Compromissos Compromisso, Usuario User)
+        public void AlterarStatusComp(Compromissos Compromisso, Usuario User)
         {
             //Somente o criador do compromisso poderá alterar o status do mesmo
             if (Compromisso.Usuario.IdUser == User.IdUser)
             {
                 try
                 {
-                    SqlCommand sqlComando = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'C' WHERE IDCOMP = @IDCOMP", Connection.Conectar());
+                    SqlCommand sqlComando = new SqlCommand();
+                    sqlComando.Connection = Connection.Conectar();
+                    
+                    if(Compromisso.Status == "A")
+                        sqlComando.CommandText = "UPDATE TBCOMPROMISSOS SET STATUS = 'C' WHERE IDCOMP = @IDCOMP";
+                    else
+                        sqlComando.CommandText = "UPDATE TBCOMPROMISSOS SET STATUS = 'A' WHERE IDCOMP = @IDCOMP";
+
                     sqlComando.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
                     sqlComando.ExecuteNonQuery();
                 }
@@ -59,7 +66,7 @@ namespace Easy.Models
 
             try
             {
-                SqlCommand sqlComando = new SqlCommand("Select * from TBCompromissos order by dt_inicio", Connection.Conectar());
+                SqlCommand sqlComando = new SqlCommand("select * from TBCOMPROMISSOS where DT_INICIO > getdate() order by dt_inicio desc", Connection.Conectar());
                 SqlDataReader dr = sqlComando.ExecuteReader();
 
                 while(dr.Read())

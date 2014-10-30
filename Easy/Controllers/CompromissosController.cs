@@ -66,7 +66,7 @@ namespace Easy.Controllers
             return RedirectToAction("Index", "Compromissos");
         }
         [HttpPost]
-        public ActionResult ConcluirCompromisso(int id)
+        public ActionResult AlterarStatusComp(int id)
         {
             DAOCompromissos dCompromisso = new DAOCompromissos();
             Compromissos Compromisso = new Compromissos();
@@ -75,7 +75,7 @@ namespace Easy.Controllers
             //Usuario User = (Usuario)Session["Usuario"];
             Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
 
-            dCompromisso.TerminarCompromisso(Compromisso, User);
+            dCompromisso.AlterarStatusComp(Compromisso, User);
             return RedirectToAction("Index", "Compromissos");
         }
     }
