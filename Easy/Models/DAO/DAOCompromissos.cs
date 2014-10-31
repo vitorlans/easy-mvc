@@ -74,12 +74,16 @@ namespace Easy.Models
                     Compr.IdComp = int.Parse(dr["IDCOMP"].ToString());
                     Compr.Titulo = dr["TITULO"].ToString();
                     Compr.Descricao = dr["DESCRICAO"].ToString();
-                    Compr.DataInicio = Convert.ToDateTime(dr["DT_INICIO"].ToString()).ToShortDateString();
+                    Compr.DataInicio = dr["DT_INICIO"].ToString();
                     Compr.DataTermino = dr["DT_FIM"].ToString();
                     Compr.Status = (dr["STATUS"].ToString());
                     Compr.Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString());
-                    Compr.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString();
+                    Compr.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString());
                     
+                    string dtIni = Convert.ToDateTime(Compr.DataInicio).ToShortDateString();
+                    string dtFim = Convert.ToDateTime(Compr.DataTermino).ToShortDateString();
+
+
 
 
                     ListaComp.Add(Compr);
@@ -115,7 +119,7 @@ namespace Easy.Models
                     Compr.DataTermino = dr["DT_FIM"].ToString();
                     Compr.Status = (dr["STATUS"].ToString());
                     Compr.Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString());
-                    Compr.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString();
+                    Compr.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString());
                     ListaComp.Add(Compr);
                 }
             }
