@@ -8,19 +8,19 @@
     string classe = "";
     int valida = 0;
 
-    if (Session["Add"] != null)
+    if (Session["AddCompromisso"] != null)
     {
-        valida = int.Parse(Session["Add"].ToString());
+        valida = int.Parse(Session["AddCompromisso"].ToString());
     }
 
-    Session.Remove("Add");
+    Session.Remove("AddCompromisso");
 }
-
+<input id="hidValida" value="@valida" type="hidden"/>
 <h2>Gerenciamento de Compromissos</h2>
-<a href="~/Compromissos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add" title="Adicionar Compromisso"></a>
+<a href="~/Compromissos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Adicionar Compromisso"></a>
 <br />
 <br />
-<table class ="table table-striped table-hover well bs-component">
+<table class ="table table-striped table-hover">
     <tr >
         
     </tr>
@@ -83,10 +83,22 @@
 
 <script>
 
-    if($("#hidValida").val() == 1)
-    {
+    $(document).ready(function () {
+        $("#btteste").click(function () {
+            $("#myModal").modal('toogle');
+        });
+    });
+
+    if ($("#hidValida").val() == 1) {
         $(document).ready(function () {
-            $.snackbar({ content: "O Compromisso foi Cadastrado com Sucesso. Verifique as informações.", timeout: 8000 });
+            $.snackbar({ content: "O Compromisso foi Cadastrado. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
+        });
+    }
+    else if ($("#hidValida").val() == 2) {
+        $(document).ready(function () {
+            $.snackbar({ content: "O Compromisso foi Alterado. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
         });
     }
 
@@ -96,7 +108,7 @@
 
     $("#btCom").click(function () {
         var x = $("#btCom").val();
-        $("#"+x).slideToggle();
+        $("#" + x).slideToggle();
     });
 
     $('#myTab a').click(function (e) {

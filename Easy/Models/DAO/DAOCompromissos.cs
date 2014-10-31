@@ -66,7 +66,7 @@ namespace Easy.Models
 
             try
             {
-                SqlCommand sqlComando = new SqlCommand("select * from TBCOMPROMISSOS where DT_INICIO > getdate() order by dt_inicio desc", Connection.Conectar());
+                SqlCommand sqlComando = new SqlCommand("SELECT * FROM TBCOMPROMISSOS WHERE DT_FIM > getdate() order by dt_inicio", Connection.Conectar());
                 SqlDataReader dr = sqlComando.ExecuteReader();
 
                 while(dr.Read())

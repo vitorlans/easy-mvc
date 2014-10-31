@@ -60,10 +60,21 @@ namespace Easy.Controllers
         [HttpPost]
         public ActionResult AtualizarCompromisso(Compromissos CompromissoNovo)
         {
-            DAOCompromissos dCompromisso = new DAOCompromissos();
-            Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
-            dCompromisso.EditarCompromisso(CompromissoNovo, User);
+            if (ModelState.IsValid)
+            {
+                DAOCompromissos dCompromisso = new DAOCompromissos();
+                Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+                dCompromisso.EditarCompromisso(CompromissoNovo, User);
+                Session["AddCompromisso"] = 2;
+                Session.Timeout = 1;
+            }
+            else
+            {
+                Session["AddCompromisso"] = 0;
+                Session.Timeout = 1;
+            }
             return RedirectToAction("Index", "Compromissos");
+
         }
         [HttpPost]
         public ActionResult AlterarStatusComp(int id)
