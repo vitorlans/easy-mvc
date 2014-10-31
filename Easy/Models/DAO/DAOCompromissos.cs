@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
 
 namespace Easy.Models
 {
@@ -63,7 +63,7 @@ namespace Easy.Models
             DAOEmpresas DEmpresa = new DAOEmpresas();
             List<Compromissos> ListaComp;
             ListaComp = new List<Compromissos>();
-
+            Compromissos Compr = new Compromissos();
             try
             {
                 SqlCommand sqlComando = new SqlCommand("SELECT * FROM TBCOMPROMISSOS WHERE DT_FIM > getdate() order by dt_inicio", Connection.Conectar());
@@ -71,19 +71,52 @@ namespace Easy.Models
 
                 while(dr.Read())
                 {
-                    ListaComp.Add(
-                        new Compromissos
-                        {
-                            IdComp = int.Parse(dr["IDCOMP"].ToString()),
-                            Titulo = dr["TITULO"].ToString(),
-                            Descricao = dr["DESCRICAO"].ToString(),
-                            DataInicio = dr["DT_INICIO"].ToString(),
-                            DataTermino = dr["DT_FIM"].ToString(),
-                            Status = (dr["STATUS"].ToString()),
-                            Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString()),
-                            Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
-                        }
-                        );
+                    Compr.IdComp = int.Parse(dr["IDCOMP"].ToString());
+                    Compr.Titulo = dr["TITULO"].ToString();
+                    Compr.Descricao = dr["DESCRICAO"].ToString();
+                    Compr.DataInicio = Convert.ToDateTime(dr["DT_INICIO"].ToString()).ToShortDateString();
+                    Compr.DataTermino = dr["DT_FIM"].ToString();
+                    Compr.Status = (dr["STATUS"].ToString());
+                    Compr.Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString());
+                    Compr.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString();
+                    
+
+
+                    ListaComp.Add(Compr);
+                }
+            }
+            catch(SqlException sqlErro)
+            {
+            }
+            catch(Exception erro)
+            {
+            }
+            Connection.Desconectar();
+            return ListaComp;
+        }
+        public List<Compromissos> ListarCompromissosTodos()
+        {
+            DAOUsuario DUser = new DAOUsuario();
+            DAOEmpresas DEmpresa = new DAOEmpresas();
+            List<Compromissos> ListaComp;
+            ListaComp = new List<Compromissos>();
+            Compromissos Compr = new Compromissos();
+            try
+            {
+                SqlCommand sqlComando = new SqlCommand("SELECT * FROM TBCOMPROMISSOS", Connection.Conectar());
+                SqlDataReader dr = sqlComando.ExecuteReader();
+
+                while(dr.Read())
+                {
+                    Compr.IdComp = int.Parse(dr["IDCOMP"].ToString());
+                    Compr.Titulo = dr["TITULO"].ToString();
+                    Compr.Descricao = dr["DESCRICAO"].ToString();
+                    Compr.DataInicio = Convert.ToDateTime(dr["DT_INICIO"].ToString()).ToShortDateString();
+                    Compr.DataTermino = dr["DT_FIM"].ToString();
+                    Compr.Status = (dr["STATUS"].ToString());
+                    Compr.Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString());
+                    Compr.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString();
+                    ListaComp.Add(Compr);
                 }
             }
             catch(SqlException sqlErro)
