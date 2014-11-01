@@ -20,6 +20,15 @@ namespace Easy.Models
         //Status será inserido como (T)erminado, (C)ancelado ou em (A)ndamento
         public string Status {get;set;}
         public Usuario Usuario {get;set;}
-        public Empresas Empresa { get; set; }     
+        public Empresas Empresa { get; set; }
+
+
+        public static string FormataTexto(string c) {
+
+            char primeira = char.ToUpper(c[0]);
+            c = primeira + c.Substring(1);
+            return c;
+        
+        }
     }
 }

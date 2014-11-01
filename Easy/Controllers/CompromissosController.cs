@@ -46,7 +46,7 @@ namespace Easy.Controllers
             }
             return RedirectToAction("Index", "Compromissos");
         }
-        [HttpPost]
+        [HttpGet]
         public ActionResult EditarCompromisso(int id)
         {
             DAOCompromissos daoCompromisso = new DAOCompromissos();

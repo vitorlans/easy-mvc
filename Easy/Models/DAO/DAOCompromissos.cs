@@ -85,15 +85,22 @@ namespace Easy.Models
                             Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
                         }
                         );
-                }   
+
                     string dtIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortDateString();
                     string dtFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortDateString();
                     string hrIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortTimeString();
                     string hrFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortTimeString();
 
+
+
                     if (dtIni == dtFim)
+                    {
+                        ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
+                        ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
                         ListaComp[x].DataTermino = hrFim;
+                    }
                     x++;
+                }
             }
             catch(SqlException sqlErro)
             {
