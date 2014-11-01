@@ -53,9 +53,60 @@ namespace Easy.Models
                 }
             }
             catch { }
+            Connection.Desconectar();
 
             return lista;
         }
+
+        public List<Usuario> ListaUsuarios(string login, string letra)
+        {
+
+            var meusContatos = MeusContatos(login);
+
+            List<Usuario> lista = new List<Usuario>();
+
+            try
+            {
+                var x = 0;
+                foreach (var i in meusContatos)
+                {
+
+                    SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IdUser=" + meusContatos[x].IdUser2.ToString() + " and NOME like '"+letra+"%'", Connection.Conectar());
+                    SqlDataReader dr = sqlExec.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        lista.Add
+                            (
+                            new Usuario
+                            {
+                                IdUser = int.Parse(dr["IDUSER"].ToString()),
+                                Nome = dr["NOME"].ToString(),
+                                Sobrenome = dr["SOBRENOME"].ToString(),
+                                Senha = dr["SENHA"].ToString(),
+                                Endereco = dr["ENDERECO"].ToString(),
+                                Bairro = dr["BAIRRO"].ToString(),
+                                Cidade = dr["CIDADE"].ToString(),
+                                Cep = dr["CEP"].ToString(),
+                                Telefone = dr["TELEFONE"].ToString(),
+                                UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
+                                LiberaConvite = dr["LIBERACONVITE"].ToString(),
+                                Status = dr["STATUS"].ToString(),
+                                DataCriacao = dr["DT_CRIACAO"].ToString(),
+                                Imagem = dr["IMAGEM"].ToString(),
+
+                            }
+                            );
+                    }
+                    x++;
+                }
+            }
+            catch { }
+            Connection.Desconectar();
+
+            return lista;
+        }
+
 
         public Usuario RecuperaUsuario(string id)
         {
@@ -95,6 +146,8 @@ namespace Easy.Models
 
             }
             catch { }
+            Connection.Desconectar();
+
             return user;
 
         }
@@ -137,6 +190,8 @@ namespace Easy.Models
 
             }
             catch { }
+            Connection.Desconectar();
+
             return user;
 
         }
@@ -187,6 +242,8 @@ namespace Easy.Models
                 {
                     VinculaUsuario(login, user);
                 }
+                Connection.Desconectar();
+
             }
             catch (SqlException) { }
 
@@ -222,6 +279,7 @@ namespace Easy.Models
             inserirUsuario2.Parameters.AddWithValue("iduser2", user.IdUser);
 
             inserirUsuario2.ExecuteNonQuery();
+            Connection.Desconectar();
 
         }
 
@@ -256,6 +314,7 @@ namespace Easy.Models
                             IdUser2 = int.Parse(dr["IDUSER2"].ToString()),
                         });
             }
+            Connection.Desconectar();
 
             return lista;
         }
@@ -286,7 +345,10 @@ namespace Easy.Models
             catch (Exception)
             {
                 return false;
-            }
+
+          }
+            Connection.Desconectar();
+
         }
 
 

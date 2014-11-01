@@ -1,30 +1,68 @@
 ﻿@model IEnumerable<Easy.Models.Usuario>
 @{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "Contatos";
 }
 <br />
 <div class="row">
               <div class="col-md-12">
-              <h1>Contatos</h1><a href="~/Contatos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised btn-material-deeppurple mdi-social-person-add"></a>
+              <h1>Contatos</h1><a href="~/Contatos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised mdi-social-person-add"></a>
               </div>
             </div>
 <br />
+<div >
+   <form action="/Contatos" class=" form-horizontal" method="post">
 
-@using (Html.BeginForm("Index", "Contatos", FormMethod.Post, new { @class = "form-horizontal" }))
-{
-               <div style="width:50%">
-                   <input type="search"  class="form-control" placeholder="Pesquisa" name="pesquisa" />
-               </div>
-    <br />
-               <div>
-                   <input type ="submit" class="btn btn-success color_button" value="Pesquisar" />
-               </div>
-               
+        <div class="col-md-4">
+            <div>
+              <div class="form-control-wrapper">
+                <input type="search" class="form-control empty" placeholder="Pesquisa" name="pesquisa">
+                <span class="material-input"></span>
+              </div>
+            </div>
+            <br>
+        </div>
+            <div>
+             &nbsp;
+              <input type="submit" class="btn btn-success btn-xs color_button withripple mdi-content-send" value="Procurar">
+            </div>
+        </form>
 
-                
-}
+      </div>
+
+
 <br />
-<div class="list-group ">
+<ul class="pagination">
+    <li><a href="/Contatos/Alfa?letra=TD"><i class="mdi-navigation-more-vert"></i></a></li>
+    <li><a href="/Contatos/Alfa?letra=A">A</a></li>
+    <li><a href="/Contatos/Alfa?letra=B">B</a></li>
+    <li><a href="/Contatos/Alfa?letra=C">C</a></li>
+    <li><a href="/Contatos/Alfa?letra=D">D</a></li>
+    <li><a href="/Contatos/Alfa?letra=E">E</a></li>
+    <li><a href="/Contatos/Alfa?letra=F">F</a></li>
+    <li><a href="/Contatos/Alfa?letra=G">G</a></li>
+    <li><a href="/Contatos/Alfa?letra=H">H</a></li>
+    <li><a href="/Contatos/Alfa?letra=I">I</a></li>
+    <li><a href="/Contatos/Alfa?letra=J">J</a></li>
+    <li><a href="/Contatos/Alfa?letra=K">K</a></li>
+    <li><a href="/Contatos/Alfa?letra=L">L</a></li>
+    <li><a href="/Contatos/Alfa?letra=M">M</a></li>
+    <li><a href="/Contatos/Alfa?letra=N">N</a></li>
+    <li><a href="/Contatos/Alfa?letra=O">O</a></li>
+    <li><a href="/Contatos/Alfa?letra=P">P</a></li>
+    <li><a href="/Contatos/Alfa?letra=Q">Q</a></li>
+    <li><a href="/Contatos/Alfa?letra=R">R</a></li>
+    <li><a href="/Contatos/Alfa?letra=S">S</a></li>
+    <li><a href="/Contatos/Alfa?letra=T">T</a></li>
+    <li><a href="/Contatos/Alfa?letra=U">U</a></li>
+    <li><a href="/Contatos/Alfa?letra=V">V</a></li>
+    <li><a href="/Contatos/Alfa?letra=W">W</a></li>
+    <li><a href="/Contatos/Alfa?letra=X">X</a></li>
+    <li><a href="/Contatos/Alfa?letra=Y">Y</a></li>
+    <li><a href="/Contatos/Alfa?letra=Z">Z</a></li>
+</ul>
+
+<div id="Layer1" style="left:10px; top:20px;  height:300px; z-index:1; overflow:auto">
+  <div class="list-group ">
     @foreach (var item in Model) {
     <div class="list-group-item ">
         <div class="row-picture">
@@ -37,4 +75,6 @@
     <div class="list-group-separator"></div>
     }
  
+</div>  
+     
 </div>

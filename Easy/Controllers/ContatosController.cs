@@ -22,28 +22,43 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string pesquisa, string tipo)
+        public ActionResult Index(string pesquisa)
         {
 
             if (pesquisa == "")
             {
                 return View();
             }
-            else
+
+            return View();
+        }
+    
+        [HttpGet]
+        public ActionResult Alfa(string letra)
+        {
+            letra = letra.ToUpper();
+
+            if (letra == "A" || letra == "B" || letra == "C" || letra == "D" || letra == "E" || letra == "F" || letra == "G" || letra == "H" || letra == "I" || letra == "J" || letra == "K" || letra == "L" || letra == "M" || letra == "N" || letra == "O" || letra == "P" || letra == "Q" || letra == "R" || letra == "S" || letra == "T" || letra == "U" || letra == "V" || letra == "W" || letra == "X" || letra == "Y" || letra == "Z")
             {
 
-                if (tipo == "0")
-                {
-                    return View();
-                }
-                else
-                {
+                Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
+                DAOUsuario DUser = new DAOUsuario();
 
-                    return View();
-
-                }
+                var lista = DUser.ListaUsuarios(Logado.IdUser.ToString(),letra);
+                return View("Index", lista);
 
             }
+            else {
+
+                Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
+                DAOUsuario DUser = new DAOUsuario();
+
+                var lista = DUser.ListaUsuarios(Logado.IdUser.ToString());
+                return View("Index", lista);
+            
+            }
+
+
         }
 
         public ActionResult Add() {
@@ -84,7 +99,7 @@ namespace Easy.Controllers
 
             DUser.CriarUsuario(user, Logado.IdUser.ToString());
 
-            return View();
+            return RedirectToAction("Index");
 
         }
         public ActionResult Detalhes(string id)
