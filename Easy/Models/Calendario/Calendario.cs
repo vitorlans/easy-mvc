@@ -16,6 +16,11 @@ namespace Easy.Models
         public string key { get; set; }
         public string allday { get; set; }
 
-               
+
+        public static DateTime ConvertFromUnixTimestamp(double timestamp)
+        {
+            var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return origin.AddSeconds(timestamp);
+        }
     }
 }

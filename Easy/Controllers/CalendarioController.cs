@@ -31,27 +31,38 @@ namespace Easy.Controllers
             //                    someKey = e.SomeImportantKeyID,
             //                    allDay = false
             //                };
+            DAOCompromissos DAOcomp = new DAOCompromissos();
+            var LstComp = DAOcomp.ListarCompromissosTodos();
                          List<Calendario> Lc = new List<Calendario>();
 
-            var k = 0;
-            while(k <= 5 ){
+                         int x = 0;
+
+            foreach(var i in LstComp) {
+                var dt = string.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(LstComp[x].DataInicio));
+                var dt2 = string.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(LstComp[x].DataTermino));
+
+                var hr = Convert.ToDateTime(LstComp[x].DataInicio).ToShortTimeString();
+                var hr2 = Convert.ToDateTime(LstComp[x].DataTermino).ToShortTimeString();
+
+                 var cd = dt+"T"+hr;
+                 var cd2 = dt2 + "T"+hr2;
 
                 Lc.Add(
                     new Calendario
                     {
-                        id=k.ToString(), 
-                        title="facebook",
-                        start = "2014-10-27T20:00:00",
-                        end = "2014-10-27T20:50:00",
-                        url = "http://google.com",
-                        allday = "true"
+                        id= LstComp[x].IdComp.ToString(), 
+                        title=  LstComp[x].Titulo,
+                        start = cd,
+                        end = cd2,
+                        url = "http://localhost:58623/Compromissos/EditarCompromisso?id="+LstComp[x].IdComp.ToString(),
+                        allday = "false"
 
                     }
                 );
-
-                 k++;
+                x++;
+                 
             }
-
+            
             var row = Lc.ToArray();
             return Json(row, JsonRequestBehavior.AllowGet);
         }
