@@ -27,7 +27,21 @@ namespace Easy.Controllers
 
             if (pesquisa == "")
             {
-                return View();
+                Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
+                DAOUsuario DUser = new DAOUsuario();
+
+                var lista = DUser.ListaUsuarios(Logado.IdUser.ToString());
+                return View(lista);
+            }
+            else {
+
+                Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
+                DAOUsuario DUser = new DAOUsuario();
+
+                var lista = DUser.ListaUsuariosPesquisa(Logado.IdUser.ToString(), pesquisa);
+                return View(lista);
+                
+            
             }
 
             return View();
