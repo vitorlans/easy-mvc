@@ -14,10 +14,16 @@ namespace Easy.Controllers
 
         public ActionResult Index(Usuario user)
         {
+           
             Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
             DAOUsuario DUser = new DAOUsuario();
+            List<Usuario> lista = new List<Usuario>();
+            if (Logado != null)
+            {
 
-            var lista = DUser.ListaUsuarios(Logado.IdUser.ToString());
+                lista = DUser.ListaUsuarios(Logado.IdUser.ToString());
+            }
+
             return View(lista);
         }
 

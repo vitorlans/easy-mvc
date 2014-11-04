@@ -55,8 +55,8 @@ namespace Easy.Controllers
                         start = cd,
                         end = cd2,
                         url = "http://localhost:58623/Compromissos/EditarCompromisso?id="+LstComp[x].IdComp.ToString(),
-                        allday = "false"
-
+                        allday = true,
+                        color = "blue"
                     }
                 );
                 x++;

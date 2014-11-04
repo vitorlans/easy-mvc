@@ -14,7 +14,8 @@ namespace Easy.Models
         public string start { get; set;}
         public string end { get; set; }
         public string key { get; set; }
-        public string allday { get; set; }
+        public bool allday { get; set; }
+        public string color { get; set; }
 
 
         public static DateTime ConvertFromUnixTimestamp(double timestamp)

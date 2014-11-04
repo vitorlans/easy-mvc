@@ -298,8 +298,42 @@ namespace Easy.Models
 
         }
 
+        public void AtualizarUsuario(Usuario user)
+        {
+
+            try
+            {
+
+                string strInserir = "update TBUSUARIOS  set NOME = @nome, SOBRENOME = @sobrenome, EMAIL = @email, SENHA = @senha, ENDERECO = @endereco, BAIRRO = @bairro, CIDADE = @cidade, CEP = @cep, TELEFONE = @telefone, USUARIOSISTEMA = @usuariosistema, LIBERACONVITE = @liberaconvite, STATUS = @status, DT_CRIACAO = @datacriacao, IMAGEM = @imagem where IDUSER = @iduser";
+
+                SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
 
 
+
+                updateUsuario.Parameters.AddWithValue("nome", user.Nome);
+                updateUsuario.Parameters.AddWithValue("sobrenome", (object)user.Sobrenome ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("email", user.Email);
+                updateUsuario.Parameters.AddWithValue("senha", user.Senha);
+                updateUsuario.Parameters.AddWithValue("endereco", (object)user.Endereco ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("bairro", (object)user.Bairro ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("usuariosistema", user.UsuarioSistema);
+                updateUsuario.Parameters.AddWithValue("liberaconvite", user.LiberaConvite);
+                updateUsuario.Parameters.AddWithValue("status", user.Status);
+                updateUsuario.Parameters.AddWithValue("datacriacao", user.DataCriacao);
+                updateUsuario.Parameters.AddWithValue("imagem", (object)user.Imagem ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("iduser", (object)user.IdUser ?? DBNull.Value);
+
+
+                updateUsuario.ExecuteNonQuery();
+                DAOEmpresas Demp = new DAOEmpresas();
+            }
+
+            catch (SqlException) { }
+        }
+        
         private void VinculaUsuario(string login, Usuario user)
         {
 
@@ -331,6 +365,7 @@ namespace Easy.Models
             Connection.Desconectar();
 
         }
+
 
 
 
