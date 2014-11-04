@@ -32,7 +32,7 @@ namespace Easy.Models
             HttpCookie UserCookie = new HttpCookie("UserCookieEmpresa");
 
             //Setando o ID do usuário no cookie
-            UserCookie.Values["IDEMPRESA"] = Criptografia.Criptografar(emp.IdEmpresa.ToString());
+            UserCookie.Values["IDEMPRESA"] = Criptografia.Criptografar(emp.NomeEmpresa.ToString());
 
 
             //Definindo o prazo de vida do cookie

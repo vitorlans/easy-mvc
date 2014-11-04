@@ -77,15 +77,20 @@ namespace Easy.Models
 
         public List<Tarefas> ListaTarefas()
         {
-            List<Tarefas> lsTaf;
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            Empresas emp = Empresas.RecuperaEmpresaCookie();
 
+            int x = user.IdUser;
+            int y = emp.IdEmpresa;
+
+            List<Tarefas> lsTaf;
             lsTaf = new List<Tarefas>();
 
             //DEVERÁ SER APLICADA A CLAUSULA WHERE PELO ID DO USUARIO LOGADO
 
             try
             {
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE STATUS = 'A' ORDER BY DT_FIM", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDUSER = "+user.IdUser+" AND IDEMPR = "+emp.IdEmpresa+" AND STATUS = 'A' ORDER BY DT_FIM", Connection.Conectar());
                 SqlDataReader dr = sqlExec.ExecuteReader();
                 bool status = true;
 
@@ -134,6 +139,9 @@ namespace Easy.Models
             {
                 try
                 {
+                    Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+                    Empresas emp = Empresas.RecuperaEmpresaCookie();
+
                     SqlCommand sqlExec = new SqlCommand
                     (
                         "INSERT INTO TBTAREFAS VALUES("+
@@ -142,8 +150,8 @@ namespace Easy.Models
                                                     "'"+Convert.ToDateTime(tar.DtFim)+"'," +
                                                     "'"+tar.Prioridade+"',"+
                                                     "'A',"+
-                                                    "1,"+
-                                                    "2, null)", Connection.Conectar()
+                                                    ""+user.IdUser+","+
+                                                    "2,"+emp.IdEmpresa+" )", Connection.Conectar()
                     );
                     sqlExec.ExecuteNonQuery();
                 }
@@ -178,9 +186,7 @@ namespace Easy.Models
                                              +"DT_FIM = @fim, "
                                              +"PRIORIDADE = @prior, "
                                              +"STATUS = @status, "
-                                             +"IDUSER = @criador, "
                                              +"IDUSERDEST = @relac, "
-                                             +"IDEMPR = @emp "
                                              +"WHERE IDTARE = @id", Connection.Conectar()
                     );
 
@@ -189,9 +195,7 @@ namespace Easy.Models
                     sqlExec.Parameters.AddWithValue("fim", (object)tar.DtFim ?? DBNull.Value);
                     sqlExec.Parameters.AddWithValue("prior", tar.Prioridade);
                     sqlExec.Parameters.AddWithValue("status", status);
-                    sqlExec.Parameters.AddWithValue("criador", 1);
                     sqlExec.Parameters.AddWithValue("relac", 1);
-                    sqlExec.Parameters.AddWithValue("emp", 1);
 
                     sqlExec.Parameters.AddWithValue("id", tar.IdTarefa);
 
@@ -203,6 +207,38 @@ namespace Easy.Models
                 {
                 }
             }
+        }
+
+
+        //TESTE SOBRE RELACÇÃO DE USUARIOS NA INSERÇÃO DE TAREFAS
+
+        public List<String> ListaContatoTarefa()
+        {
+            Usuario us = Usuario.VerificaSeOUsuarioEstaLogado();
+            List<String> listUs = new List<String>();
+
+            SqlCommand sqlBusca = new SqlCommand
+            (
+               " SELECT IDUSER, NOME, EMAIL FROM TBUSUARIOS WHERE IDUSER IN "+ 
+                "("+
+	                " SELECT vuser1.IDUSER2 FROM TBUSUARIOS tuser1"+
+		                " INNER JOIN VUSUACONT vuser1 ON vuser1.IDUSER = tuser1.IDUSER"+
+	                " WHERE tuser1.IDUSER = 1 "+
+                ")", Connection.Conectar()
+            );
+
+            SqlDataReader dr = sqlBusca.ExecuteReader();
+
+            while (dr.Read())
+            {
+                listUs.Add(dr["IDUSER"].ToString());
+                listUs.Add(dr["NOME"].ToString());
+                listUs.Add(dr["EMAIL"].ToString());
+            }
+
+            Connection.Desconectar();
+
+            return listUs;
         }
     }
 }

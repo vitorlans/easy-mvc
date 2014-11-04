@@ -71,7 +71,7 @@ namespace Easy.Controllers
             daoTaf.AtualizaTarefa(tar);
             //email.EnviarTarefaAtualizada(tar);
 
-           /* EmailTarefas eTare = new EmailTarefas();
+           EmailTarefas eTare = new EmailTarefas();
 
             eTare.Para = "gigabite.info@gmail.com";
             eTare.Assunto = "Alteração de Tarefa";
@@ -82,11 +82,21 @@ namespace Easy.Controllers
             eTare.UrlAceita = "";
             eTare.UrlRejeita = "";
             
-            eTare.Send();*/
+            eTare.Send();
 
             Session["AddTarefa"] = 2;
             return RedirectToAction("Index", "Tarefas");
 
+        }
+
+        public ActionResult AutoCompleteTarefa(string term)
+        {
+            // Get Tags from database
+            string[] tags = { "ASP.NET", "WebForms", 
+                    "MVC", "jQuery", "ActionResult", 
+                    "MangoDB", "Java", "Windows" };
+            return this.Json(tags.Where(t => t.StartsWith(term)),
+                            JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Comentarios()
