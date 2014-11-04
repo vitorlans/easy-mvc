@@ -27,15 +27,16 @@
 <div class="navbar navbar-inverse">
 
     <div class="navbar-collapse collapse navbar-inverse-collapse">
-        <form class="navbar-form navbar-left">
-            <input type="text" class="form-control col-lg-8" placeholder="Pesquisar..">
-        </form>
+        @using(Html.BeginForm("Index", "Tarefas", FormMethod.Get, new { @class="navbar-form navbar-left" }))
+        {
+            @Html.TextBox("search", null, new { @class="form-control col-lg-8", @placeholder="Pesquisar..", @onKeyPress="return submitenter(this,event)" } )
+        }
         <ul class="nav navbar-nav">
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Data de Início <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="javascript:void(0)">Crescente</a></li>
-                    <li><a href="javascript:void(0)">Descrecente</a></li>
+                    <li>@Html.ActionLink("Crescente", "Index", new { @sortOrder = "icresc" })</li>
+                    <li>@Html.ActionLink("Descrescente", "Index", new { @sortOrder = "idesc" })</li>
                 </ul>
             </li>
         </ul>
@@ -43,8 +44,18 @@
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Data de Término <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="javascript:void(0)">Crescente</a></li>
-                    <li><a href="javascript:void(0)">Descrecente</a></li>
+                    <li>@Html.ActionLink("Crescente", "Index", new { @sortOrder = "tcresc" })</li>
+                    <li>@Html.ActionLink("Descrescente", "Index", new { @sortOrder = "tdesc" })</li>
+                </ul>
+            </li>
+        </ul>
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Prioridade <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Baixa", "Index", new { @sortOrder = "baixa" })</li>
+                    <li>@Html.ActionLink("Média", "Index", new { @sortOrder = "media" })</li>
+                    <li>@Html.ActionLink("Alta", "Index", new { @sortOrder = "alta" })</li>
                 </ul>
             </li>
         </ul>

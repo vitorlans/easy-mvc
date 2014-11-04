@@ -13,12 +13,46 @@ namespace Easy.Controllers
         //
         // GET: /Tarefas/
 
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string search)
         {
             DAOTarefas daoTaf = new DAOTarefas();
             var listTaf = daoTaf.ListaTarefas();
- 
-            return View(listTaf);
+            var x = from lista in listTaf select lista;
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                x = x.Where(lista => lista.Descricao.ToUpper().Contains(search.ToUpper())); //PODE-SE ACRESCENTAR MAIS CLAUSULAS
+            }
+
+            switch (sortOrder)
+            {
+                case "icresc":
+                    x = x.OrderBy(lista => lista.DtInicio);
+                    break;
+                case "idesc":
+                    x = x.OrderByDescending(lista => lista.DtInicio);
+                    break;
+                case "tcresc":
+                    x = x.OrderBy(lista => lista.DtFim);
+                    break;
+                case "tdesc":
+                    x = x.OrderByDescending(lista => lista.DtFim);
+                    break;
+                case "baixa":
+                    x = x.Where(lista => lista.Prioridade.ToUpper().Equals("B"));
+                    break;
+                case "media":
+                    x = x.Where(lista => lista.Prioridade.ToUpper().Equals("M"));
+                    break;
+                case "alta":
+                    x = x.Where(lista => lista.Prioridade.ToUpper().Equals("A"));
+                    break;
+                default:
+                    x = x.OrderBy(lista => lista.DtFim);
+                    break;
+            }
+
+            return View(x.ToList());
         }
 
         public ActionResult AdicionarTarefa()
