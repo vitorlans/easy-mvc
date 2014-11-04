@@ -8,38 +8,50 @@
     string classe = "";
     int valida = 0;
 
-    if (Session["Add"] != null)
+    if (Session["AddCompromisso"] != null)
     {
-        valida = int.Parse(Session["Add"].ToString());
+        valida = int.Parse(Session["AddCompromisso"].ToString());
     }
 
-    Session.Remove("Add");
+    Session.Remove("AddCompromisso");
 }
-
+<input id="hidValida" value="@valida" type="hidden"/>
 <h2>Gerenciamento de Compromissos</h2>
-<a href="~/Compromissos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add" title="Adicionar Compromisso"></a>
-<table class ="table table-striped table-hover well bs-component">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Titulo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Descricao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataInicio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataTermino)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
+<a href="~/Compromissos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Adicionar Compromisso"></a>
+<br />
+<br />
+<table class ="table table-striped table-hover">
+    <tr >
+        
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td colspan="6">
+            
+            @Html.DisplayFor(modelItem => item.DataInicio)
+            @Html.DisplayFor(modelItem => item.DataTermino)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @if(item.Status == "C")
+            {
+                <div class="ClasseRed" title="Cancelado">
+                </div>
+            }
+            else if (item.Status == "T")
+            {
+                <div class="ClasseGreen" title="Concluído">
+                </div>
+            }
+            else if (item.Status == "A")
+            {
+                <div class="ClasseYellow" title="Em Andamento">
+
+                </div>
+            }
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Titulo)
         </td>
@@ -47,16 +59,9 @@
             @Html.DisplayFor(modelItem => item.Descricao)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DataInicio)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DataTermino)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-           <form action="~/Compromissos/EditarCompromisso" method="post">
+           <form action="~/Compromissos/EditarCompromisso" method="get">
                @Html.Hidden("id", item.IdComp)
                 <div class="btn-group color_button" style="margin-left:0%">
                     <button type="submit" class="btn btn-default"><i class="texto2 icon-material-create"></i></button>
@@ -64,7 +69,7 @@
            </form>
         </td>
         <td>
-           <form action="~/Compromissos/ConcluirCompromisso" method="post">
+           <form action="~/Compromissos/AlterarStatusComp" method="post">
                @Html.Hidden("id", item.IdComp)
                 <div class="btn-group color_button" style="margin-left:0%">
                     <button type="submit" class="btn btn-default"><i class="texto2 icon-material-done"></i></button>
@@ -78,10 +83,22 @@
 
 <script>
 
-    if($("#hidValida").val() == 1)
-    {
+    $(document).ready(function () {
+        $("#btteste").click(function () {
+            $("#myModal").modal('toogle');
+        });
+    });
+
+    if ($("#hidValida").val() == 1) {
         $(document).ready(function () {
-            $.snackbar({ content: "O Compromisso foi Cadastrado com Sucesso. Verifique as informações.", timeout: 8000 });
+            $.snackbar({ content: "O Compromisso foi Cadastrado. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
+        });
+    }
+    else if ($("#hidValida").val() == 2) {
+        $(document).ready(function () {
+            $.snackbar({ content: "O Compromisso foi Alterado. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
         });
     }
 
@@ -91,7 +108,7 @@
 
     $("#btCom").click(function () {
         var x = $("#btCom").val();
-        $("#"+x).slideToggle();
+        $("#" + x).slideToggle();
     });
 
     $('#myTab a').click(function (e) {
@@ -100,7 +117,29 @@
     })
 
 </script>
-
+<style>
+    .ClasseRed {
+        background-color: red;
+        float:left;
+        width:5px;
+        height:57px;
+        margin-right:0PX;
+    }
+    .ClasseGreen {
+        background-color: green;
+        float:left;
+        width:5px;
+        height:57px;
+        margin-right:0PX;
+    }
+    .ClasseYellow {
+        background-color: yellow;
+        float:left;
+        width:5px;
+        height:57px;
+        margin-right:0PX;
+    }
+</style>
 @{
     
     Session["Add"] = 0;

@@ -4317,6 +4317,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   border-radius: 4px;
 }
 .pagination > li {
+  font-size: 13px;
   display: inline;
 }
 .pagination > li > a,

@@ -17,12 +17,14 @@
                             <label for="inputTitulo" class="col-lg-2 control-label">Título</label>
                             <div class="col-lg-10">
                                 @Html.TextBoxFor(model => model.Titulo, new { @Id = "inputTitulo", @class = "form-control", @placeholder = "O Título deve conter no máximo 30 caracteres", @type = "text" })
+                                @Html.ValidationMessageFor(model => model.Titulo, null, new { @class = "text-danger"})
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputDescricao" class="col-lg-2 control-label">Descrição</label>
                             <div class="col-lg-10">
                                 @Html.TextAreaFor(model => model.Descricao, new { @Id = "inputDescricao", @class = "form-control", @placeholder = "A Descrição deve conter no máximo 50 caracteres" })
+                                @Html.ValidationMessageFor(model => model.Descricao, null, new { @class = "text-danger"})
                             </div>
                         </div>
                         <div class="form-group">

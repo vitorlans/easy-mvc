@@ -46,7 +46,7 @@ namespace Easy.Controllers
             }
             return RedirectToAction("Index", "Compromissos");
         }
-        [HttpPost]
+        [HttpGet]
         public ActionResult EditarCompromisso(int id)
         {
             DAOCompromissos daoCompromisso = new DAOCompromissos();
@@ -60,13 +60,24 @@ namespace Easy.Controllers
         [HttpPost]
         public ActionResult AtualizarCompromisso(Compromissos CompromissoNovo)
         {
-            DAOCompromissos dCompromisso = new DAOCompromissos();
-            Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
-            dCompromisso.EditarCompromisso(CompromissoNovo, User);
+            if (ModelState.IsValid)
+            {
+                DAOCompromissos dCompromisso = new DAOCompromissos();
+                Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+                dCompromisso.EditarCompromisso(CompromissoNovo, User);
+                Session["AddCompromisso"] = 2;
+                Session.Timeout = 1;
+            }
+            else
+            {
+                Session["AddCompromisso"] = 0;
+                Session.Timeout = 1;
+            }
             return RedirectToAction("Index", "Compromissos");
+
         }
         [HttpPost]
-        public ActionResult ConcluirCompromisso(int id)
+        public ActionResult AlterarStatusComp(int id)
         {
             DAOCompromissos dCompromisso = new DAOCompromissos();
             Compromissos Compromisso = new Compromissos();
@@ -75,7 +86,7 @@ namespace Easy.Controllers
             //Usuario User = (Usuario)Session["Usuario"];
             Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
 
-            dCompromisso.TerminarCompromisso(Compromisso, User);
+            dCompromisso.AlterarStatusComp(Compromisso, User);
             return RedirectToAction("Index", "Compromissos");
         }
     }
