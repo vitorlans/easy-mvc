@@ -99,6 +99,14 @@ namespace Easy.Models
                         ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
                         ListaComp[x].DataTermino = hrFim;
                     }
+                    else
+                    {
+                        ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
+                        ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
+                        ListaComp[x].DataTermino = Convert.ToDateTime(ListaComp[x].DataTermino.ToString()).ToLongDateString() + " às " + hrIni.ToString();
+                        ListaComp[x].DataTermino = Compromissos.FormataTexto(ListaComp[x].DataTermino);
+                    }
+
                     x++;
                 }
             }
@@ -151,6 +159,7 @@ namespace Easy.Models
         }
         public void AddCompromisso(Compromissos Compromisso)
         {
+            Compromisso.Status = "P";
             try
             {
                 SqlCommand sqlExec = new SqlCommand("INSERT INTO TBCOMPROMISSOS VALUES (@TITULO, @DESCRICAO, @DT_INICIO, @DT_FIM, @STATUS, @IDUSER, @IDEMPR)", Connection.Conectar());
@@ -216,6 +225,40 @@ namespace Easy.Models
             catch(SqlException e){}
             Connection.Desconectar();
             return Compromisso;
+        }
+        public void AddParticipantesCompromisso(Compromissos Comp, Usuario Part)
+        {
+            try
+            {
+                SqlCommand sqlExec = new SqlCommand("INSERT INTO VCOMPUSER VALUES (@IDCOMP, @IDUSER)", Connection.Conectar());
+
+                //sqlExec.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
+                sqlExec.Parameters.AddWithValue("IDCOMP", Comp.IdComp);
+                sqlExec.Parameters.AddWithValue("IDUSER", Part.IdUser);
+
+                sqlExec.ExecuteNonQuery();
+            }
+            catch (SqlException sqlEx)
+            {
+            }
+            Connection.Desconectar();
+        }
+        public int RecuperaIdUltimoCompromisso(int IdUser)
+        {
+            int IdComp = 0;
+            try
+            {
+                SqlCommand sqlComando = new SqlCommand("SELECT IDCOMP FROM TBCOMPROMISSOS WHERE IDUSER = " + IdUser + "ORDER BY IDCOMP DESC", Connection.Conectar());
+                SqlDataReader dr = sqlComando.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    IdComp = Int32.Parse(dr["IDCOMP"].ToString());
+                }
+            }
+            catch (SqlException e) { }
+            Connection.Desconectar();
+            return IdComp;
         }
     }
 }

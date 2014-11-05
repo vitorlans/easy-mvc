@@ -19,17 +19,17 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnviarEmailCompromisso()
+        public ActionResult EnviarEmailCompromisso(Compromissos comp, string participantes)
         {
             var email = new EmailCompromisso
             {
-                Para = "nathanbernardes7@gmail.com",
-                Assunto = "Bem Vindo",
-                Titulo = "Vamos sair sabado",
-                Descricao = "Vamos la na praça ",
-                Quando = "segunda-feira, 27 de outubro de 2014",
+                Para = participantes,
+                Assunto = "Compromisso -"+ comp.Titulo,
+                Titulo = comp.Titulo,
+                Descricao = comp.Descricao,
+                Quando = "Início em: " + comp.DataInicio,
                 Mensagem = "Este evento é patrocinado por Easy Peoples",
-                UrlAceita = "http://facebook.com",
+                UrlAceita = "http://localhost:0000/Compromissos/UrlConfirma?codigo="+codigo,
                 UrlRejeita = "http://google.com"
             };
             try

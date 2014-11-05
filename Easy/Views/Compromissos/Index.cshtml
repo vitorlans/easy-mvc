@@ -17,69 +17,103 @@
 }
 <input id="hidValida" value="@valida" type="hidden"/>
 <h2>Gerenciamento de Compromissos</h2>
-<a href="~/Compromissos/Add" style="margin-left:90%" class="btn btn-fab btn-primary btn-raised icon-material-add" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Adicionar Compromisso"></a>
+<a href="~/Compromissos/Add" style="margin-left: 90%" class="btn btn-fab btn-primary btn-raised icon-material-add" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Adicionar Compromisso"></a>
 <br />
 <br />
-<table class ="table table-striped table-hover">
-    <tr >
-        
-    </tr>
+<div class="navbar navbar-inverse">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Tipo <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void(0)">Proximidade</a></li>
+                    <li><a href="javascript:void(0)">Data</a></li>
+                    <li><a href="javascript:void(0)">Título</a></li>
+                    <li><a href="javascript:void(0)">Status</a></li>
+                </ul>
+            </li>
+        </ul>
+        @if (1 == 1)
+        {
+            <form class="navbar-form navbar-left">
+                <input type="text" class="form-control col-lg-8" placeholder="1">
+            </form>
+        }
+        else
+        {
+            <form class="navbar-form navbar-left">
+                <input type="text" class="form-control col-lg-8" placeholder="2">
+            </form>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td colspan="6">
-            
-            @Html.DisplayFor(modelItem => item.DataInicio)
-            @Html.DisplayFor(modelItem => item.DataTermino)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @if(item.Status == "C")
-            {
-                <div class="ClasseRed" title="Cancelado">
-                </div>
-            }
-            else if (item.Status == "T")
-            {
-                <div class="ClasseGreen" title="Concluído">
-                </div>
-            }
-            else if (item.Status == "A")
-            {
-                <div class="ClasseYellow" title="Em Andamento">
+    </div>
+</div>
+@if (Model.Count() > 0)
+{
+    <table class="table table-striped table-hover">
+        <tr>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td colspan="6">
 
-                </div>
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Titulo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descricao)
-        </td>
-        <td>
-        </td>
-        <td>
-           <form action="~/Compromissos/EditarCompromisso" method="get">
-               @Html.Hidden("id", item.IdComp)
-                <div class="btn-group color_button" style="margin-left:0%">
-                    <button type="submit" class="btn btn-default"><i class="texto2 icon-material-create"></i></button>
-                </div>
-           </form>
-        </td>
-        <td>
-           <form action="~/Compromissos/AlterarStatusComp" method="post">
-               @Html.Hidden("id", item.IdComp)
-                <div class="btn-group color_button" style="margin-left:0%">
-                    <button type="submit" class="btn btn-default"><i class="texto2 icon-material-done"></i></button>
-                </div>
-           </form>
-        </td>
-    </tr>
+                    @Html.DisplayFor(modelItem => item.DataInicio)
+                    @Html.DisplayFor(modelItem => item.DataTermino)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @if (item.Status == "C")
+                    {
+                        <div class="ClasseRed" title="Cancelado">
+                        </div>
+                }
+                    else if (item.Status == "T")
+                    {
+                        <div class="ClasseGreen" title="Concluído">
+                        </div>
+                }
+                    else if (item.Status == "A")
+                    {
+                        <div class="ClasseYellow" title="Em Andamento">
+                        </div>
+                }
+                </td>
+                <td class="well-sm">
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                    @Html.DisplayFor(modelItem => item.Descricao)
+
+
+                    <form action="~/Compromissos/EditarCompromisso" method="get">
+                        @Html.Hidden("id", item.IdComp)
+                        <div class="btn-group color_button" style="margin-left: 0%; float: right">
+                            <button type="submit" class="btn btn-default"><i class="texto2 icon-material-create"></i></button>
+                        </div>
+                    </form>
+                    <form action="~/Compromissos/AlterarStatusComp" method="post">
+                        @Html.Hidden("id", item.IdComp)
+                        <div class="btn-group color_button" style="margin-left: 0%; float: right">
+                            <button type="submit" class="btn btn-default"><i class="texto2 icon-material-done"></i></button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+    }
+
+    </table>
 }
-
-</table>
+else
+{    
+    <h3>Você não possui Compromissos! Por favor redefina a busca ou adicione um novo compromisso.</h3>
+}
 
 <script>
 
