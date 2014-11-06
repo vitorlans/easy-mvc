@@ -29,7 +29,7 @@ namespace Easy.Controllers
                 Descricao = comp.Descricao,
                 Quando = "Início em: " + comp.DataInicio,
                 Mensagem = "Este evento é patrocinado por Easy Peoples",
-                UrlAceita = "http://localhost:0000/Compromissos/UrlConfirma?codigo="+codigo,
+                UrlAceita = "http://localhost:0000/Compromissos/UrlConfirma?codigo=",
                 UrlRejeita = "http://google.com"
             };
             try
