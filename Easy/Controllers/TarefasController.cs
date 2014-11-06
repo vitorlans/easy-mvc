@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Easy.Models;
 using Postal;
+using PagedList;
 
 namespace Easy.Controllers
 {
@@ -13,8 +14,18 @@ namespace Easy.Controllers
         //
         // GET: /Tarefas/
 
-        public ActionResult Index(string sortOrder, string search)
+        public ActionResult Index(string sortOrder, string currentFilter, string search, int? page)
         {
+            ViewBag.Sort = sortOrder;
+
+            if (search != null)
+                page = 1;
+
+            else
+                search = currentFilter;
+
+            ViewBag.Filtro = search;
+
             DAOTarefas daoTaf = new DAOTarefas();
             var listTaf = daoTaf.ListaTarefas();
             var x = from lista in listTaf select lista;
@@ -52,7 +63,10 @@ namespace Easy.Controllers
                     break;
             }
 
-            return View(x.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+
+            return View(x.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult AdicionarTarefa()
@@ -122,15 +136,19 @@ namespace Easy.Controllers
             return RedirectToAction("Index", "Tarefas");
 
         }
-
-        public ActionResult AutoCompleteTarefa(string term)
+        
+        [HttpPost]
+        public JsonResult BuscaRelacionado(string busca, int max)
         {
-            // Get Tags from database
-            string[] tags = { "ASP.NET", "WebForms", 
-                    "MVC", "jQuery", "ActionResult", 
-                    "MangoDB", "Java", "Windows" };
-            return this.Json(tags.Where(t => t.StartsWith(term)),
-                            JsonRequestBehavior.AllowGet);
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            DAOUsuario daoUser = new DAOUsuario();
+
+            string id = user.IdUser.ToString();
+            var y = daoUser.ListaUsuarios(id).ToList();
+
+            var final = (from search in y where search.Email.StartsWith(busca.ToUpper()) select new {EmailTeste = search.Email });
+
+            return Json(final);
         }
 
         public ActionResult Comentarios()

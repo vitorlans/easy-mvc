@@ -33,6 +33,7 @@ namespace Easy.Models
         public Tarefas SelecionaTarefaId(int id)
         {
             Tarefas tar = new Tarefas();
+            DAOUsuario dUser = new DAOUsuario();
 
             try
             {
@@ -42,6 +43,8 @@ namespace Easy.Models
 
                 while (dr.Read())
                 {
+                    Usuario relac = dUser.RecuperaUsuario(dr["IDUSERDEST"].ToString());
+
                     if (dr["Status"].ToString() == "A")
                     {
                         status = true;
@@ -58,7 +61,7 @@ namespace Easy.Models
                     tar.Prioridade = dr["PRIORIDADE"].ToString();
                     tar.Status = status;
                     tar.Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) };
-                    tar.Relacionado = new Usuario { IdUser = int.Parse(dr["IDUSERDEST"].ToString()) };
+                    tar.Relacionado = relac.Email.ToString().Trim();
                     tar.Empresa = new Empresas { IdEmpresa = int.Parse(dr["IDEMPR"].ToString()) };
 
                 }
@@ -77,11 +80,9 @@ namespace Easy.Models
 
         public List<Tarefas> ListaTarefas()
         {
+            DAOUsuario dUser = new DAOUsuario();
             Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
             Empresas emp = Empresas.RecuperaEmpresaCookie();
-
-            int x = user.IdUser;
-            int y = emp.IdEmpresa;
 
             List<Tarefas> lsTaf;
             lsTaf = new List<Tarefas>();
@@ -96,6 +97,8 @@ namespace Easy.Models
 
                 while (dr.Read())
                 {
+                    Usuario relac = dUser.RecuperaUsuario(dr["IDUSERDEST"].ToString());
+
                     if (dr["Status"].ToString() == "A")
                     {
                         status = true;
@@ -116,7 +119,7 @@ namespace Easy.Models
                             Prioridade = dr["Prioridade"].ToString(),
                             Status = status,
                             Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) },
-                            Relacionado = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) }
+                            Relacionado = relac.Email.ToString().Trim()
                         }
                     );
                 }
@@ -139,6 +142,8 @@ namespace Easy.Models
             {
                 try
                 {
+                    DAOUsuario dUser = new DAOUsuario();
+                    Usuario idRelac = dUser.RecuperaUsuarioEmail(tar.Relacionado.ToString().Trim());
                     Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
                     Empresas emp = Empresas.RecuperaEmpresaCookie();
 
@@ -151,7 +156,7 @@ namespace Easy.Models
                                                     "'"+tar.Prioridade+"',"+
                                                     "'A',"+
                                                     ""+user.IdUser+","+
-                                                    "2,"+emp.IdEmpresa+" )", Connection.Conectar()
+                                                    ""+idRelac.IdUser+","+emp.IdEmpresa+" )", Connection.Conectar()
                     );
                     sqlExec.ExecuteNonQuery();
                 }

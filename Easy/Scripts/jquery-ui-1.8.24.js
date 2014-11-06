@@ -5990,7 +5990,7 @@ $.widget( "ui.autocomplete", {
 			});
 		this._initSource();
 		this.menu = $( "<ul></ul>" )
-			.addClass( "ui-autocomplete" )
+			.addClass( "btn btn-flat btn-default" )
 			.appendTo( $( this.options.appendTo || "body", doc )[0] )
 			// prevent the close-on-blur in case of a "slow" click on the menu (long mousedown)
 			.mousedown(function( event ) {

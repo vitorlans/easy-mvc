@@ -30,7 +30,7 @@
                                 @Html.ValidationMessageFor(model => model.Descricao, null, new { @class="text-danger"})
                             </div>
                         </div>
-                        <div class="form-group">
+                       <div class="form-group">
                             <label for="inputDefault" class="col-lg-2 control-label">Data de Início</label>
                              <div class="col-lg-10"> 
                                 <div class="controls input-append date form_datetime" data-date="" data-date-format="dd/mm/yyyy HH:ii p" data-link-field="dtp_input1">
@@ -64,8 +64,7 @@
                         <div class="form-group">
                         <label for="select" class="col-lg-2 control-label">Relacionado</label>
                         <div class="col-lg-10">
-                            @Html.TextBoxFor(model => model.Relacionado, new {@class ="form-control" })
-                            <input type="text" id="tcomplete" />
+                            @Html.TextBoxFor(model => model.Relacionado, new {id = "tcomplete", @class ="form-control", @placeholder = "Escolha um contato.." })
                             @Html.ValidationMessageFor(model => model.Relacionado)
                         </div>
                        </div>
@@ -93,9 +92,23 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $('#tcomplete').autocomplete(
+
+        $("#tcomplete").autocomplete(
             {
-                source: '@Url.Action("AutoCompleteTarefa", "Tarefas")'
+                minLength: 1,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Tarefas/BuscaRelacionado",
+                        type: "POST",
+                        dateType: "json",
+                        data: {busca: request.term, max: 10},
+                        success: function (data){
+                            response($.map(data, function(item){
+                                return { label: item.EmailTeste }
+                            }))
+                        }
+                    })
+                }
             });
     });
 
