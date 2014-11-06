@@ -7,73 +7,89 @@
 }
 <br /> 
 <script>
+    $('#btnPopupCancel').click(function () {
+        $('#popupEventForm').addClass('hide'),
+        $('#popupEventForm').hide()
+    });
+
+    $('#btnPopupSave').click(function () {
+
+        $('#popupEventForm').hide();
+
+        var dataRow = {
+            'Title': $('#eventTitle').val(),
+            'NewEventDate': $('#eventDate').val(),
+            'NewEventTime': $('#eventTime').val(),
+            'NewEventDuration': $('#eventDuration').val()
+        }
+
+
+        $.ajax({
+            type: 'POST',
+            url: "/Home/SaveEvent",
+            data: dataRow,
+            success: function (response) {
+                if (response == 'True') {
+                    $('#calendar').fullCalendar('refetchEvents');
+                    alert('New event saved!');
+                }
+                else {
+                    alert('Error, could not save event!');
+                }
+            }
+        })
+    });
+
+</script>
+<script>
     $(document).ready(function () {
         var m = moment();
         		
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,agendaDay'
-			},
-			defaultView: 'agendaDay',
-			editable: false,
-			timezone: 'America/Sao_Paulo',
-            allDaySlot: false,
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            lang:'pt-br',
+            defaultView: 'month',
+            editable: false,
+            timezone: 'America/Sao_Paulo',
+            allDaySlot: true,
             selectable: true,
+            selectable: true,
+            selectHelper: true,
+            dayClick: function(date, start, end) {
+
+                alert('Clicked on: ' + date.format());
+                $('#confirm').removeClass('hide');
+
+            },
+
             slotMinutes: 15,
-			eventLimit: true, // allow "more" link when too many events
-			events: 
+            eventLimit: true, // allow "more" link when too many events
+            events: 
 				{
 				    url: 'Calendario/RecuperarEventos',
 				    error: function () {
 				        $('#script-warning').show();
 				    }
 				},
-
-			dayClick: function (date) {
+            eventColor: '#378006',
 			   
-			    var data = date._d;
-
-			    $.ajax({
-			        url: "/Calendario/NovoCompromisso",
-			        data: {
-			            dia: data	            
-			        },
-			        dataType: "json",
-			        type: "POST",
-			        async: true,
-			        beforeSend: function () {
-			            
-
-			        },
-			        success: function (dados) {
-			            if (dados.OK) {
-			                
-			                //setTimeout(function () { window.location.href = dados.Local }, 5000);
-			                //$("#status").show();
-			            }
-			            else {
-			                //$("#status").html(dados.Mensagem);
-			                //$("#status").show();
-			            }
-			        },
-			        error: function () {
-			            //$("#status").html(dados.Mensagem);
-			            //$("#status").show()
-			        }
-			    });
-			},
+			   
 				
-			loading: function (bool) {
-			    $('#loading').toggle(bool);
-			}
-				
-		});
+            loading: function (bool) {
+                $('#loading').toggle(bool);
+            }
+			
+            
+
+        })
 		
-	});
-
+    });
 </script>
+
 
 <style>
 
@@ -122,27 +138,17 @@
 
 </div>
 
-<div id="popupEventForm" class="modal hide" style="display: none;">
+<div id="confirm" class="modal hide fade">
   <div class="modal-body">
-       <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                <p>One fine body…</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+    Do you want to continue?
+  </div>
+  <div class="modal-footer">
+    <button type="button" data-dismiss="modal" class="btn btn-primary" data-value="1">Continue</button>
+    <button type="button" data-dismiss="modal" class="btn" data-value="0">Cancel</button>
+  </div>
 </div>
 
-<form action="@Url.Action("EnviarEmailCompromisso", "Email")" method="POST">
+@*<form action="@Url.Action("EnviarEmailCompromisso", "Email")" method="POST">
     <button type="submit" class="btn btn-primary">Send Email</button>
     <a href="@Url.Action("EmailCompromissoPreview", "Email")" class="btn btn-default">Preview</a>
 </form>
@@ -151,6 +157,6 @@
 <form action="@Url.Action("EnviarEmailSistema", "Email")" method="POST">
     <button type="submit" class="btn btn-primary">Send Email</button>
     <a href="@Url.Action("EmailSistemaPreview", "Email")" class="btn btn-default">Preview</a>
-</form>
+</form>*@
 
   @Scripts.Render("~/bundles/calendariojs")

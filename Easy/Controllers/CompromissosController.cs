@@ -23,19 +23,27 @@ namespace Easy.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Add(Compromissos Compromisso)
+        public ActionResult Add(Compromissos Compromisso, string participantes)
         {
-            if (ModelState.IsValid)
+            if (Compromisso.Titulo != null && Compromisso.Descricao != null && Compromisso.DataInicio != null && Compromisso.DataTermino != null)
             {
-                string login = Compromisso.Usuario.Email;
-                DAOUsuario daoUsuario = new DAOUsuario();
-                Compromisso.Usuario = daoUsuario.RecuperaUsuarioEmail(login);
-                Compromisso.Status = "A";
-                //retirar qdo obter o id da empresa
-                DAOEmpresas daoEmpresa = new DAOEmpresas();
-                Compromisso.Empresa = daoEmpresa.RecuperarEmpresaId("1");
+                //Compromisso.Usuario = (Usuario)Session["Usuario"];
+                Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+                Compromisso.Usuario = User;
+
+                Empresas Emp = Empresas.RecuperaEmpresaCookie();
+                Compromisso.Empresa = Emp;
+
+                //Quebrar email por ponto e virgula e  add ao compromisso
+                Compromisso = Compromissos.SplitParticipantes(Compromisso,participantes);                
+                
                 DAOCompromissos daoCompromisso = new DAOCompromissos();
                 daoCompromisso.AddCompromisso(Compromisso);
+                Compromisso.IdComp = daoCompromisso.RecuperaIdUltimoCompromisso(Compromisso.Usuario.IdUser);
+                if (Compromisso.Participantes != null)
+                    for(int x = 0; x <= Compromisso.Participantes.Count;x++)
+                        daoCompromisso.AddParticipantesCompromisso(Compromisso, Compromisso.Participantes[x]);
+
                 Session["AddCompromisso"] = 1;
                 Session.Timeout = 1;
             }
@@ -88,6 +96,15 @@ namespace Easy.Controllers
 
             dCompromisso.AlterarStatusComp(Compromisso, User);
             return RedirectToAction("Index", "Compromissos");
+        }
+
+        [HttpGet]
+        public ActionResult UrlConfirma(string codigo, int id) {
+
+
+            return View();
+        
+        
         }
     }
 }

@@ -1,12 +1,15 @@
 ﻿@model Easy.Models.Compromissos
 @{
     ViewBag.Title = "Novo Compromisso";
+
+    var UsuarioRelacionado = new Easy.Models.Usuario();
 }
 <div class="bs-docs-section">
     <div class="row">
         <div class="col-lg-9">
             <div class="well bs-component">
-                 @using (Html.BeginForm("Add", "Compromissos", null, FormMethod.Post, new { @class="form-horizontal"})) {
+                @using (Html.BeginForm("Add", "Compromissos", null, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
                     <fieldset>
@@ -16,14 +19,14 @@
                             <label for="inputTitulo" class="col-lg-2 control-label">Título</label>
                             <div class="col-lg-10">
                                 @Html.TextBoxFor(model => model.Titulo, new { @Id = "inputTitulo", @class = "form-control dtIni", @type = "text", @maxlength = "30" })
-                                @Html.ValidationMessageFor(model => model.Titulo, null, new { @class = "text-danger"})
+                                @Html.ValidationMessageFor(model => model.Titulo, null, new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputDescricao" class="col-lg-2 control-label">Descrição</label>
                             <div class="col-lg-10">
                                 @Html.TextAreaFor(model => model.Descricao, new { @Id = "inputDescricao", @class = "form-control dtFim", @maxlength = "50" })
-                                @Html.ValidationMessageFor(model => model.Descricao, null, new { @class = "text-danger"})
+                                @Html.ValidationMessageFor(model => model.Descricao, null, new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -51,58 +54,30 @@
                             </div>
                         </div>
                         <div class="form-group" draggable="true">
-                            <label for="inputParticipantes" class="col-lg-2 control-label">Participantes</label>
+                            <label for="participantes" class="col-lg-2 control-label">Participantes</label>
                             <div class="col-lg-10">
-                                @Html.TextBoxFor(model => model.Usuario.Email, new { @Id = "inputParticipantes", @class = "form-control", @placeholder = "Participantes", @type = "text" })
+                               <input type="text" id="participantes" class="form-control part" name="participantes" value="" placeholder="Separar com ;"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
-                                <button onclick="btEnviar()" class="btn btn-primary" type="submit" value="Adicionar" >Adicionar</button>
+                                <button onclick="btEnviar()" class="btn btn-primary" type="submit" value="Adicionar">Adicionar</button>
                                 <button formaction="/Compromissos" class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </fieldset>
-                 }
+                }
             </div>
         </div>
     </div>
 </div>
 
-<div class="page-container">
-    <div class="container">
-        <br />
-        <button class="btn launchConfirm">Launch Confirm</button>
-    </div>
-</div>
-
-<div id="confirm" class="modal hide fade">
-  <div class="modal-body">
-    Do you want to continue?
-  </div>
-  <div class="modal-footer">
-    <button type="button" data-dismiss="modal" class="btn btn-primary" data-value="1">Continue</button>
-    <button type="button" data-dismiss="modal" class="btn" data-value="0">Cancel</button>
-  </div>
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 
 <script type="text/javascript">
-    
-    $('.btn-primary').on('click', function (e) {
-        $('#confirm')
-            .modal({ backdrop: 'static', keyboard: false })
-            .one('click', '[data-value]', function (e) {
-                if ($(this).data('value')) {
-                    // alert('confirmed');
-                } else {
-                    alert('canceled');
-                }
-            });
-    });
 
     $(".btClose1").click(function()
     {

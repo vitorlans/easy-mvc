@@ -19,17 +19,17 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnviarEmailCompromisso()
+        public ActionResult EnviarEmailCompromisso(Compromissos comp, string participantes)
         {
             var email = new EmailCompromisso
             {
-                Para = "nathanbernardes7@gmail.com",
-                Assunto = "Bem Vindo",
-                Titulo = "Vamos sair sabado",
-                Descricao = "Vamos la na praça ",
-                Quando = "segunda-feira, 27 de outubro de 2014",
+                Para = participantes,
+                Assunto = "Compromisso -"+ comp.Titulo,
+                Titulo = comp.Titulo,
+                Descricao = comp.Descricao,
+                Quando = "Início em: " + comp.DataInicio,
                 Mensagem = "Este evento é patrocinado por Easy Peoples",
-                UrlAceita = "http://facebook.com",
+                UrlAceita = "http://localhost:0000/Compromissos/UrlConfirma?codigo=",
                 UrlRejeita = "http://google.com"
             };
             try
@@ -39,28 +39,12 @@ namespace Easy.Controllers
                 return RedirectToAction("Index", "Home");
 
             }
-            catch {
+            catch
+            {
 
                 return RedirectToAction("Index", "Calendario");
 
             }
-        }
-
-        public ActionResult EmailCompromissoPreview()
-        {
-            var email = new EmailCompromisso
-            {
-                Para = "vitor_hs@live.com",
-                Assunto = "Bem Vindo",
-                Titulo = "Vamos sair sabado",
-                Descricao = "Vamos la na praça ",
-                Quando = "segunda-feira, 27 de outubro de 2014",
-                Mensagem = "Este evento é patrocinado por Easy Peoples",
-                UrlAceita = "http://facebook.com",
-                UrlRejeita = "http://google.com"
-            };
-
-            return new EmailViewResult(email);
         }
 
         [HttpPost]
@@ -93,22 +77,80 @@ namespace Easy.Controllers
             }
         }
 
-
-        public ActionResult EmailSistemaPreview()
+        [HttpPost]
+        public ActionResult EnviarEmailRecuperar(Usuario user)
         {
-            var email = new EmailSistema
+
+            var email = new EmailRecuperar
             {
-                Para = "vitor_hs@live.com",
-                Assunto = "Bem Vindo",
+                Para = user.Email,
+                Assunto = "Recuperar - Nova Senha",
                 Titulo = "Bem Vindo ao Easy Peoples",
-                Descricao = "Você foi convidado, a participar de nosso Sistema. Abaixo seus dados de Acesso Inicial:",
-                Login = "vitor_hs@live.com",
-                Senha = "google123",
+                Descricao = "Recentimente foi solicitado um pedido de alteração de senha. Abaixo seus novos dados de Acesso:",
+                Login = user.Email,
+                Senha = user.Senha,
                 Mensagem = "Você pode alterar sua senha a qualquer momento, basta acessar seu perfil"
+
             };
 
-            return new EmailViewResult(email);
+            try
+            {
+
+                email.Send();
+                return RedirectToAction("Index", "Login");
+
+            }
+            catch
+            {
+
+                return RedirectToAction("Recuperar", "Login");
+
+            }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //public ActionResult EmailSistemaPreview()
+        //{
+        //    var email = new EmailSistema
+        //    {
+        //        Para = "vitor_hs@live.com",
+        //        Assunto = "Bem Vindo",
+        //        Titulo = "Bem Vindo ao Easy Peoples",
+        //        Descricao = "Você foi convidado, a participar de nosso Sistema. Abaixo seus dados de Acesso Inicial:",
+        //        Login = "vitor_hs@live.com",
+        //        Senha = "google123",
+        //        Mensagem = "Você pode alterar sua senha a qualquer momento, basta acessar seu perfil"
+        //    };
+
+        //    return new EmailViewResult(email);
+        //}
     }
     }
 

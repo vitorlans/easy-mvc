@@ -69,9 +69,15 @@ namespace Easy.Controllers
         public ActionResult Recuperar(string email)
         {
             DAOUsuario DUser = new DAOUsuario();
-            DUser.RecuperaUsuarioEmail(email);
-
-            return View();
+            var user = DUser.RecuperaUsuarioEmail(email);
+            user.Senha = Criptografia.GerarSenha();
+            if (user != null)
+            {
+                DUser.AtualizarUsuario(user);
+                EmailController c = new EmailController();
+                c.EnviarEmailRecuperar(user);
+            }
+            return RedirectToAction("Index","Login");
         }
 
         public ActionResult Index()
