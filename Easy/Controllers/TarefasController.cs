@@ -94,12 +94,19 @@ namespace Easy.Controllers
             return RedirectToAction("Index", "Tarefas");
         }
 
-        [HttpPost]
-        public ActionResult EditTarefa(int id)
+        //GET 
+        public ActionResult EditTarefa(string id)
         {
-            DAOTarefas tar = new DAOTarefas();
+            int idEdit = 0;
 
-            return View(tar.SelecionaTarefaId(id));
+            if (id.ToString() != null && int.TryParse(id, out idEdit ))
+            {
+                DAOTarefas tar = new DAOTarefas();
+
+                return View(tar.SelecionaTarefaId(int.Parse(id)));
+            }
+
+            return Content("Tarefa inexistente");
         }
 
         [HttpPost]
@@ -119,7 +126,7 @@ namespace Easy.Controllers
             daoTaf.AtualizaTarefa(tar);
             //email.EnviarTarefaAtualizada(tar);
 
-           EmailTarefas eTare = new EmailTarefas();
+          /* EmailTarefas eTare = new EmailTarefas();
 
             eTare.Para = "gigabite.info@gmail.com";
             eTare.Assunto = "Alteração de Tarefa";
@@ -130,7 +137,7 @@ namespace Easy.Controllers
             eTare.UrlAceita = "";
             eTare.UrlRejeita = "";
             
-            eTare.Send();
+            eTare.Send();*/
 
             Session["AddTarefa"] = 2;
             return RedirectToAction("Index", "Tarefas");

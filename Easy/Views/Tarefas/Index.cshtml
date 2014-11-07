@@ -124,7 +124,7 @@
                             }
                         </td>
                         <td>
-                            <form action="~/Tarefas/EditTarefa" method="post">
+                            <form action="~/Tarefas/EditTarefa" method="get">
                                 @Html.Hidden("id", item.IdTarefa)
                                 <div class="btn-group color_button" style="margin-left: 0%">
                                     <button type="submit" class="btn btn-default"><i class="texto2 icon-material-create"></i></button>
@@ -175,6 +175,11 @@
 
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootdt")
+}
 
 <script>
 
