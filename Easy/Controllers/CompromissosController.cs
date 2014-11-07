@@ -27,25 +27,35 @@ namespace Easy.Controllers
         {
             if (Compromisso.Titulo != null && Compromisso.Descricao != null && Compromisso.DataInicio != null && Compromisso.DataTermino != null)
             {
-                //Compromisso.Usuario = (Usuario)Session["Usuario"];
-                Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
-                Compromisso.Usuario = User;
+                try
+                {
+                    //Compromisso.Usuario = (Usuario)Session["Usuario"];
+                    Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+                    Compromisso.Usuario = User;
 
-                Empresas Emp = Empresas.RecuperaEmpresaCookie();
-                Compromisso.Empresa = Emp;
+                    Empresas Emp = Empresas.RecuperaEmpresaCookie();
+                    Compromisso.Empresa = Emp;
 
-                //Quebrar email por ponto e virgula e  add ao compromisso
-                Compromisso = Compromissos.SplitParticipantes(Compromisso,participantes);                
-                
-                DAOCompromissos daoCompromisso = new DAOCompromissos();
-                daoCompromisso.AddCompromisso(Compromisso);
-                Compromisso.IdComp = daoCompromisso.RecuperaIdUltimoCompromisso(Compromisso.Usuario.IdUser);
-                if (Compromisso.Participantes != null)
-                    for(int x = 0; x <= Compromisso.Participantes.Count;x++)
-                        daoCompromisso.AddParticipantesCompromisso(Compromisso, Compromisso.Participantes[x]);
+                    //Quebrar email por ponto e virgula e  add ao compromisso
+                    Compromisso = Compromissos.SplitParticipantes(Compromisso, participantes);
 
-                Session["AddCompromisso"] = 1;
-                Session.Timeout = 1;
+                    DAOCompromissos daoCompromisso = new DAOCompromissos();
+                    daoCompromisso.AddCompromisso(Compromisso);
+                    Compromisso.IdComp = daoCompromisso.RecuperaIdUltimoCompromisso(Compromisso.Usuario.IdUser);
+                    if (Compromisso.Participantes != null)
+                        for (int x = 0; x <= Compromisso.Participantes.Count; x++)
+                            daoCompromisso.AddParticipantesCompromisso(Compromisso, Compromisso.Participantes[x]);
+
+                    EmailController EmailC = new EmailController();
+                    EmailC.EnviarEmailCompromisso(Compromisso, participantes);
+                    Session["AddCompromisso"] = 1;
+                    Session.Timeout = 1;
+                }
+                catch
+                {
+                    Session["AddCompromisso"] = 0;
+                    Session.Timeout = 1;
+                }
             }
             else
             {
@@ -53,15 +63,26 @@ namespace Easy.Controllers
                 Session.Timeout = 1;
             }
             return RedirectToAction("Index", "Compromissos");
+
         }
         [HttpGet]
-        public ActionResult EditarCompromisso(int id)
+        public ActionResult EditarCompromisso(string id)
         {
-            DAOCompromissos daoCompromisso = new DAOCompromissos();
-            Compromissos Compromisso = daoCompromisso.SelecionarCompromissoId(id);
-            Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
-            if (Compromisso.Usuario.IdUser == User.IdUser)
-                return View(Compromisso);
+            int id1;
+            if (int.TryParse(id, out id1))
+            {
+                DAOCompromissos daoCompromisso = new DAOCompromissos();
+                Compromissos Compromisso = daoCompromisso.SelecionarCompromissoId(id1);
+                Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+                Empresas Emp = Empresas.RecuperaEmpresaCookie();
+                Compromisso.Empresa = Emp;
+                string participantes;
+
+                if (Compromisso.IdComp != 0 && Compromisso.Usuario.IdUser == User.IdUser)
+                    return View(Compromisso);
+                else
+                    return RedirectToAction("Index", "Compromissos");
+            }
             else
                 return RedirectToAction("Index", "Compromissos");
         }

@@ -63,57 +63,72 @@ namespace Easy.Models
             DAOEmpresas DEmpresa = new DAOEmpresas();
             List<Compromissos> ListaComp;
             ListaComp = new List<Compromissos>();
+            Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
 
             try
             {
-                SqlCommand sqlComando = new SqlCommand("SELECT * FROM TBCOMPROMISSOS WHERE DT_FIM > getdate() order by dt_inicio", Connection.Conectar());
-                SqlDataReader dr = sqlComando.ExecuteReader();
-
-                int x = 0;
-                while (dr.Read())
+                int y;
+                for (y = 1; y <= 2; y++)
                 {
-                    ListaComp.Add(
-                        new Compromissos
-                        {
-                            IdComp = int.Parse(dr["IDCOMP"].ToString()),
-                            Titulo = dr["TITULO"].ToString(),
-                            Descricao = dr["DESCRICAO"].ToString(),
-                            DataInicio = dr["DT_INICIO"].ToString(),
-                            DataTermino = dr["DT_FIM"].ToString(),
-                            Status = (dr["STATUS"].ToString()),
-                            Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString()),
-                            Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
-                        }
-                        );
-
-                    string dtIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortDateString();
-                    string dtFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortDateString();
-                    string hrIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortTimeString();
-                    string hrFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortTimeString();
-
-
-
-                    if (dtIni == dtFim)
+                    string strSelect;
+                    if (y == 1)
                     {
-                        ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
-                        ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
-                        ListaComp[x].DataTermino = hrFim;
+                        strSelect = "SELECT * FROM TBCOMPROMISSOS CO, VCOMPUSER UC, TBUSUARIOS US WHERE CO.IDCOMP = UC.IDCOMP " +
+                            "AND UC.IDUSER = US.IDUSER AND UC.IDUSER = " + User.IdUser;
                     }
                     else
                     {
-                        ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
-                        ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
-                        ListaComp[x].DataTermino = Convert.ToDateTime(ListaComp[x].DataTermino.ToString()).ToLongDateString() + " às " + hrIni.ToString();
-                        ListaComp[x].DataTermino = Compromissos.FormataTexto(ListaComp[x].DataTermino);
+                        strSelect = "SELECT * FROM TBCOMPROMISSOS WHERE IDUSER = " + User.IdUser;
                     }
+                    SqlCommand sqlComando = new SqlCommand(strSelect, Connection.Conectar());
+                    SqlDataReader dr = sqlComando.ExecuteReader();
 
-                    x++;
+                    int x = 0;
+                    while (dr.Read())
+                    {
+                        ListaComp.Add(
+                            new Compromissos
+                            {
+                                IdComp = int.Parse(dr["IDCOMP"].ToString()),
+                                Titulo = dr["TITULO"].ToString(),
+                                Descricao = dr["DESCRICAO"].ToString(),
+                                DataInicio = dr["DT_INICIO"].ToString(),
+                                DataTermino = dr["DT_FIM"].ToString(),
+                                Status = (dr["STATUS"].ToString()),
+                                Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString()),
+                                Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
+                            }
+                            );
+
+                        string dtIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortDateString();
+                        string dtFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortDateString();
+                        string hrIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortTimeString();
+                        string hrFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortTimeString();
+
+
+
+                        if (dtIni == dtFim)
+                        {
+                            ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
+                            ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
+                            ListaComp[x].DataTermino = hrFim;
+                        }
+                        else
+                        {
+                            ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
+                            ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
+                            ListaComp[x].DataTermino = Convert.ToDateTime(ListaComp[x].DataTermino.ToString()).ToLongDateString() + " às " + hrIni.ToString();
+                            ListaComp[x].DataTermino = Compromissos.FormataTexto(ListaComp[x].DataTermino);
+                        }
+
+                        x++;
+                    }
                 }
             }
-            catch(SqlException sqlErro)
+            catch (SqlException sqlErro)
             {
             }
-            catch(Exception erro)
+            catch (Exception erro)
             {
             }
             Connection.Desconectar();
@@ -182,22 +197,25 @@ namespace Easy.Models
         }
         public void EditarCompromisso(Compromissos Compromisso, Usuario User)
         {
-            try
+            if (Compromisso.Usuario.IdUser == User.IdUser)
             {
-                SqlCommand sqlExec = new SqlCommand("UPDATE TBCOMPROMISSOS SET TITULO = @TITULO, DESCRICAO = @DESCRICAO, DT_INICIO = @DT_INICIO, DT_FIM = @DT_FIM WHERE IDCOMP = @IDCOMP", Connection.Conectar());
+                try
+                {
+                    SqlCommand sqlExec = new SqlCommand("UPDATE TBCOMPROMISSOS SET TITULO = @TITULO, DESCRICAO = @DESCRICAO, DT_INICIO = @DT_INICIO, DT_FIM = @DT_FIM WHERE IDCOMP = @IDCOMP", Connection.Conectar());
 
-                sqlExec.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
-                sqlExec.Parameters.AddWithValue("TITULO", Compromisso.Titulo);
-                sqlExec.Parameters.AddWithValue("DESCRICAO", Compromisso.Descricao);
-                sqlExec.Parameters.AddWithValue("DT_INICIO", Convert.ToDateTime(Compromisso.DataInicio));
-                sqlExec.Parameters.AddWithValue("DT_FIM", Convert.ToDateTime(Compromisso.DataTermino));
+                    sqlExec.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
+                    sqlExec.Parameters.AddWithValue("TITULO", Compromisso.Titulo);
+                    sqlExec.Parameters.AddWithValue("DESCRICAO", Compromisso.Descricao);
+                    sqlExec.Parameters.AddWithValue("DT_INICIO", Convert.ToDateTime(Compromisso.DataInicio));
+                    sqlExec.Parameters.AddWithValue("DT_FIM", Convert.ToDateTime(Compromisso.DataTermino));
 
-                sqlExec.ExecuteNonQuery();
+                    sqlExec.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                }
+                Connection.Desconectar();
             }
-            catch (SqlException sqlEx)
-            {
-            }
-            Connection.Desconectar();
 
         }
         public Compromissos SelecionarCompromissoId(int id)

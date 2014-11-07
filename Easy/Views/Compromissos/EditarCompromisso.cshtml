@@ -1,30 +1,31 @@
 ﻿@model Easy.Models.Compromissos
 @{
-    ViewBag.Title = "Editar Compromisso";
+    ViewBag.Title = "Detalhes Compromisso";
 }
 <div class="bs-docs-section">
     <div class="row">
         <div class="col-lg-9">
             <div class="well bs-component">
-                 @using (Html.BeginForm("AtualizarCompromisso", "Compromissos", null, FormMethod.Post, new { @class="form-horizontal"})) {
+                @using (Html.BeginForm("AtualizarCompromisso", "Compromissos", null, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
                     <fieldset>
-                        <legend draggable="true">Editar Compromisso</legend>
+                        <legend draggable="true">Detalhes Compromisso</legend>
                         @Html.ValidationSummary(true)
                         @Html.HiddenFor(model => model.IdComp)
                         <div class="form-group" draggable="true">
                             <label for="inputTitulo" class="col-lg-2 control-label">Título</label>
                             <div class="col-lg-10">
                                 @Html.TextBoxFor(model => model.Titulo, new { @Id = "inputTitulo", @class = "form-control", @placeholder = "O Título deve conter no máximo 30 caracteres", @type = "text" })
-                                @Html.ValidationMessageFor(model => model.Titulo, null, new { @class = "text-danger"})
+                                @Html.ValidationMessageFor(model => model.Titulo, null, new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputDescricao" class="col-lg-2 control-label">Descrição</label>
                             <div class="col-lg-10">
                                 @Html.TextAreaFor(model => model.Descricao, new { @Id = "inputDescricao", @class = "form-control", @placeholder = "A Descrição deve conter no máximo 50 caracteres" })
-                                @Html.ValidationMessageFor(model => model.Descricao, null, new { @class = "text-danger"})
+                                @Html.ValidationMessageFor(model => model.Descricao, null, new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -52,18 +53,38 @@
                             </div>
                         </div>
                         <div class="form-group" draggable="true">
-                            <label for="inputParticipantes" class="col-lg-2 control-label">Participantes</label>
+                            <label for="inputParticipantes" class="col-lg-2 control-label">Criador:</label>
                             <div class="col-lg-10">
-                                @Html.TextBoxFor(model => model.Usuario.Email, new { @Id = "inputParticipantes", @class = "form-control", @placeholder = "Participantes", @type = "text" })
+                                @Html.HiddenFor(model => model.Usuario.Email, new { @Id = "inputParticipantes", @class = "form-control", @placeholder = "Participantes", @type = "text" })
                             </div>
+                        </div>
+                        <div class="form-group" draggable="true">
+                            <label for="participantes" class="col-lg-2 control-label">Participantes</label>
+                            <div class="col-lg-10">
+                                <input type="text" id="participantes" class="form-control part" name="participantes" value="" placeholder="Digite os e-mail dos participantes separando por ;" />
+                            </div>
+                        </div>
+                        <div class="form-group" draggable="true">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Status <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="javascript:void(0)">Cancelado</a></li>
+                                        <li><a href="javascript:void(0)">Data</a></li>
+                                        <li><a href="javascript:void(0)">Título</a></li>
+                                        <li><a href="javascript:void(0)">Status</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
                                 <input class="btn btn-primary" type="submit" value="Atualizar" />
+                                <button formaction="/Compromissos" class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </fieldset>
-                 }
+                }
             </div>
         </div>
     </div>
