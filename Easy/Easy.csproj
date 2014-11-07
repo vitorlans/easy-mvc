@@ -231,8 +231,10 @@
   <ItemGroup>
     <Content Include="Content\css\bootstrap-datetimepicker.css" />
     <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\calendar.css" />
     <Content Include="Content\css\component.css" />
     <Content Include="Content\css\demo.css" />
+    <Content Include="Content\css\fonts\Existence-Light-webfont.svg" />
     <Content Include="Content\css\fonts\LICENSE.txt" />
     <Content Include="Content\css\fonts\Material-Design-Icons.svg" />
     <Content Include="Content\css\fullcalendar.css" />
@@ -324,18 +326,21 @@
     <Content Include="Content\css\fonts\Material-Design.ttf" />
     <Content Include="Content\css\fonts\Material-Design.woff" />
     <Content Include="Content\css\fonts\Roboto-Draft.woff2" />
+    <Content Include="Content\css\fonts\Existence-Light-webfont.woff" />
+    <Content Include="Content\css\fonts\Existence-Light-webfont.ttf" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.pt-BR.js" />
     <Content Include="Scripts\bootstrap-modal.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\calendariojs\bootstrapmodal.js" />
     <Content Include="Scripts\calendariojs\fullcalendar.js" />
-    <Content Include="Scripts\calendariojs\jquery-1-11-1.js" />
+    <Content Include="Scripts\calendariojs\moment.js" />
+    <Content Include="Scripts\jquery-1.11.1.js" />
     <Content Include="Scripts\calendariojs\jquery-ui.custom.js" />
     <Content Include="Scripts\calendariojs\lang-all.js" />
     <Content Include="Scripts\calendariojs\lang\pt-br.js" />
-    <Content Include="Scripts\calendariojs\moment.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />

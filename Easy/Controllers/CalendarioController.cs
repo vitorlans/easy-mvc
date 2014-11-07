@@ -7,7 +7,7 @@ using Easy.Models;
 
 namespace Easy.Controllers
 {
-    public class CalendarioController : Controller
+    public class CalendarioController : BaseController
     {
         //
         // GET: /Calendario/
@@ -20,17 +20,7 @@ namespace Easy.Controllers
 
         public JsonResult RecuperarEventos(string start, string end)
         {
-            //var ApptListForDate = DiaryEvent.LoadAppointmentSummaryInDateRange(start, end);
-            //var eventList = from e in 
-            //                select new
-            //                {
-            //                    id = e.ID,
-            //                    title = e.Title,
-            //                    start = e.StartDateString,
-            //                    end = e.EndDateString,
-            //                    someKey = e.SomeImportantKeyID,
-            //                    allDay = false
-            //                };
+
             DAOCompromissos DAOcomp = new DAOCompromissos();
             var LstComp = DAOcomp.ListarCompromissosTodos();
                          List<Calendario> Lc = new List<Calendario>();
@@ -51,18 +41,60 @@ namespace Easy.Controllers
                     new Calendario
                     {
                         id= LstComp[x].IdComp.ToString(), 
+                        allday = false,
                         title=  LstComp[x].Titulo,
+                        description = LstComp[x].Descricao,
                         start = cd,
                         end = cd2,
                         url = "http://localhost:58623/Compromissos/EditarCompromisso?id="+LstComp[x].IdComp.ToString(),
-                        allday = true,
-                        color = "blue"
+                        color = "pink"
+
                     }
                 );
                 x++;
                  
             }
-            
+
+
+            DAOTarefas DAOTaref = new DAOTarefas();
+            var LstTaref = DAOTaref.ListaTarefas();
+
+            int y = 0;
+
+            foreach (var i in LstTaref)
+            {
+                var dt = string.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(LstTaref[y].DtInicio));
+                var dt2 = string.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(LstTaref[y].DtFim));
+
+                //var hr = Convert.ToDateTime(LstTaref[y].DtInicio).ToShortTimeString();
+                //var hr2 = Convert.ToDateTime(LstTaref[y].DtFim).ToShortTimeString();
+                //if (hr == "00:00" && hr2 == "00:00")
+                //{
+                //    hr = "12:30";
+                //    hr2 = "13:30";
+                //}
+
+                //var cd = dt + "T" + hr;
+                //var cd2 = dt2 + "T" + hr2;
+
+                Lc.Add(
+                    new Calendario
+                    {
+                        id = LstTaref[y].IdTarefa.ToString(),
+                        title = LstTaref[y].Descricao,
+                        start = dt,
+                        end = dt2,
+                        url = "http://localhost:58623/Tarefas/EditTarefa?id=" + LstTaref[y].IdTarefa.ToString(),
+                        allday = true,
+                        borderColor ="#5173DA",
+                        color = "#99ABEA"
+                        
+                    }
+                );
+                y++;
+
+            }
+
             var row = Lc.ToArray();
             return Json(row, JsonRequestBehavior.AllowGet);
         }

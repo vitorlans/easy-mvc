@@ -21,21 +21,20 @@ namespace Easy
             bundles.Add(new ScriptBundle("~/bundles/easy").Include(                       
                        "~/Scripts/bootstrap.js",
                        "~/Scripts/material.js",
-                        "~/Scripts/bootstrap-datetimepicker.js",
-                        "~/Scripts/bootstrap-datetimepicker.pt-BR.js",
-                        "~/Scripts/bootstrap-modal.js",
                         "~/Scripts/ripples.js",
                         "~/Scripts/snackbar.js",
                         "~/Scripts/jquery.nouislider.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css/calendario").Include(
-                                        "~/Content/themes/base/jquery-ui-calendar.css",
-                                        "~/Content/css/fullcalendar.css"
-                                         ));
+             bundles.Add(new ScriptBundle("~/bundles/bootdt").Include(                       
+                        "~/Scripts/bootstrap-datetimepicker.js",
+                        "~/Scripts/bootstrap-datetimepicker.pt-BR.js",
+                        "~/Scripts/bootstrap-modal.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/calendariojs").Include(
                         "~/Scripts/jquery-ui-{version}.js",
                         "~/Scripts/calendariojs/jquery-ui.custom.js",
+                        "~/Scripts/calendariojs/bootstrapmodal.js",
                         "~/Scripts/calendariojs/moment.js",
                         "~/Scripts/calendariojs/fullcalendar.js",
                         "~/Scripts/calendariojs/lang-all.js",
@@ -46,6 +45,12 @@ namespace Easy
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
+
+            bundles.Add(new StyleBundle("~/Content/css/calendario").Include(
+                                    "~/Content/themes/base/jquery-ui-calendar.css",
+                                    "~/Content/css/fullcalendar.css",
+                                    "~/Content/css/calendar.css"
+                                     ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                                          "~/Content/css/bootstrap.css",
