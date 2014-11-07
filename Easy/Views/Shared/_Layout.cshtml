@@ -1,4 +1,24 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var emp = Easy.Models.Empresas.RecuperaEmpresaCookie();
+    if(emp == null){
+        ViewBag.Empresa = "###";
+    }
+    else{
+        ViewBag.Empresa = emp.NomeEmpresa;
+    }
+
+    var user = Easy.Models.Usuario.VerificaSeOUsuarioEstaLogado();
+    if (user == null)
+    {
+        ViewBag.Usuario = "###";
+    }
+    else
+    {
+        ViewBag.Usuario = user.Nome;
+    }
+    
+}
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -52,7 +72,7 @@
             <span class="icon-bar"></span>
           </button>
        <a class="navbar-brand mdi-navigation-arrow-back" href="#menu-toggle" id="menu-toggle"></a>
-       <a class="navbar-brand" href="/Home">Easy Peoples</a>
+       <a class="navbar-brand" href="/Home/Empresa">@ViewBag.Empresa</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -63,7 +83,6 @@
                             <a href="#">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
                                     </span>
                                     <div class="media-body">
                                         <h5 class="media-heading"><strong>Sebá Purcini</strong>
@@ -78,7 +97,6 @@
                             <a href="#">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
                                     </span>
                                     <div class="media-body">
                                         <h5 class="media-heading"><strong>Sebá Purcini</strong>
@@ -93,7 +111,6 @@
                             <a href="#">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="media-object" src="" alt="">
                                     </span>
                                     <div class="media-body">
                                         <h5 class="media-heading"><strong>Sebá Purcini</strong>
@@ -110,34 +127,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i>Alertas <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Sebá Purcini <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>@ViewBag.Usuario<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Perfil </a>

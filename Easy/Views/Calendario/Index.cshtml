@@ -7,41 +7,6 @@
 }
 <br /> 
 <script>
-    $('#btnPopupCancel').click(function () {
-        $('#popupEventForm').addClass('hide'),
-        $('#popupEventForm').hide()
-    });
-
-    $('#btnPopupSave').click(function () {
-
-        $('#popupEventForm').hide();
-
-        var dataRow = {
-            'Title': $('#eventTitle').val(),
-            'NewEventDate': $('#eventDate').val(),
-            'NewEventTime': $('#eventTime').val(),
-            'NewEventDuration': $('#eventDuration').val()
-        }
-
-
-        $.ajax({
-            type: 'POST',
-            url: "/Home/SaveEvent",
-            data: dataRow,
-            success: function (response) {
-                if (response == 'True') {
-                    $('#calendar').fullCalendar('refetchEvents');
-                    alert('New event saved!');
-                }
-                else {
-                    alert('Error, could not save event!');
-                }
-            }
-        })
-    });
-
-</script>
-<script>
     $(document).ready(function () {
         var m = moment();
         		
@@ -55,17 +20,11 @@
             defaultView: 'month',
             editable: false,
             timezone: 'America/Sao_Paulo',
-            allDaySlot: true,
             selectable: true,
-            selectable: true,
-            selectHelper: true,
             dayClick: function(date, start, end) {
-
-                alert('Clicked on: ' + date.format());
-                $('#confirm').removeClass('hide');
+                $('#dayclick').modal();
 
             },
-
             slotMinutes: 15,
             eventLimit: true, // allow "more" link when too many events
             events: 
@@ -76,7 +35,23 @@
 				    }
 				},
             eventColor: '#378006',
-			   
+            eventRender: function (event, element) {
+                element.attr('href', 'javascript:void(0);');
+                element.click(function () {
+                    $("#startTime").html(moment(event.start).format('MMM Do h:mm A'));
+                    $("#endTime").html(moment(event.end).format('MMM Do h:mm A'));
+                    $("#eventInfo").html(event.description);
+                    $("#eventLink").attr('href', event.url);
+                    $("#eventContent").dialog({ modal: true, title: event.title, width: 350 });
+                })
+            },
+            eventClick: function (event, jsEvent, view) {
+                $('#modalTitle').html(event.title);
+                $('#modalBody').html(event.description);
+                $('#eventUrl').attr('href', event.url);
+                $('#fullCalModal').modal();
+            },
+
 			   
 				
             loading: function (bool) {
@@ -89,7 +64,6 @@
 		
     });
 </script>
-
 
 <style>
 
@@ -127,25 +101,43 @@
 </style>
 
 <div id='script-warning'>
-		<code>php/get-events.php</code> must be running.
+		<code>Falha no carregamento do Calendario</code> Tente novamente/Reload.
 	</div>
 
-	<div id='loading'>loading...</div>
+	<div id='loading'>Carregando...</div>
 
 	<div id='calendar'></div>
 
-<div class="modal hide">
-
+<div id="fullCalModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                <h4 id="modalTitle" class="modal-title"></h4>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a id="eventUrl" target="_blank">Event Page</a>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="confirm" class="modal hide fade">
-  <div class="modal-body">
-    Do you want to continue?
-  </div>
-  <div class="modal-footer">
-    <button type="button" data-dismiss="modal" class="btn btn-primary" data-value="1">Continue</button>
-    <button type="button" data-dismiss="modal" class="btn" data-value="0">Cancel</button>
-  </div>
+<div id="dayclick" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                <h4 id="modalTitle1" class="modal-title"></h4>
+            </div>
+            <div id="modalBody1" class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a id="eventUrl1" target="_blank">Event Page</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 @*<form action="@Url.Action("EnviarEmailCompromisso", "Email")" method="POST">

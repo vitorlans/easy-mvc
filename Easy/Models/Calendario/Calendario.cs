@@ -9,14 +9,15 @@ namespace Easy.Models
     public class Calendario
     {
         public string id { get; set;}
-         public string title { get; set;}
+        public string title { get; set;}
+        public string description { get; set; }
         public string url { get; set;}
         public string start { get; set;}
         public string end { get; set; }
-        public string key { get; set; }
         public bool allday { get; set; }
         public string color { get; set; }
-
+        public string borderColor {get ;set;}
+        public string textcolor {get;set;}
 
         public static DateTime ConvertFromUnixTimestamp(double timestamp)
         {

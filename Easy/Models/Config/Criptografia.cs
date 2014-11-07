@@ -14,7 +14,7 @@ namespace Easy.Models
         private static byte[] chave = { };
         private static byte[] iv = { 12, 34, 56, 78, 90, 102, 114, 126 };
 
-        private static string chaveCriptografia = "CadeMeuMedico";
+        private static string chaveCriptografia = "VitorSebastiaoNathan";
 
         //Criptografa o Cookie
         public static string Criptografar(string valor)
