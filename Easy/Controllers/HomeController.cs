@@ -11,7 +11,7 @@ namespace Easy.Controllers
     {
         public ActionResult Index()
         {
-            Session["Usuario"] = Usuario.VerificaSeOUsuarioEstaLogado() ;
+            Session["Usuario"] = (object)Usuario.VerificaSeOUsuarioEstaLogado() ?? "Ninguem";
 
             return View();
         }
@@ -27,9 +27,11 @@ namespace Easy.Controllers
         [HttpPost]
         public ActionResult Empresa(Empresas emp)
         {
-            Autenticacao.RegistrarEmpresaCookie(emp);
-            Session["Empresa"] = emp;
-
+            if (emp.NomeEmpresa != null)
+            {
+                Autenticacao.RegistrarEmpresaCookie(emp);
+                Session["Empresa"] = emp;
+            }
             return RedirectToAction("Index","Home");
 
         }

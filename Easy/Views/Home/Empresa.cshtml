@@ -6,7 +6,10 @@
     Easy.Models.DAOEmpresas Dempresa = new Easy.Models.DAOEmpresas();
     List<SelectListItem> empresaList = new List<SelectListItem>();
     var Usuar = Easy.Models.Usuario.VerificaSeOUsuarioEstaLogado();
-    var ListaEmp = Dempresa.ListarEmpresas(Usuar.IdUser.ToString());
+    var ListaEmp = new List<Easy.Models.Empresas>();
+    if(Usuar != null){
+       ListaEmp = Dempresa.ListarEmpresas(Usuar.IdUser.ToString());
+    }
     
     for (int x = 0; x < ListaEmp.Count(); x++)
     {
