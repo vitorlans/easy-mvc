@@ -27,7 +27,7 @@
 <!--Filtros -->
 <div class="navbar navbar-inverse">
 
-    <div class="navbar-collapse collapse navbar-inverse-collapse">
+    <div class="navbar-inverse-collapse">
         @using(Html.BeginForm("Index", "Tarefas", FormMethod.Get, new { @class="navbar-form navbar-left" }))
         {
             @Html.TextBox("search", null, new { @class="form-control col-lg-8", @placeholder="Pesquisar..", @onKeyPress="return submitenter(this,event)" } )
