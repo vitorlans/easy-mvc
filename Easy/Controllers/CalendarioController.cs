@@ -42,7 +42,7 @@ namespace Easy.Controllers
                     {
                         id= LstComp[x].IdComp.ToString(), 
                         allday = false,
-                        title=  LstComp[x].Titulo,
+                        title=  "Comp: "+LstComp[x].Titulo,
                         description = LstComp[x].Descricao,
                         start = cd,
                         end = cd2,
@@ -81,7 +81,7 @@ namespace Easy.Controllers
                     new Calendario
                     {
                         id = LstTaref[y].IdTarefa.ToString(),
-                        title = LstTaref[y].Descricao,
+                        title = "Tarefa :"+LstTaref[y].Descricao,
                         start = dt,
                         end = dt2,
                         url = "http://localhost:58623/Tarefas/EditTarefa?id=" + LstTaref[y].IdTarefa.ToString(),

@@ -50,22 +50,35 @@ namespace Easy.Controllers
             
             }
 
-            return View();
         }
     
         [HttpGet]
         public ActionResult Alfa(string letra)
         {
-            letra = letra.ToUpper();
-
-            if (letra == "A" || letra == "B" || letra == "C" || letra == "D" || letra == "E" || letra == "F" || letra == "G" || letra == "H" || letra == "I" || letra == "J" || letra == "K" || letra == "L" || letra == "M" || letra == "N" || letra == "O" || letra == "P" || letra == "Q" || letra == "R" || letra == "S" || letra == "T" || letra == "U" || letra == "V" || letra == "W" || letra == "X" || letra == "Y" || letra == "Z")
+            if (letra != null)
             {
+                letra = letra.ToUpper();
 
-                Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
-                DAOUsuario DUser = new DAOUsuario();
+                if (letra == "A" || letra == "B" || letra == "C" || letra == "D" || letra == "E" || letra == "F" || letra == "G" || letra == "H" || letra == "I" || letra == "J" || letra == "K" || letra == "L" || letra == "M" || letra == "N" || letra == "O" || letra == "P" || letra == "Q" || letra == "R" || letra == "S" || letra == "T" || letra == "U" || letra == "V" || letra == "W" || letra == "X" || letra == "Y" || letra == "Z")
+                {
 
-                var lista = DUser.ListaUsuarios(Logado.IdUser.ToString(),letra);
-                return View("Index", lista);
+                    Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
+                    DAOUsuario DUser = new DAOUsuario();
+
+                    var lista = DUser.ListaUsuarios(Logado.IdUser.ToString(), letra);
+                    return View("Index", lista);
+
+                }
+                else
+                {
+
+                    Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
+                    DAOUsuario DUser = new DAOUsuario();
+
+                    var lista = DUser.ListaUsuarios(Logado.IdUser.ToString());
+                    return View("Index", lista);
+
+                }
 
             }
             else {
@@ -77,8 +90,6 @@ namespace Easy.Controllers
                 return View("Index", lista);
             
             }
-
-
         }
 
         public ActionResult Add() {
