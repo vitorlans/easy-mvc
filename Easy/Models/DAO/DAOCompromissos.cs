@@ -68,6 +68,7 @@ namespace Easy.Models
             try
             {
                 int y;
+                int x = 0;
                 for (y = 1; y <= 2; y++)
                 {
                     string strSelect;
@@ -83,7 +84,6 @@ namespace Easy.Models
                     SqlCommand sqlComando = new SqlCommand(strSelect, Connection.Conectar());
                     SqlDataReader dr = sqlComando.ExecuteReader();
 
-                    int x = 0;
                     while (dr.Read())
                     {
                         ListaComp.Add(

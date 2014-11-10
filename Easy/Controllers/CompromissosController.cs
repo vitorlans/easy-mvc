@@ -78,10 +78,10 @@ namespace Easy.Controllers
                 Compromisso.Empresa = Emp;
                 string participantes;
 
-                if (Compromisso.IdComp != 0 && Compromisso.Usuario.IdUser == User.IdUser)
+                //if (Compromisso.IdComp != 0 && Compromisso.Usuario.IdUser == User.IdUser)
                     return View(Compromisso);
-                else
-                    return RedirectToAction("Index", "Compromissos");
+                /*else
+                    return RedirectToAction("Index", "Compromissos");*/
             }
             else
                 return RedirectToAction("Index", "Compromissos");
