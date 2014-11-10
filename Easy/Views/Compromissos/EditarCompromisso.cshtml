@@ -1,6 +1,8 @@
 ﻿@model Easy.Models.Compromissos
 @{
     ViewBag.Title = "Detalhes Compromisso";
+    
+    var User = Easy.Models.Usuario.VerificaSeOUsuarioEstaLogado();
 }
 <div class="bs-docs-section">
     <div class="row">
@@ -17,14 +19,27 @@
                         <div class="form-group" draggable="true">
                             <label for="inputTitulo" class="col-lg-2 control-label">Título</label>
                             <div class="col-lg-10">
-                                @Html.TextBoxFor(model => model.Titulo, new { @Id = "inputTitulo", @class = "form-control", @placeholder = "O Título deve conter no máximo 30 caracteres", @type = "text" })
+                                @if(Model.Usuario.IdUser == User.IdUser)
+                                {
+                                    @Html.TextBoxFor(model => model.Titulo, new { @Id = "inputTitulo", @class = "form-control", @placeholder = "O Título deve conter no máximo 30 caracteres", @type = "text" })
+                                }else
+                                {
+                                    @Html.TextBoxFor(model => model.Titulo, new { @Id = "inputTitulo", @class = "form-control", @readonly=true, @placeholder = "O Título deve conter no máximo 30 caracteres", @type = "text" })
+                                }
                                 @Html.ValidationMessageFor(model => model.Titulo, null, new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputDescricao" class="col-lg-2 control-label">Descrição</label>
                             <div class="col-lg-10">
+                                 @if(Model.Usuario.IdUser == User.IdUser)
+                                {
                                 @Html.TextAreaFor(model => model.Descricao, new { @Id = "inputDescricao", @class = "form-control", @placeholder = "A Descrição deve conter no máximo 50 caracteres" })
+                                 }
+                                else
+                                {
+                                     @Html.TextAreaFor(model => model.Descricao, new { @Id = "inputDescricao", @class = "form-control", @readonly=true, @placeholder = "A Descrição deve conter no máximo 50 caracteres" })
+                                 }
                                 @Html.ValidationMessageFor(model => model.Descricao, null, new { @class = "text-danger" })
                             </div>
                         </div>
@@ -32,10 +47,18 @@
                             <label for="inputDefault" class="col-lg-2 control-label">Data de Início</label>
                             <div class="col-lg-10">
                                 <div class="controls input-append date form_datetime" data-date="" data-date-format="dd/mm/yyyy HH:ii p" data-link-field="dtp_input1">
+                                     @if(Model.Usuario.IdUser == User.IdUser)
+                                {
                                     @Html.TextBoxFor(model => model.DataInicio, new { @class = "form-control dtIni", id = "inputDefault", @readonly = true, @size = "20" })
-                                    @Html.ValidationMessageFor(model => model.DataInicio, null, new { @class = "text-danger" })
-                                    <span style="margin-left: 90%" class="add-on"><i class="icon-th icon-material-today"></i></span>&nbsp&nbsp
+                                         <span style="margin-left: 90%" class="add-on"><i class="icon-th icon-material-today"></i></span>
                                     <span class="add-on"><i class="icon-material-close btClose1"></i></span>
+                                     }
+                                    else
+                                    {
+                                         @Html.TextBoxFor(model => model.DataInicio, new { @class = "form-control", @readonly = true, @size = "20" })
+                                     }
+                                    @Html.ValidationMessageFor(model => model.DataInicio, null, new { @class = "text-danger" })
+                                    
                                 </div>
                                 <input type="hidden" id="dtp_input1" value="" /><br />
                             </div>
@@ -44,10 +67,17 @@
                             <label for="inputDefault" class="col-lg-2 control-label">Data de Término</label>
                             <div class="col-lg-10">
                                 <div class="controls input-append date form_datetime" data-date="1979-09-16T05:25:07Z" data-date-format="dd/mm/yyyy HH:ii p" data-link-field="dtp_input1">
-                                    @Html.TextBoxFor(model => model.DataTermino, new { @class = "form-control dtFim", id = "inputDefault", @readonly = true, @size = "20" })
-                                    @Html.ValidationMessageFor(model => model.DataTermino)
-                                    <span style="margin-left: 90%" class="add-on"><i class="icon-th icon-material-today"></i></span>&nbsp&nbsp
+                                     @if(Model.Usuario.IdUser == User.IdUser)
+                                {
+                                    @Html.TextBoxFor(model => model.DataTermino, new { @class = "form-control dtFim", id = "inputDefault", @readonly = true, @size = "20" })    
+                                    <span style="margin-left: 90%" class="add-on"><i class="icon-th icon-material-today"></i></span>
                                     <span class="add-on"><i class="icon-material-close btClose2"></i></span>
+                                     }
+                                    else
+                                    {
+                                         @Html.TextBoxFor(model => model.DataTermino, new {@class = "form-control", @readonly = true, @size = "20" })
+                                     }
+                                    @Html.ValidationMessageFor(model => model.DataTermino)
                                 </div>
                                 <input type="hidden" id="dtp_input2" value="" /><br />
                             </div>
@@ -55,13 +85,27 @@
                         <div class="form-group" draggable="true">
                             <label for="inputParticipantes" class="col-lg-2 control-label">Criador:</label>
                             <div class="col-lg-10">
-                                @Html.HiddenFor(model => model.Usuario.Email, new { @Id = "inputParticipantes", @class = "form-control", @placeholder = "Participantes", @type = "text" })
+                                 @if(Model.Usuario.IdUser == User.IdUser)
+                                {
+                                @Html.HiddenFor(model => model.Usuario.Nome, new { @Id = "inputParticipantes", @class = "form-control", @placeholder = "Participantes", @type = "text" })
+                                 }
+                                else
+                                {
+                                     @Html.HiddenFor(model => model.Usuario.Nome, new { @Id = "inputParticipantes", @class = "form-control", @readonly=true, @placeholder = "Participantes", @type = "text" })
+                                 }
                             </div>
                         </div>
                         <div class="form-group" draggable="true">
                             <label for="participantes" class="col-lg-2 control-label">Participantes</label>
                             <div class="col-lg-10">
+                                 @if(Model.Usuario.IdUser == User.IdUser)
+                                {
                                 <input type="text" id="participantes" class="form-control part" name="participantes" value="" placeholder="Digite os e-mail dos participantes separando por ;" />
+                                 }
+                                else
+                                {
+                                     <input type="text" id="participantes" class="form-control part" name="participantes" value="" placeholder="" readonly="true"/>
+                                 }
                             </div>
                         </div>
                         <div class="form-group" draggable="true">
@@ -79,8 +123,10 @@
                         </div>
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
+                                 @if(Model.Usuario.IdUser == User.IdUser)
+                                {
                                 <input class="btn btn-primary" type="submit" value="Atualizar" />
-                                <button formaction="/Compromissos" class="btn btn-default">Cancelar</button>
+                                 }
                             </div>
                         </div>
                     </fieldset>
@@ -92,6 +138,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+@if(Model.Usuario.IdUser == User.IdUser)
+{
+    @Scripts.Render("~/bundles/bootdt")
+}
 }
 
 <script type="text/javascript">

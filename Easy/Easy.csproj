@@ -411,6 +411,7 @@
     <Content Include="Views\Emails\EmailTarefas.cshtml" />
     <Content Include="Views\Tarefas\Comentarios.cshtml" />
     <Content Include="Views\Emails\EmailRecuperar.cshtml" />
+    <Content Include="Views\Home\Perfil.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

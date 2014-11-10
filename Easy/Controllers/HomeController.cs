@@ -35,5 +35,12 @@ namespace Easy.Controllers
             return RedirectToAction("Index","Home");
 
         }
+
+        public ActionResult Perfil()
+        {
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+
+            return View(user);
+        }
     }
 }
