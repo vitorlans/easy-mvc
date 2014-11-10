@@ -127,5 +127,19 @@ namespace Easy.Controllers
         
         
         }
+
+        [HttpPost]
+        public ActionResult AddCal(string data1)
+        {
+
+            Compromissos comp = new Compromissos();
+            var dt = Convert.ToDateTime(data1);
+            var dt1 = dt.AddHours(1);
+
+            comp.DataInicio = dt.ToString();
+            comp.DataTermino = dt1.ToString();
+
+            return View("Add", comp);
+        }
     }
 }
