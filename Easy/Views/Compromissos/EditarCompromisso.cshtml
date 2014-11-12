@@ -87,7 +87,8 @@
                             <div class="col-lg-10">
                                  @if(Model.Usuario.IdUser == User.IdUser)
                                 {
-                                @Html.HiddenFor(model => model.Usuario.Nome, new { @Id = "inputParticipantes", @class = "form-control", @placeholder = "Participantes", @type = "text" })
+                                @Html.HiddenFor(model => model.Usuario.Nome, new { @Id = "inputParticipantes", @class = "form-control", @readonly=true, @placeholder = "Participantes", @type = "text" })
+                                
                                  }
                                 else
                                 {
@@ -100,11 +101,11 @@
                             <div class="col-lg-10">
                                  @if(Model.Usuario.IdUser == User.IdUser)
                                 {
-                                <input type="text" id="participantes" class="form-control part" name="participantes" value="" placeholder="Digite os e-mail dos participantes separando por ;" />
+                                     <input type="text" id="participantes" class="form-control part" name="participantes" value="@ViewBag.participantes" class="form-control" placeholder="Digite os e-mail dos participantes separando por ;"/>
                                  }
                                 else
                                 {
-                                     <input type="text" id="participantes" class="form-control part" name="participantes" value="" placeholder="" readonly="true"/>
+                                     <input type="text" id="participantes" class="form-control part" name="participantes" value="@ViewBag.participantes" class="form-control" placeholder="Digite os e-mail dos participantes separando por ;" readonly="true"/>
                                  }
                             </div>
                         </div>
