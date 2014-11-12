@@ -8,6 +8,7 @@
     listaPrior.Add(new SelectListItem { Text = "Baixa", Value = "B", Selected=true });
     listaPrior.Add(new SelectListItem { Text = "Média", Value = "M" });
     listaPrior.Add(new SelectListItem { Text = "Alta", Value = "A" });
+
 }
 
 <div class="bs-docs-section">
@@ -20,6 +21,7 @@
                     @Html.ValidationSummary(true)
 
                     @Html.HiddenFor(model => model.IdTarefa)
+        
                     <fieldset>
                         <legend>Informações da Tarefa</legend>
 
@@ -37,8 +39,8 @@
                                 <div class="controls input-append date form_datetime" data-date="" data-date-format="dd/mm/yyyy HH:ii p" data-link-field="dtp_input1">
                                      @Html.TextBoxFor(model => model.DtInicio, new { @class="form-control dtIni", id="inputDefault", @readonly=true, @size="20" })
                                      @Html.ValidationMessageFor(model => model.DtInicio, null, new { @class="text-danger"})
-                                    <span style="margin-left:90%" class="add-on"><i class="icon-th icon-material-today"></i></span>&nbsp&nbsp
-                                    <span class="add-on"><i class="icon-material-close btClose1"></i></span>
+                                    <span style="margin-left:90%" class="add-on"><i id="dtinit" class="icon-th icon-material-today"></i></span>&nbsp&nbsp
+                                    <span class="add-on"><i class="icon-material-close btClose1" ></i></span>
                                 </div>
 				               <input type="hidden" id="dtp_input2" value="" /><br/>
                             </div>
@@ -49,8 +51,8 @@
                                 <div class="controls input-append date form_datetime" data-date="" data-date-format="dd/mm/yyyy HH:ii p" data-link-field="dtp_input1">
                                      @Html.TextBoxFor(model => model.DtFim, new { @class="form-control dtFim", id="inputDefault", @readonly=true, @size="20" })
                                      @Html.ValidationMessageFor(model => model.DtFim)
-                                    <span style="margin-left:90%" class="add-on"><i class="icon-th icon-material-today"></i></span>&nbsp&nbsp
-                                    <span class="add-on"><i class="icon-material-close btClose2"></i></span>
+                                    <span style="margin-left:90%" class="add-on"><i id="dtterm" class="icon-th icon-material-today" ></i></span>&nbsp&nbsp
+                                    <span class="add-on"><i class="icon-material-close btClose2" ></i></span>
                                 </div>
 				               <input type="hidden" id="dtp_input2" value="" /><br/>
                             </div>
@@ -58,7 +60,7 @@
                         <div class="form-group">
                             <label for="select" class="col-lg-2 control-label">Prioridade</label>
                             <div class="col-lg-10">
-                                @Html.DropDownListFor(model => model.Prioridade, listaPrior, new {@class ="form-control" })
+                                @Html.DropDownListFor(model => model.Prioridade, listaPrior, new {@class ="form-control"})
                                 @Html.ValidationMessageFor(model => model.Prioridade)
                             </div>
                        </div>
@@ -69,7 +71,7 @@
                                     {
                                         <div class="checkbox">
                                         <label>
-                                            @Html.CheckBoxFor(model => model.Status, new { @class = "bs-material"}) Tarefa Ativa
+                                            @Html.CheckBoxFor(model => model.Status, new { @class = "bs-material" }) Tarefa Ativa
                                         </label>
                                         </div>
                                     }
@@ -92,13 +94,6 @@
                             </div>
                        </div>
                   </fieldset>
-                  <div class="form-group">
-                    <hr />
-                    <label for="select" class="col-lg-2 control-label">Comentário:</label>
-                    <div class="col-lg-10 col-lg-offset-2">
-                        @Html.TextAreaFor(model => model.Descricao, new {@class="form-control", rows="3" , id="textArea", @maxlength="200" })
-                    </div>
-                </div>
                 }
             </div>
         </div>
@@ -151,5 +146,6 @@
             minView: 0,
             maxView: 1,
             forceParse: 0
-        });
+  });
+
 </script>

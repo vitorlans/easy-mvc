@@ -14,9 +14,10 @@ namespace Easy.Controllers
         //
         // GET: /Tarefas/
 
-        public ActionResult Index(string sortOrder, string currentFilter, string search, int? page)
+        public ActionResult Index(string id, string sortOrder, string currentFilter, string search, int? page)
         {
-            ViewBag.Sort = sortOrder;
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            ViewBag.Id = user.IdUser;
 
             if (search != null)
                 page = 1;
@@ -63,8 +64,20 @@ namespace Easy.Controllers
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
+
+            if (id != null && id != "")
+            {
+                DAOTarefas tar = new DAOTarefas();
+                List<Tarefas> listTar = new List<Tarefas>();
+                listTar.Add(tar.SelecionaTarefaId(int.Parse(id)));
+
+                if (tar.SelecionaTarefaId(int.Parse(id)).IdTarefa != 0)
+                    return View(listTar.ToPagedList(1, 1)); //REALIZAR ALTERACAO PARA LISTA!!!!!
+                else
+                    return View(tar.ListaTarefas().ToPagedList(pageNumber, pageSize));
+            }
 
             return View(x.ToPagedList(pageNumber, pageSize));
         }
@@ -97,13 +110,29 @@ namespace Easy.Controllers
         //GET 
         public ActionResult EditTarefa(string id)
         {
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            DAOUsuario daoUser = new DAOUsuario();
+
             int idEdit = 0;
 
             if (id.ToString() != null && int.TryParse(id, out idEdit ))
             {
                 DAOTarefas tar = new DAOTarefas();
+                Tarefas tar2 = new Tarefas();
+                tar2 = tar.SelecionaTarefaId(int.Parse(id));
 
-                return View(tar.SelecionaTarefaId(int.Parse(id)));
+                if (tar2.IdTarefa != 0)
+                {
+                    if (tar2.Criador.IdUser == user.IdUser)
+                        return View(tar.SelecionaTarefaId(int.Parse(id)));
+
+                    else
+                        return RedirectToAction("Index", "Tarefas");
+
+                }
+                else
+                    return RedirectToAction("Index", "Tarefas");
+
             }
 
             return Content("Tarefa inexistente");
@@ -112,6 +141,9 @@ namespace Easy.Controllers
         [HttpPost]
         public ActionResult AtualizaTarefa(Tarefas tar)
         {
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            DAOUsuario daoUser = new DAOUsuario();
+
             string prior = "";
 
             if (tar.Prioridade == "B")
@@ -126,36 +158,44 @@ namespace Easy.Controllers
             daoTaf.AtualizaTarefa(tar);
             //email.EnviarTarefaAtualizada(tar);
 
-          /* EmailTarefas eTare = new EmailTarefas();
+            /* EmailTarefas eTare = new EmailTarefas();
 
-            eTare.Para = "gigabite.info@gmail.com";
-            eTare.Assunto = "Alteração de Tarefa";
-            eTare.Titulo = "Alteração Realizada em Tarefa";
-            eTare.Descricao = "Algumas alterações foram realizadas em uma Tarefa destinada a você.\nVerifique abaixo as informações:";
-            eTare.Quando = Convert.ToString(DateTime.Now);
-            eTare.Mensagem = "Descrição: "+tar.Descricao+"\nData de Início: "+tar.DtInicio+"\nData de Término: "+tar.DtFim+"\nPrioridade: "+prior;
-            eTare.UrlAceita = "";
-            eTare.UrlRejeita = "";
+                eTare.Para = "gigabite.info@gmail.com";
+                eTare.Assunto = "Alteração de Tarefa";
+                eTare.Titulo = "Alteração Realizada em Tarefa";
+                eTare.Descricao = "Algumas alterações foram realizadas em uma Tarefa destinada a você.\nVerifique abaixo as informações:";
+                eTare.Quando = Convert.ToString(DateTime.Now);
+                eTare.Mensagem = "Descrição: "+tar.Descricao+"\nData de Início: "+tar.DtInicio+"\nData de Término: "+tar.DtFim+"\nPrioridade: "+prior;
+                eTare.UrlAceita = "";
+                eTare.UrlRejeita = "";
             
-            eTare.Send();*/
+                eTare.Send();*/
 
             Session["AddTarefa"] = 2;
             return RedirectToAction("Index", "Tarefas");
+
 
         }
         
         [HttpPost]
         public JsonResult BuscaRelacionado(string busca, int max)
         {
-            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
-            DAOUsuario daoUser = new DAOUsuario();
+            if (busca != "")
+            {
+                Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+                DAOUsuario daoUser = new DAOUsuario();
 
-            string id = user.IdUser.ToString();
-            var y = daoUser.ListaUsuarios(id).ToList();
+                string id = user.IdUser.ToString();
+                var y = daoUser.ListaUsuarios(id).ToList();
 
-            var final = (from search in y where search.Email.StartsWith(busca.ToUpper()) select new {EmailTeste = search.Email });
+                Connection.Desconectar();
 
-            return Json(final);
+                var final = (from search in y where search.Email.Contains(busca.ToUpper()) select new { EmailTeste = search.Email });
+
+                return Json(final);
+            }
+
+            return Json("");
         }
 
         public ActionResult Comentarios()

@@ -34,10 +34,12 @@ namespace Easy.Models
         {
             Tarefas tar = new Tarefas();
             DAOUsuario dUser = new DAOUsuario();
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            Empresas emp = Empresas.RecuperaEmpresaCookie();
 
             try
             {
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDTARE = '"+id+"' ", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDTARE = "+id+" AND IDUSER = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " AND STATUS = 'A' OR IDTARE = "+id+" AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " AND STATUS = 'A'", Connection.Conectar());
                 SqlDataReader dr = sqlExec.ExecuteReader();
                 bool status = true;
 
@@ -91,9 +93,10 @@ namespace Easy.Models
 
             try
             {
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDUSER = "+user.IdUser+" AND IDEMPR = "+emp.IdEmpresa+" AND STATUS = 'A' ORDER BY DT_FIM", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDUSER = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " AND STATUS = 'A' OR IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " AND STATUS = 'A'", Connection.Conectar());
                 SqlDataReader dr = sqlExec.ExecuteReader();
                 bool status = true;
+                string data;
 
                 while (dr.Read())
                 {
@@ -108,6 +111,11 @@ namespace Easy.Models
                         status = false;
                     }
 
+                    if (dr["Dt_Fim"].ToString() != "")
+                        data = Convert.ToDateTime(dr["Dt_Fim"].ToString()).ToShortDateString();
+                    else
+                        data = dr["Dt_Fim"].ToString();
+
                     lsTaf.Add
                     (
                         new Tarefas
@@ -115,7 +123,7 @@ namespace Easy.Models
                             IdTarefa = int.Parse(dr["IdTare"].ToString()),
                             Descricao = dr["Descricao"].ToString(),
                             DtInicio = Convert.ToDateTime(dr["Dt_Inicio"].ToString()).ToShortDateString(),
-                            DtFim = Convert.ToDateTime(dr["Dt_Fim"].ToString()).ToShortDateString(),
+                            DtFim = data,
                             Prioridade = dr["Prioridade"].ToString(),
                             Status = status,
                             Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) },
@@ -146,13 +154,19 @@ namespace Easy.Models
                     Usuario idRelac = dUser.RecuperaUsuarioEmail(tar.Relacionado.ToString().Trim());
                     Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
                     Empresas emp = Empresas.RecuperaEmpresaCookie();
+             
+                    string data = null;
+
+                    if (tar.DtFim != null)
+                        data = Convert.ToDateTime(tar.DtFim).ToString();
+                    
 
                     SqlCommand sqlExec = new SqlCommand
                     (
                         "INSERT INTO TBTAREFAS VALUES("+
                                                     "'"+tar.Descricao+"',"+
                                                     "'"+Convert.ToDateTime(tar.DtInicio)+"',"+
-                                                    "'"+Convert.ToDateTime(tar.DtFim)+"'," +
+                                                    "'"+data+"'," +
                                                     "'"+tar.Prioridade+"',"+
                                                     "'A',"+
                                                     ""+user.IdUser+","+
@@ -191,7 +205,7 @@ namespace Easy.Models
                                              +"DT_FIM = @fim, "
                                              +"PRIORIDADE = @prior, "
                                              +"STATUS = @status, "
-                                             +"IDUSERDEST = @relac, "
+                                             +"IDUSERDEST = @relac "
                                              +"WHERE IDTARE = @id", Connection.Conectar()
                     );
 
