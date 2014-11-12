@@ -23,6 +23,9 @@
             selectable: true,
             dayClick: function(date, start, end) {
                 $('#dayclick').modal();
+                $("#data").attr('value', date.format());
+                $("#data1").attr('value', date.format());
+
 
             },
             slotMinutes: 15,
@@ -132,10 +135,12 @@
                 <h4 id="modalTitle1" class="modal-title">Novo Compromiso/Tarefa?</h4>
             </div>
             <div id="modalBody1" class="modal-body">
-                <form method="post" action="Compromissos/Add">
+                <form method="post" action="Compromissos/AddCal">
+                    <input type="hidden" id="data1" name="data1" />
                     <input class="btn btn-success"type="submit" value="Compromissos" />
                 </form>
-                <form method="post" action="Tarefas/AdicionarTarefa">
+                <form method="post" action="Tarefas/AddCal">
+                     <input type="hidden" id="data" name="data" />
                      <input class="btn btn-warning" type="submit" value="Tarefas"/>
                </form>
             </div>

@@ -203,5 +203,15 @@ namespace Easy.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult AddCal(string data) {
+
+            Tarefas tare = new Tarefas();
+            var dt =Convert.ToDateTime(data);
+
+            tare.DtInicio = dt.ToString();
+            return View("AdicionarTarefa", tare);
+        }
+
     }
 }

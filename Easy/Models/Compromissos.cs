@@ -35,7 +35,7 @@ namespace Easy.Models
             char[] strSep1 = { ';' }; //Caracter usado para separar o texto
             string[] strArray = participantes.Split(strSep1);//Onde ficará o resultado da separação
 
-            for (int count = 0; count <= strArray.Length - 1; count++)//Mostra os valores existentes no array
+            for (int count = 0; count < strArray.Length - 1; count++)//Mostra os valores existentes no array
             {
                 DAOUsuario dUser = new DAOUsuario();
                 Comp.Participantes.Add(new Usuario { Email = strArray[count] });

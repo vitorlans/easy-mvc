@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,27 +10,62 @@ namespace Easy.Models
 {
     public class DAOCompromissos
     {
-        //Status será inserido como (T)erminado, (C)ancelado ou em (A)ndamento
-        public void TerminarCompromisso(Compromissos Compromisso, Usuario User)
+        //Status será inserido como (T)erminado, (C)ancelado, (P)róximo ou em (A)ndamento
+        public static string VerificaStatusComp(Compromissos Comp)
         {
-            //Somente o criador do compromisso poderá alterar o status do mesmo
-            if (Compromisso.Usuario.IdUser == User.IdUser)
+            string status = Comp.Status;
+            try
             {
-                try
+                if (Comp.Status.ToUpper() != "C")
                 {
-                    SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'T' where idcomp = @IDCOMP", Connection.Conectar());
-                    sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
-                    sqlTerminarCompromisso.ExecuteNonQuery();
+                    SqlCommand sqlAlterarStatusComp;
+                    if (DateTime.Parse(Comp.DataInicio) < DateTime.Now && DateTime.Parse(Comp.DataTermino) < DateTime.Now)
+                    {
+                        status = "T";
+                        sqlAlterarStatusComp = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'T' where idcomp = @IDCOMP", Connection.Conectar());
+                    }
+                    else
+                    {
+                        if (DateTime.Parse(Comp.DataInicio) < DateTime.Now && DateTime.Parse(Comp.DataTermino) > DateTime.Now)
+                        {
+                            status = "O";
+                            sqlAlterarStatusComp = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'O' where idcomp = @IDCOMP", Connection.Conectar());
+                        }
+                        else
+                        {
+                            status = "P";
+                            sqlAlterarStatusComp = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'P' where idcomp = @IDCOMP", Connection.Conectar());
+                        }
+                    }
+                    sqlAlterarStatusComp.Parameters.AddWithValue("IDCOMP", Comp.IdComp);
+                    sqlAlterarStatusComp.ExecuteNonQuery();
                 }
-                catch (SqlException sqlExcp)
-                {
-                }
-                catch(Exception Erro)
-                {
-                }
-                Connection.Desconectar();
             }
+            catch
+            {
+            }
+            return status;
         }
+        //public void TerminarCompromisso(Compromissos Compromisso, Usuario User)
+        //{
+        //    //Somente o criador do compromisso poderá alterar o status do mesmo
+        //    if (Compromisso.Usuario.IdUser == User.IdUser)
+        //    {
+        //        try
+        //        {
+        //            SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'T' where idcomp = @IDCOMP", Connection.Conectar());
+        //            sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
+        //            sqlTerminarCompromisso.ExecuteNonQuery();
+        //        }
+        //        catch (SqlException sqlExcp)
+        //        {
+        //        }
+        //        catch(Exception Erro)
+        //        {
+        //        }
+        //        Connection.Desconectar();
+        //    }
+        //}
         public void AlterarStatusComp(Compromissos Compromisso, Usuario User)
         {
             //Somente o criador do compromisso poderá alterar o status do mesmo
@@ -68,6 +104,7 @@ namespace Easy.Models
             try
             {
                 int y;
+                int x = 0;
                 for (y = 1; y <= 2; y++)
                 {
                     string strSelect;
@@ -83,7 +120,6 @@ namespace Easy.Models
                     SqlCommand sqlComando = new SqlCommand(strSelect, Connection.Conectar());
                     SqlDataReader dr = sqlComando.ExecuteReader();
 
-                    int x = 0;
                     while (dr.Read())
                     {
                         ListaComp.Add(
@@ -99,6 +135,8 @@ namespace Easy.Models
                                 Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString())
                             }
                             );
+
+                        ListaComp[x].Status = DAOCompromissos.VerificaStatusComp(ListaComp[x]);
 
                         string dtIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortDateString();
                         string dtFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortDateString();
@@ -221,12 +259,19 @@ namespace Easy.Models
         public Compromissos SelecionarCompromissoId(int id)
         {
             Compromissos Compromisso = new Compromissos();
+            
             DAOEmpresas DEmpresa = new DAOEmpresas();
             DAOUsuario DUser = new DAOUsuario();
+            List<Usuario> lista = new List<Usuario>();
+            lista = DAOCompromissos.RecuperaPartComp(id);
             try
             {
                 SqlCommand sqlComando = new SqlCommand("SELECT * FROM TBCOMPROMISSOS WHERE IDCOMP = "+ id,Connection.Conectar());
                 SqlDataReader dr = sqlComando.ExecuteReader();
+
+                
+                lista = DAOCompromissos.RecuperaPartComp(id);
+                
 
                 if (dr.Read())
                 {
@@ -238,10 +283,29 @@ namespace Easy.Models
                     Compromisso.Status = (dr["STATUS"].ToString());
                     Compromisso.Usuario = DUser.RecuperaUsuario(dr["IDUSER"].ToString());
                     Compromisso.Empresa = DEmpresa.RecuperarEmpresaId(dr["IDEMPR"].ToString());
+                    Compromisso.Participantes = lista;
                 }
+                
             }
             catch(SqlException e){}
             Connection.Desconectar();
+
+           /* if (lista != null && Compromisso != null)
+            {
+                int x = 0;
+                while (x < lista.Count)
+                {
+                    DAOUsuario DUserPart = new DAOUsuario();
+                    Usuario UserPart = new Usuario();
+                    int idUser = Int32.Parse(lista[x].ToString());
+                    UserPart.IdUser = idUser;
+
+                    UserPart = DUserPart.RecuperaUsuario(idUser.ToString());
+                    string participantes = UserPart.Email.ToString() + ";";
+                    x++;
+                }
+            }*/
+            
             return Compromisso;
         }
         public void AddParticipantesCompromisso(Compromissos Comp, Usuario Part)
@@ -277,6 +341,46 @@ namespace Easy.Models
             catch (SqlException e) { }
             Connection.Desconectar();
             return IdComp;
+        }
+        public static List<Usuario> RecuperaPartComp(int id)
+        {
+            DAOUsuario DUser = new DAOUsuario();
+            List<Usuario> lista = new List<Usuario>();
+            try
+            {
+                SqlCommand sqlComando = new SqlCommand("SELECT US.* FROM TBUSUARIOS US, VCOMPUSER UC WHERE US.IDUSER = UC.IDUSER AND UC.IDCOMP = " + id, Connection.Conectar());
+                SqlDataReader dr = sqlComando.ExecuteReader();
+                int x =0;
+                while (dr.Read())
+                {
+                    lista.Add
+                            (
+                            new Usuario
+                            {
+                                IdUser = int.Parse(dr["IDUSER"].ToString()),
+                                Nome = dr["NOME"].ToString(),
+                                Sobrenome = dr["SOBRENOME"].ToString(),
+                                Email = dr["EMAIL"].ToString(),
+                                Senha = dr["SENHA"].ToString(),
+                                Endereco = dr["ENDERECO"].ToString(),
+                                Bairro = dr["BAIRRO"].ToString(),
+                                Cidade = dr["CIDADE"].ToString(),
+                                Cep = dr["CEP"].ToString(),
+                                Telefone = dr["TELEFONE"].ToString(),
+                                UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
+                                LiberaConvite = dr["LIBERACONVITE"].ToString(),
+                                Status = dr["STATUS"].ToString(),
+                                DataCriacao = dr["DT_CRIACAO"].ToString(),
+                                Imagem = dr["IMAGEM"].ToString(),
+
+                            }
+                            );
+                }
+                x++;
+            }
+            catch(SqlException e){}
+            Connection.Desconectar();
+            return lista;
         }
     }
 }
