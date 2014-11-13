@@ -46,7 +46,7 @@ namespace Easy.Controllers
                         description = LstComp[x].Descricao,
                         start = cd,
                         end = cd2,
-                        url = "http://localhost:58623/Compromissos/EditarCompromisso?id="+LstComp[x].IdComp.ToString(),
+                        url = "http://localhost:58623/Compromissos?search=" + LstComp[x].Titulo.ToString(),
                         color = "pink"
 
                     }
@@ -84,7 +84,7 @@ namespace Easy.Controllers
                         title = "Tarefa :"+LstTaref[y].Descricao,
                         start = dt,
                         end = dt2,
-                        url = "http://localhost:58623/Tarefas/EditTarefa?id=" + LstTaref[y].IdTarefa.ToString(),
+                        url = "http://localhost:58623/Tarefas?search=" + LstTaref[y].Descricao.ToString(),
                         allday = true,
                         borderColor ="#5173DA",
                         color = "#99ABEA"
