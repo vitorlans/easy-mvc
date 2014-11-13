@@ -4,19 +4,34 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Easy.Models;
+using PagedList;
 
 namespace Easy.Controllers
 {
     public class CompromissosController : BaseController
     {
         //
-        // GET: /Eventos/
+        // GET: /Compromissos/
 
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string search, int? page, string currentFilter)
         {
+            if (search != null)
+                page = 1;
+
+            else
+                search = currentFilter;
+
+            ViewBag.Filtro = search;
+
             DAOCompromissos daoCompromisso = new DAOCompromissos();
             var listaComp = daoCompromisso.ListarCompromissosData();
             var x = from lista in listaComp select lista;
+            
+            if (!String.IsNullOrEmpty(search))
+            {
+                x = x.Where(lista => lista.Titulo.ToUpper().Contains(search.ToUpper())); //PODE-SE ACRESCENTAR MAIS CLAUSULAS
+            }
+
             switch (sortOrder)
             {
                 case "icresc":
@@ -47,7 +62,39 @@ namespace Easy.Controllers
                     x = x.OrderBy(lista => lista.DataInicio);
                     break;
             }
-            return View(x);
+
+            listaComp = x.ToList();
+
+            for (int y = 0; y < listaComp.Count; y++)
+            {
+
+                string dtIni = Convert.ToDateTime(listaComp[y].DataInicio).ToShortDateString();
+                string dtFim = Convert.ToDateTime(listaComp[y].DataTermino).ToShortDateString();
+                string hrIni = Convert.ToDateTime(listaComp[y].DataInicio).ToShortTimeString();
+                string hrFim = Convert.ToDateTime(listaComp[y].DataTermino).ToShortTimeString();
+
+
+
+                if (dtIni == dtFim)
+                {
+                    listaComp[y].DataInicio = Convert.ToDateTime(listaComp[y].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
+                    listaComp[y].DataInicio = Compromissos.FormataTexto(listaComp[y].DataInicio);
+                    listaComp[y].DataTermino = hrFim;
+                }
+                else
+                {
+                    listaComp[y].DataInicio = Convert.ToDateTime(listaComp[y].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
+                    listaComp[y].DataInicio = Compromissos.FormataTexto(listaComp[y].DataInicio);
+                    listaComp[y].DataTermino = Convert.ToDateTime(listaComp[y].DataTermino.ToString()).ToLongDateString() + " às " + hrIni.ToString();
+                    listaComp[y].DataTermino = Compromissos.FormataTexto(listaComp[y].DataTermino);
+                }
+            }
+           
+            x = from lista in listaComp select lista;
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+
+            return View(x.ToPagedList(pageNumber, pageSize));
         }
         public ActionResult Add()
         {
