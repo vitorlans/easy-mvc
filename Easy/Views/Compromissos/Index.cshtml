@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Easy.Models.Compromissos>
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<Easy.Models.Compromissos>
 
 @{
     ViewBag.Title = "Index";
@@ -23,25 +24,42 @@
 <br />
 <br />
 <div class="navbar navbar-inverse">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-    </div>
-    <div class="navbar-collapse collapse navbar-responsive-collapse">
+
+    <div class="navbar-inverse-collapse">
+        @using(Html.BeginForm("Index", "Compromissos", FormMethod.Get, new { @class="navbar-form navbar-left" }))
+        {
+            @Html.TextBox("search", null, new { @class="form-control col-lg-8", @placeholder="Título do Compromisso...", @onKeyPress="return submitenter(this,event)" } )
+        }
         <ul class="nav navbar-nav">
             <li class="dropdown">
-                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Tipo <b class="caret"></b></a>
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Data de Início <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="javascript:void(0)">Proximidade</a></li>
-                    <li><a href="javascript:void(0)">Data</a></li>
-                    <li><a href="javascript:void(0)">Título</a></li>
-                    <li><a href="javascript:void(0)">Status</a></li>
+                    <li>@Html.ActionLink("Crescente", "Index", new { @sortOrder = "icresc" })</li>
+                    <li>@Html.ActionLink("Descrescente", "Index", new { @sortOrder = "idesc" })</li>
                 </ul>
             </li>
         </ul>
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Data de Término <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Crescente", "Index", new { @sortOrder = "tcresc" })</li>
+                    <li>@Html.ActionLink("Descrescente", "Index", new { @sortOrder = "tdesc" })</li>
+                </ul>
+            </li>
+        </ul>
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Status <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Cancelado", "Index", new { @sortOrder = "cancelado" })</li>
+                    <li>@Html.ActionLink("Concluído", "Index", new { @sortOrder = "concluido" })</li>
+                    <li>@Html.ActionLink("Próximo", "Index", new { @sortOrder = "proximo" })</li>
+                    <li>@Html.ActionLink("Em Andamento", "Index", new { @sortOrder = "andamento" })</li>
+                </ul>
+            </li>
+        </ul>
+         <!--&nbsp &nbsp &nbsp &nbsp <input type="submit" class="btn btn-primary" value="Filtrar" /> -->
     </div>
 </div>
 @if (Model.Count() > 0)
@@ -76,6 +94,11 @@
                         <div class="ClasseYellow" title="Em Andamento">
                         </div>
                     }
+                    else
+                    {
+                        <div title="Próximo">
+                        </div>
+                    }
                 </td>
                 <td class="well-sm">
                     <div class="well">
@@ -102,21 +125,28 @@
                         <form action="~/Compromissos/EditarCompromisso" method="get">
                             @Html.Hidden("id", item.IdComp)
                             <div class="btn-group color_button" style="margin-left: 0%; float: left">
-                                <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 icon-material-content-paste"></i></button>
+                                <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 mdi-action-description"></i></button>
                             </div>
                         </form>
                     }
+                    <form action="~/Compromissos/EditarCompromisso" method="get">
+                            @Html.Hidden("id", item.IdComp)
+                            <div class="btn-group color_button" style="margin-left: 0%; float: left">
+                                <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 ClasseAlta mdi-action-speaker-notes"></i></button>
+                            </div>
+                        </form>
                 </td>
             </tr>
         }
 
-    </table>
+    </table>   
 }
 else
 {    
     <h3>Você não possui Compromissos! Por favor redefina a busca ou adicione um novo compromisso.</h3>
 }
-
+Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new {page, sortOrder = ViewBag.Sort, currentFilter = ViewBag.Filtro }))
 <script>
 
     $(document).ready(function () {
@@ -157,23 +187,26 @@ else
     .ClasseRed {
         background-color: red;
         float:left;
-        width:5px;
+        width:15px;
         height:57px;
         margin-right:0PX;
     }
     .ClasseGreen {
         background-color: green;
         float:left;
-        width:5px;
+        width:15px;
         height:57px;
         margin-right:0PX;
     }
     .ClasseYellow {
         background-color: yellow;
         float:left;
-        width:5px;
+        width:15px;
         height:57px;
         margin-right:0PX;
+    }
+    .ClasseAlta {
+        font-size:30px;
     }
 </style>
 @{
