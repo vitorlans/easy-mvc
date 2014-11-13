@@ -86,7 +86,7 @@ namespace Easy.Controllers
                 Para = user.Email,
                 Assunto = "Recuperar - Nova Senha",
                 Titulo = "Bem Vindo ao Easy Peoples",
-                Descricao = "Recentimente foi solicitado um pedido de alteração de senha. Abaixo seus novos dados de Acesso:",
+                Descricao = "Recentemente foi solicitado um pedido de alteração de senha. Abaixo seus novos dados de Acesso:",
                 Login = user.Email,
                 Senha = user.Senha,
                 Mensagem = "Você pode alterar sua senha a qualquer momento, basta acessar seu perfil"

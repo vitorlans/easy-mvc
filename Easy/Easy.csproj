@@ -245,7 +245,12 @@
     <Content Include="Content\css\ripples.css" />
     <Content Include="Content\css\sb-admin.css" />
     <Content Include="Content\css\snackbar.css" />
-    <Content Include="Content\img\contato.png" />
+    <Content Include="Content\img\contato1.png" />
+    <Content Include="Content\img\contato2.png" />
+    <Content Include="Content\img\contato3.png" />
+    <Content Include="Content\img\contato4.png" />
+    <Content Include="Content\img\contato5.png" />
+    <Content Include="Content\img\contato0.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
@@ -391,7 +396,6 @@
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Contatos\Add.cshtml" />
     <Content Include="Views\Contatos\Detalhes.cshtml" />
     <Content Include="Views\Tarefas\Index.cshtml" />
     <Content Include="Views\Tarefas\AdicionarTarefa.cshtml" />
@@ -412,6 +416,7 @@
     <Content Include="Views\Tarefas\Comentarios.cshtml" />
     <Content Include="Views\Emails\EmailRecuperar.cshtml" />
     <Content Include="Views\Home\Perfil.cshtml" />
+    <Content Include="Views\Contatos\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

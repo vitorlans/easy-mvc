@@ -10,6 +10,11 @@
                     <form class="form-horizontal" style="" method="post">
                       <fieldset>
                         <legend>Detalhes Contato</legend>
+                        <div >
+                         <img style="width:27%;height:27%" src="@Model.Imagem" alt="icon">
+                        </div>
+                          <br />
+                          <hr />
                         <div class="form-group">
                           <label for="inputNome" class="col-lg-2 control-label">Nome</label>
                           <div class="col-lg-10">
@@ -17,30 +22,12 @@
                            </div>
                         </div>
                           <div class="form-group">
-                          <label for="inputSobrenome" class="col-lg-2 control-label">Sobrenome</label>
-                          <div class="col-lg-10">
-                          @Html.TextBoxFor(model => model.Sobrenome, new { @id="inputSobrenome", @maxlength = "50", @placeholder="Sobrenome", @class = "form-control" })
-                           </div>
-                        </div>
-                          <div class="form-group">
                           <label for="inputEmail" class="col-lg-2 control-label">Email</label>
                           <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Email, new { @id="inputEmail", @placeholder="Email", @class = "form-control", @type="email" })
-                              <div class="checkbox">
-                                 @if ( Html.ViewData.Model.UsuarioSistema == "S")
-                                  { ViewBag.V1 = "checked";  }
-                                else 
-                                  { ViewBag.V1 = ""; }
-                                  @if ( Html.ViewData.Model.LiberaConvite == "S")
-                                  { ViewBag.V2 = "checked";  }
-                                else 
-                                  { ViewBag.V2 = ""; }
-                              <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist" @ViewBag.V1>Usuario do Sistema</label>
-                                  <div class="checkbox">
-                              <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv" @ViewBag.V2>Permissão - Envio de Convite</label>
-                            </div>
-                            </div>
-                            </div>
+                             @Html.TextBoxFor(model => model.Email, new { @id="inputEmail", @placeholder="Email", @class = "form-control", @type="email", @readonly=true})
+                             @Html.HiddenFor(model => model.Imagem)
+                             @Html.HiddenFor(model => model.IdUser)
+                           </div>
                           </div>    
         
                         <br />
@@ -81,20 +68,38 @@
                              @Html.TextBoxFor(model => model.Telefone, new { @id="inputTel", @class = "form-control", @type="tel" })
                           </div>
                         </div>
-
-          
-                                  
-
                        
                         <div class="form-group">
                           <div class="col-lg-10 col-lg-offset-2">
-                            <button type="submit" class="btn btn-primary">Atualizar Dados</button>
-                            <button type="submit" class="btn btn-warning">Apagar Contato</button>
-                          </div>
+                            <input type="submit" value="Atualizar" class="btn btn-primary"/>
+                        </div>
                         </div>
                       </fieldset>
                     </form>
                   </div>
+                    <form class="well form-horizontal" style="" method="post" action="/Contatos/Apagar">
+                      <fieldset>
+                        <legend>Apagar Contato?</legend>
+                             @Html.HiddenFor(model => model.IdUser)
+                               <input type="submit" value="Apagar" class="btn btn-warning"/>                        
+                          </fieldset>
+                      </form>
                 </div>
+                  
               </div>
  </div> 
+
+@*  <div class="checkbox">
+    @if ( Html.ViewData.Model.UsuarioSistema == "S")
+       { ViewBag.V1 = "checked";  }
+   else 
+    { ViewBag.V1 = ""; }
+    @if ( Html.ViewData.Model.LiberaConvite == "S")
+   { ViewBag.V2 = "checked";  }
+        else 
+         { ViewBag.V2 = ""; }
+                              <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist" @ViewBag.V1>Usuario do Sistema</label>
+                                  <div class="checkbox">
+                              <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv" @ViewBag.V2>Permissão - Envio de Convite</label>
+                            </div>
+                            </div>*@

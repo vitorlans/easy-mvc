@@ -23,8 +23,8 @@ namespace Easy.Controllers
 
                 lista = DUser.ListaUsuarios(Logado.IdUser.ToString());
             }
-
-            return View(lista);
+            var x = lista.OrderBy(m => m.Nome);
+            return View(x);
         }
 
         [HttpPost]
@@ -137,10 +137,31 @@ namespace Easy.Controllers
         {
             DAOUsuario DUser = new DAOUsuario();
 
-            var user = DUser.RecuperaUsuario(id);
+            var user = DUser.RecuperaContato(id);
             
 
             return View(user);
+
+        }
+
+        [HttpPost]
+        public ActionResult Detalhes(Usuario user) {
+
+            DAOUsuario DUser = new DAOUsuario();
+
+            DUser.AtualizarContato(user);
+            return View(user);
+        
+        }
+
+        [HttpPost]
+        public ActionResult Apagar(Usuario user)
+        {
+
+            DAOUsuario DUser = new DAOUsuario();
+
+            DUser.ApagarVinculo(user, Usuario.VerificaSeOUsuarioEstaLogado().IdUser.ToString());
+            return RedirectToAction("Index", "Contatos");
 
         }
     }

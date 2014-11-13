@@ -18,7 +18,7 @@ namespace Easy.Filters
 
             if (Controller != "Home" || Action != "Login")
             {
-                if (Usuario.VerificaSeOUsuarioEstaLogado() == null)
+                if (Usuario.VerificaSeOUsuarioEstaLogado() == null && Empresas.RecuperaEmpresaCookie() == null)
                 {
                     FiltroDeContexto.RequestContext.HttpContext.Response.Redirect("/Login?Url=" + FiltroDeContexto.HttpContext.Request.Url.LocalPath);
                 }

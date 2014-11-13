@@ -42,5 +42,23 @@ namespace Easy.Controllers
 
             return View(user);
         }
+
+        [HttpPost]
+        public ActionResult Perfil(Usuario user)
+        {
+
+            DAOUsuario duser = new DAOUsuario();
+            duser.AtualizarUsuario(user);
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult AlterarSenha(Usuario user)
+        {
+
+            DAOUsuario duser = new DAOUsuario();
+            duser.AlterarSenha(user);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

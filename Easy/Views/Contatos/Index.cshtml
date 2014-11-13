@@ -4,10 +4,9 @@
 }
 <br />
 <div class="row">
-      <div>
-             <h1>Contatos <a  style="margin-left: 68%" href="/Contatos/Add" class="btn btn-primary btn-fab btn-raised texto2"><i class="icon-material-add"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" class="btn btn-primary btn-fab btn-raised texto2"><i class="icon-material-add"></i></a></h1>
-      </div>
-</div>
+<h2>Contatos</h2>
+<a href="~/Contatos/Add" style="margin-left: 90%" class="btn btn-fab btn-primary btn-raised icon-material-add"></a>
+<br />
 <br />
 <div>
    <form action="/Contatos" class=" form-horizontal" method="post">
@@ -66,7 +65,7 @@
     @foreach (var item in Model) {
     <div class="list-group-item ">
         <div class="row-picture">
-            <img class="circle" src="~/Content/img/contato.png" alt="icon">
+            <img class="circle" src="@item.Imagem" alt="icon">
         </div>
         <div class="row-content">
             <h3> @Html.ActionLink(item.Nome, "Detalhes", new {  id=item.IdUser})  </h3>
