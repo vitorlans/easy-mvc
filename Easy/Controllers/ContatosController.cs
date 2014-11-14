@@ -129,7 +129,7 @@ namespace Easy.Controllers
             Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
 
             DUser.CriarUsuario(user, Logado.IdUser.ToString());
-
+     
             return RedirectToAction("Index");
 
         }

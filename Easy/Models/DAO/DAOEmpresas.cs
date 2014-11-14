@@ -35,7 +35,7 @@ namespace Easy.Models
             return Empresa;
         }
 
-        public List<Empresas> ListarEmpresas(string email)
+        public List<Empresas> ListarEmpresas(string login)
         {
 
             List<Empresas> lista = new List<Empresas>();
@@ -43,8 +43,8 @@ namespace Easy.Models
             try
             {
 
-                SqlCommand sqlExec = new SqlCommand("SELECT TBEMP.*, TBUSU.EMAIL FROM VUSUAEMPR VEMP	INNER JOIN TBEMPRESAS TBEMP ON TBEMP.IDEMPR = VEMP.IDEMPR INNER JOIN TBUSUARIOS TBUSU ON TBUSU.IDUSER = VEMP.IDUSER WHERE TBEMP.STATUS = 'A' and TBUSU.EMAIL = @email", Connection.Conectar());
-                    sqlExec.Parameters.AddWithValue("email", email);
+                SqlCommand sqlExec = new SqlCommand("SELECT TBEMP.*, TBUSU.EMAIL FROM VUSUAEMPR VEMP	INNER JOIN TBEMPRESAS TBEMP ON TBEMP.IDEMPR = VEMP.IDEMPR INNER JOIN TBUSUARIOS TBUSU ON TBUSU.IDUSER = VEMP.IDUSER WHERE TBEMP.STATUS = 'A' and TBUSU.IDUSER = @iduser", Connection.Conectar());
+                    sqlExec.Parameters.AddWithValue("iduser", login);
                     SqlDataReader dr = sqlExec.ExecuteReader();
 
                     while (dr.Read())

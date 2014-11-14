@@ -22,10 +22,8 @@
                           <div class="col-lg-10">
                              @Html.TextBoxFor(model => model.Email, new { @id="inputEmail", @placeholder="Email", @class = "form-control", @type="email" })
                               <div class="checkbox">
-                                  @if(Easy.Models.Usuario.VerificaSeOUsuarioEstaLogado().UsuarioSistema == "S"){
-                              <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist">Usuario do Sistema</label>
-                                  }
                                   @if(Easy.Models.Usuario.VerificaSeOUsuarioEstaLogado().LiberaConvite == "S"){
+                              <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist">Usuario do Sistema</label>
                                <div class="checkbox">
                                     <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv">Permissão - Envio de Convite</label>
                                 </div>

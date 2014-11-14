@@ -48,16 +48,16 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnviarEmailSistema()
+        public ActionResult EnviarEmailSistema(Usuario user)
         {
             var email = new EmailSistema
             {
-                Para = "vitor_hs@live.com",
+                Para = user.Email,
                 Assunto = "Bem Vindo",
                 Titulo = "Bem Vindo ao Easy Peoples",
                 Descricao = "Você foi convidado, a participar de nosso Sistema. Abaixo seus dados de Acesso Inicial:",
-                Login = "vitor_hs@live.com",
-                Senha = "google123",
+                Login = user.Email,
+                Senha = user.Senha,
                 Mensagem = "Você pode alterar sua senha a qualquer momento, basta acessar seu perfil"
 
             };
@@ -72,7 +72,7 @@ namespace Easy.Controllers
             catch
             {
 
-                return RedirectToAction("Index", "Calendario");
+                return RedirectToAction("Index", "Home");
 
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
+using Easy.Controllers;
 
 namespace Easy.Models
 {
@@ -298,6 +299,8 @@ namespace Easy.Models
                     Demp.VinculaEmpresa(user);
                     VinculaUsuario(login, user);
 
+                    EmailController ec = new EmailController();
+                    ec.EnviarEmailSistema(user);
                 }
                 else
                 {
@@ -305,10 +308,11 @@ namespace Easy.Models
                     user.IdUser = rec.IdUser;
                     VinculaUsuario(login, user);
                 }
-                Connection.Desconectar();
 
             }
-            catch (SqlException) { }
+            catch (SqlException) {
+
+            }
 
         }
 
