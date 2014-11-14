@@ -11,10 +11,11 @@
                       <fieldset>
                         <legend>Perfil</legend>
                          @Html.ValidationSummary(true)
-                        <div class="row-picture">
-                         <img style="width:27%;height:27%" src="@Model.Imagem" alt="icon">
+                         <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                            <img style="width:30%;height:30%" src="@Model.Imagem" alt="icon">
                         </div>
-                          <br />
+                            </div>
                           <hr />
                         <div class="form-group">
                           <label for="inputNome" class="col-lg-2 control-label">Nome</label>
@@ -27,7 +28,7 @@
                         <div class="form-group">
                           <label for="inputNome" class="col-lg-2 control-label">Sobrenome</label>
                           <div class="col-lg-10">
-                          @Html.TextBoxFor(model => model.Sobrenome, new { @id="inputNome", @maxlength = "50", @placeholder="Sobrenome", @class = "form-control" })
+                          @Html.TextBoxFor(model => model.Sobrenome, new { @id="inputSobrenome", @maxlength = "50", @placeholder="Sobrenome", @class = "form-control" })
                            </div>
                         </div>
                         <div class="form-group">
@@ -86,26 +87,29 @@
                     
                   </div>
                       <br />
-                    <form class="well form-horizontal" style="" method="post" action="/Home/AlterarSenha">
+                    <div >
+    <div id="status" class="alert alert-info"></div>
+</div>
+                    <form class="well form-horizontal" style="" method="post" action="javascript:function()">
                       <fieldset>
                         <legend>Alterar Senha</legend>
                              <div class="form-group">
                           <label for="inputNome" class="col-lg-2 control-label">Senha</label>
                           <div class="col-lg-10">
-                          @Html.PasswordFor(model => model.Senha, new { @id="inputNome", @maxlength = "50", @placeholder="Password", @class = "form-control" })
-                          @Html.HiddenFor(model => model.IdUser) 
+                          @Html.PasswordFor(model => model.Senha, new { @id="inputSenha", @maxlength = "50", @placeholder="Password", @class = "form-control" })
+                              <input type="hidden" id="iduser" name="iduser" value="@Model.IdUser" />
                           </div>
                         </div>
                         <div class="form-group">
                           <label for="inputNome" class="col-lg-2 control-label">Confirmar Senha</label>
                           <div class="col-lg-10">
-                          @Html.PasswordFor(model => model.Senha1, new { @id="inputNome", @maxlength = "50", @placeholder="Password", @class = "form-control" })
+                          @Html.PasswordFor(model => model.Senha1, new { @id="inputSenha1", @maxlength = "50", @placeholder="Password", @class = "form-control" })
                            </div>
                         </div>
 
                            <div class="form-group">
                           <div class="col-lg-10 col-lg-offset-2">
-                            <button type="submit" class="btn btn-primary">Alterar</button>
+                            <input type="submit" id="botao-salvar" value="Alterar" class="btn btn-primary">
                           </div>
                         </div>
                           </fieldset>
@@ -120,7 +124,52 @@
 }
 <script src="~/Scripts/jquery-1.8.2.js" type="text/javascript"></script>
 
-<script type="text/javascript">
+<script>
+
+    $(document).ready(function () {
+        $("#status").hide();
+        $("#botao-salvar").click(function () {
+
+            $.ajax({
+                url: "/Home/AlterarSenha",
+                data: {
+                    id: $("#iduser").val(),
+                    senha: $("#inputSenha").val(),
+                    senha1: $("#inputSenha1").val(),
+                },
+                dataType: "json",
+                type: "GET",
+                async: true,
+                beforeSend: function () {
+                    $("#status").html("Validando. Só um instante...");
+                    $("#status").show();
+                },
+                success: function (dados) {
+                    if (dados.OK) {
+                        $("#status").html(dados.Mensagem);
+                        $("#status").removeClass("alert-info").addClass("alert-success");
+
+                        $("#status").show();
+                        setTimeout(function () { $("#status").hide() }, 2000);
+
+                    }
+                    else {
+                        $("#status").html(dados.Mensagem);
+                        $("#status").show();
+                    }
+                },
+                error: function () {
+                    $("#status").html(dados.Mensagem);
+                    $("#status").show()
+                }
+            });
+        });
+    });
+</script>
+
+
+
+@*<script type="text/javascript">
 
     $(document).ready(function () {
         $("#divFileUpload").mouseenter(function () {
@@ -158,4 +207,4 @@
     }
 
 
-</script>
+</script>*@

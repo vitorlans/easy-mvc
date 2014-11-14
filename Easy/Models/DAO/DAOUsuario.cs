@@ -316,7 +316,7 @@ namespace Easy.Models
 
         }
 
-        public void AlterarSenha(Usuario user)
+        public void AlterarSenha(string id, string senha)
         {
 
             try
@@ -325,8 +325,8 @@ namespace Easy.Models
                 string strInserir = "update TBUSUARIOS  set SENHA = @senha where IDUSER = @iduser";
 
                 SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
-                updateUsuario.Parameters.AddWithValue("senha", (object)user.Sobrenome ?? DBNull.Value);
-                updateUsuario.Parameters.AddWithValue("iduser", (object)user.IdUser ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("senha", senha);
+                updateUsuario.Parameters.AddWithValue("iduser", id);
 
                 
                 updateUsuario.ExecuteNonQuery();

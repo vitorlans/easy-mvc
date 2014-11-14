@@ -92,7 +92,7 @@
                         $("#status").html(dados.Mensagem);
                         $("#status").removeClass("alert-info").addClass("alert-success");
 
-                        setTimeout(function () { window.location.href = "/Home/Empresa" }, 1000);
+                        setTimeout(function () { window.location.href = dados.Local }, 1000);
                         $("#status").show();
                     }
                     else {

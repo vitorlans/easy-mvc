@@ -16,26 +16,6 @@ namespace Easy.Controllers
             return View();
         }
 
-        public ActionResult Empresa() {
-
-
-
-            return View();
-        
-        }
-
-        [HttpPost]
-        public ActionResult Empresa(Empresas emp)
-        {
-            if (emp.NomeEmpresa != null)
-            {
-                Autenticacao.RegistrarEmpresaCookie(emp);
-                Session["Empresa"] = emp;
-            }
-            return RedirectToAction("Index","Home");
-
-        }
-
         public ActionResult Perfil()
         {
             Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
@@ -52,13 +32,37 @@ namespace Easy.Controllers
             return View(user);
         }
 
-        [HttpPost]
-        public ActionResult AlterarSenha(Usuario user)
+        [HttpGet]
+        public JsonResult AlterarSenha(string id, string senha, string senha1)
         {
 
-            DAOUsuario duser = new DAOUsuario();
-            duser.AlterarSenha(user);
-            return RedirectToAction("Index", "Home");
+            if (senha == senha1 && senha.Length >= 7)
+            {
+                
+                
+                    DAOUsuario duser = new DAOUsuario();
+                    duser.AlterarSenha(id, senha);
+
+                    return Json(new
+                    {
+                        OK = true,
+                        Mensagem = "Senha Alterada com Sucesso...",
+                    },
+                    JsonRequestBehavior.AllowGet);
+                
+                
+            }
+            else
+            {
+                return Json(new
+                {
+                    OK = false,
+                    Mensagem = "Senha não coincidem ou Menor que 7 Caracteres. Tente Novamente."
+                },
+                JsonRequestBehavior.AllowGet);
+            }
+        }
+        
         }
     }
-}
+

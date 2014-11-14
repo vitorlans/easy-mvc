@@ -199,6 +199,7 @@
     <Compile Include="Controllers\CompromissosController.cs" />
     <Compile Include="Controllers\ContatosController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\EmpresaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\TarefasController.cs" />
@@ -411,7 +412,7 @@
     <Content Include="Views\Emails\EmailSistema.cshtml" />
     <Content Include="Views\Calendario\Index.cshtml" />
     <Content Include="Views\Compromissos\EditarCompromisso.cshtml" />
-    <Content Include="Views\Home\Empresa.cshtml" />
+    <Content Include="Views\Empresa\Index.cshtml" />
     <Content Include="Views\Emails\EmailTarefas.cshtml" />
     <Content Include="Views\Tarefas\Comentarios.cshtml" />
     <Content Include="Views\Emails\EmailRecuperar.cshtml" />

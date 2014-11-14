@@ -133,6 +133,7 @@ namespace Easy.Controllers
             return RedirectToAction("Index");
 
         }
+        [HttpPost]
         public ActionResult Detalhes(string id)
         {
             DAOUsuario DUser = new DAOUsuario();
@@ -145,12 +146,12 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-        public ActionResult Detalhes(Usuario user) {
+        public ActionResult AtualizarDetalhes(Usuario user) {
 
             DAOUsuario DUser = new DAOUsuario();
 
             DUser.AtualizarContato(user);
-            return View(user);
+            return View("Detalhes",user);
         
         }
 
