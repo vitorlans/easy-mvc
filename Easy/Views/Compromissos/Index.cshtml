@@ -78,26 +78,22 @@
                 </td>
             </tr>
             <tr class="">
-                <td >
+                <td class="Status">
                     @if (item.Status == "C")
                     {
-                        <div class="ClasseRed" title="Cancelado">
-                        </div>
+                        <i class=" ClasseRed mdi-action-alarm" title="Cancelado"></i>
                     }
                     else if (item.Status == "T")
                     {
-                        <div class="ClasseGreen" title="Concluído">
-                        </div>
+                          <i class=" ClasseGreen mdi-action-alarm" title="Terminado"></i>
                     }
                     else if (item.Status == "A")
                     {
-                        <div class="ClasseYellow" title="Em Andamento">
-                        </div>
+                        <i class=" ClasseYellow mdi-action-alarm" title="Em Andamento"></i>
                     }
                     else
                     {
-                        <div title="Próximo">
-                        </div>
+                        <i class=" ClasseDefault mdi-action-alarm" title="Próximo"></i>
                     }
                 </td>
                 <td class="well-sm">
@@ -107,34 +103,34 @@
 
                         </div>
                         <div style="height: 6px"></div>
-                        @Html.DisplayFor(modelItem => item.Descricao)
+                        @Html.DisplayFor(modelItem => item.Descricao)&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                     </div>
                 </td>
                 <td>
                     @if (item.Usuario.IdUser == User.IdUser)
                     {
-                        <form action="~/Compromissos/EditarCompromisso" method="get">
+                        <form action="~/Compromissos/EditarCompromisso" method="post">
                             @Html.Hidden("id", item.IdComp)
                             <div class="btn-group color_button" style="margin-left: 0%; float: left">
-                                <button type="submit" class="btn btn-default" title="Editar"><i class="texto2 icon-material-create"></i></button>
+                                <button type="submit" class="btn btn-default" title="Editar"><i class="texto2 ClasseAlta icon-material-create"></i></button>
                             </div>
                         </form>
                     }
                     else
                     {
-                        <form action="~/Compromissos/EditarCompromisso" method="get">
+                        <form action="~/Compromissos/EditarCompromisso" method="post">
                             @Html.Hidden("id", item.IdComp)
                             <div class="btn-group color_button" style="margin-left: 0%; float: left">
-                                <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 mdi-action-description"></i></button>
+                                <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 ClasseAlta mdi-action-description"></i></button>
                             </div>
                         </form>
                     }
-                    <form action="~/Compromissos/EditarCompromisso" method="get">
+                    <form action="~/Compromissos/EditarCompromisso" method="post">
                             @Html.Hidden("id", item.IdComp)
                             <div class="btn-group color_button" style="margin-left: 0%; float: left">
-                                <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 ClasseAlta mdi-action-speaker-notes"></i></button>
+                                <button type="submit" class="btn btn-default" title="Notas"><i class="texto2 ClasseAlta mdi-action-speaker-notes"></i></button>
                             </div>
-                        </form>
+                    </form>
                 </td>
             </tr>
         }
@@ -146,7 +142,7 @@ else
     <h3>Você não possui Compromissos! Por favor redefina a busca ou adicione um novo compromisso.</h3>
 }
 Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
-            @Html.PagedListPager(Model, page => Url.Action("Index", new {page, sortOrder = ViewBag.Sort, currentFilter = ViewBag.Filtro }))
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.Sort, currentFilter = ViewBag.Filtro }))
 <script>
 
     $(document).ready(function () {
@@ -184,29 +180,32 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
 
 </script>
 <style>
+    .Status {
+        width:10%;
+        height:60px;
+    }
     .ClasseRed {
-        background-color: red;
-        float:left;
-        width:15px;
-        height:57px;
-        margin-right:0PX;
+        margin:auto;
+        color:red;
+        font-size:25px;
     }
     .ClasseGreen {
-        background-color: green;
-        float:left;
-        width:15px;
-        height:57px;
-        margin-right:0PX;
+        margin:auto;
+        color:green;
+        font-size:25px;
     }
     .ClasseYellow {
-        background-color: yellow;
-        float:left;
-        width:15px;
-        height:57px;
-        margin-right:0PX;
+        margin:auto;
+        color:yellow;
+        font-size:25px;
     }
     .ClasseAlta {
-        font-size:30px;
+        font-size:15px;
+    }
+    .ClasseDefault {
+        margin:auto;
+        color:blue;
+        font-size:25px;
     }
 </style>
 @{

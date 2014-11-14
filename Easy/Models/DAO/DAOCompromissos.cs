@@ -385,5 +385,10 @@ namespace Easy.Models
             Connection.Desconectar();
             return lista;
         }
+        public static void RemoverVincPart(int id)
+        {
+            //deletar vinculos da base
+        }
+
     }
 }

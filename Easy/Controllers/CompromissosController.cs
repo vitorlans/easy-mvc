@@ -147,7 +147,7 @@ namespace Easy.Controllers
             return RedirectToAction("Index", "Compromissos");
 
         }
-        [HttpGet]
+        [HttpPost]
         public ActionResult EditarCompromisso(string id)
         {
             int id1;
@@ -173,6 +173,11 @@ namespace Easy.Controllers
             }
             else
                 return RedirectToAction("Index", "Compromissos");
+        }
+        [HttpGet]
+        public ActionResult EditarCompromisso()
+        {
+            return RedirectToAction("Index", "Compromissos");
         }
         [HttpPost]
         public ActionResult AtualizarCompromisso(Compromissos CompromissoNovo, string participantes, string id)
