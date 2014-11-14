@@ -299,8 +299,12 @@ namespace Easy.Models
                     Demp.VinculaEmpresa(user);
                     VinculaUsuario(login, user);
 
-                    EmailController ec = new EmailController();
-                    ec.EnviarEmailSistema(user);
+                    if (user.UsuarioSistema == "S")
+                    {
+                        EmailController ec = new EmailController();
+                        ec.EnviarEmailSistema(user);
+                    }
+
                 }
                 else
                 {
@@ -431,8 +435,6 @@ namespace Easy.Models
 
         private bool VerificaExistencia(Usuario user)
         {
-            var emp = Empresas.RecuperaEmpresaCookie();
-            string id;
             SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL = @email", Connection.Conectar());
             sqlExec.Parameters.AddWithValue("email", user.Email);
             SqlDataReader dr = sqlExec.ExecuteReader();
@@ -454,7 +456,7 @@ namespace Easy.Models
             try
             {
 
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=@email and SENHA=@senha and USUARIOSISTEMA='S'", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=@email and SENHA=@senha and USUARIOSISTEMA='S' and (STATUS = 'A'  or STATUS = 'S') ", Connection.Conectar());
                 sqlExec.Parameters.AddWithValue("email", (object)email ?? DBNull.Value);
                 sqlExec.Parameters.AddWithValue("senha", (object)senha ?? DBNull.Value);
 
@@ -482,6 +484,36 @@ namespace Easy.Models
         }
 
 
+        public bool AutenticaEmail(string email)
+        {
+
+            try
+            {
+
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=@email and USUARIOSISTEMA='S'", Connection.Conectar());
+                sqlExec.Parameters.AddWithValue("email", (object)email ?? DBNull.Value);
+
+                SqlDataReader dr = sqlExec.ExecuteReader();
+                if (dr.Read())
+                {
+
+                    Connection.Desconectar();
+                    return true;
+                }
+                else
+                {
+                    Connection.Desconectar();
+                    return false;
+
+                }
+            }
+            catch (Exception)
+            {
+                Connection.Desconectar();
+                return false;
+
+            }
+        }
 
     }
 

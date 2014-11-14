@@ -133,6 +133,13 @@ namespace Easy.Controllers
             return RedirectToAction("Index");
 
         }
+
+        [HttpGet]
+        public ActionResult Detalhes() {
+
+
+            return RedirectToAction("Index", "Contatos");
+        }
         [HttpPost]
         public ActionResult Detalhes(string id)
         {
@@ -165,5 +172,33 @@ namespace Easy.Controllers
             return RedirectToAction("Index", "Contatos");
 
         }
+
+        [HttpGet]
+        public JsonResult AutenticaEmail(string email)
+        {
+
+             DAOUsuario duser = new DAOUsuario();
+
+            if (duser.AutenticaEmail(email))
+            {
+
+                return Json(new
+                {
+                    OK = false
+                },
+            JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                return Json(new
+                {
+                    OK = true
+                },
+                JsonRequestBehavior.AllowGet);
+            
+            }
+        }
+        
     }
 }
