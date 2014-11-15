@@ -49,43 +49,36 @@ namespace Easy.Models
             }
             return status;
         }
-        //public void TerminarCompromisso(Compromissos Compromisso, Usuario User)
-        //{
-        //    //Somente o criador do compromisso poderá alterar o status do mesmo
-        //    if (Compromisso.Usuario.IdUser == User.IdUser)
-        //    {
-        //        try
-        //        {
-        //            SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'T' where idcomp = @IDCOMP", Connection.Conectar());
-        //            sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
-        //            sqlTerminarCompromisso.ExecuteNonQuery();
-        //        }
-        //        catch (SqlException sqlExcp)
-        //        {
-        //        }
-        //        catch(Exception Erro)
-        //        {
-        //        }
-        //        Connection.Desconectar();
-        //    }
-        //}
-        public void AlterarStatusComp(Compromissos Compromisso, Usuario User)
+        public void CancelarComp(Compromissos Comp, Usuario User)
         {
             //Somente o criador do compromisso poderá alterar o status do mesmo
-            if (Compromisso.Usuario.IdUser == User.IdUser)
+            if (Comp.Usuario.IdUser == User.IdUser)
             {
                 try
                 {
-                    SqlCommand sqlComando = new SqlCommand();
-                    sqlComando.Connection = Connection.Conectar();
-                    
-                    if(Compromisso.Status == "A")
-                        sqlComando.CommandText = "UPDATE TBCOMPROMISSOS SET STATUS = 'C' WHERE IDCOMP = @IDCOMP";
-                    else
-                        sqlComando.CommandText = "UPDATE TBCOMPROMISSOS SET STATUS = 'A' WHERE IDCOMP = @IDCOMP";
-
-                    sqlComando.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
-                    sqlComando.ExecuteNonQuery();
+                    SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'C' where idcomp = @IDCOMP", Connection.Conectar());
+                    sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Comp.IdComp);
+                    sqlTerminarCompromisso.ExecuteNonQuery();
+                }
+                catch (SqlException sqlExcp)
+                {
+                }
+                catch (Exception Erro)
+                {
+                }
+                Connection.Desconectar();
+            }
+        }
+        public void AtivarComp(Compromissos Comp, Usuario User)
+        {
+            //Somente o criador do compromisso poderá alterar o status do mesmo
+            if (Comp.Usuario.IdUser == User.IdUser)
+            {
+                try
+                {
+                    SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'P' where idcomp = @IDCOMP", Connection.Conectar());
+                    sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Comp.IdComp);
+                    sqlTerminarCompromisso.ExecuteNonQuery();
                 }
                 catch (SqlException sqlExcp)
                 {

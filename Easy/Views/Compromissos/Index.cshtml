@@ -97,21 +97,20 @@
                     }
                 </td>
                 <td class="well-sm">
-                    <div class="well">
+                    <div class="well" style="max-width:500px">
                         <div class="div-tarefas">
                             <b>@Html.DisplayFor(modelItem => item.Titulo)</b>
-
                         </div>
-                        <div style="height: 6px"></div>
-                        @Html.DisplayFor(modelItem => item.Descricao)&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <div style="height: 6px;"></div>
+                        @Html.DisplayFor(modelItem => item.Descricao)
                     </div>
                 </td>
-                <td>
+                <td style="width:200px">
                     @if (item.Usuario.IdUser == User.IdUser)
                     {
                         <form action="~/Compromissos/EditarCompromisso" method="post">
                             @Html.Hidden("id", item.IdComp)
-                            <div class="btn-group color_button" style="margin-left: 0%; float: left">
+                            <div class="btn-group color_button" style="margin-left: 7%; float: left">
                                 <button type="submit" class="btn btn-default" title="Editar"><i class="texto2 ClasseAlta icon-material-create"></i></button>
                             </div>
                         </form>
@@ -120,15 +119,15 @@
                     {
                         <form action="~/Compromissos/EditarCompromisso" method="post">
                             @Html.Hidden("id", item.IdComp)
-                            <div class="btn-group color_button" style="margin-left: 0%; float: left">
+                            <div class="btn-group color_button" style="margin-left: 7%; float: left">
                                 <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 ClasseAlta mdi-action-description"></i></button>
                             </div>
                         </form>
                     }
                     <form action="~/Compromissos/EditarCompromisso" method="post">
                             @Html.Hidden("id", item.IdComp)
-                            <div class="btn-group color_button" style="margin-left: 0%; float: left">
-                                <button type="submit" class="btn btn-default" title="Notas"><i class="texto2 ClasseAlta mdi-action-speaker-notes"></i></button>
+                            <div class="btn-group color_button" style="margin-left: 7%; float: left">
+                                <button type="submit" class="btn btn-default" title="Notas"><i class="texto2 ClasseAlta mdi-maps-rate-review"></i></button>
                             </div>
                     </form>
                 </td>
@@ -163,7 +162,18 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
             $("#hidValida").val() = 0;
         });
     }
-
+    else if ($("#hidValida").val() == 3) {
+        $(document).ready(function () {
+            $.snackbar({ content: "O Compromisso foi Cancelado. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
+        });
+    }
+    else if ($("#hidValida").val() == 4) {
+        $(document).ready(function () {
+            $.snackbar({ content: "O Compromisso foi Ativado. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
+        });
+    }
     $(document).ready(function () {
         $(".HideComentario").hide();
     });;

@@ -130,6 +130,40 @@
     </div>
 </div>
 
+@if (Model.Usuario.IdUser == User.IdUser && Model.Status != "T" && Model.Status != "C")
+                {
+    <div class="bs-docs-section">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="well bs-component">
+                        <form action="~/Compromissos/CancelarComp" method="post" class="form-horizontal">
+                            <h4>Cancelar Compromisso</h4>
+                                <p>Deseja cancelar o Compromisso ?</p>
+                            @Html.Hidden("id", Model.IdComp)
+                            <button type="submit" class="btn btn-danger btn-raised" title="Detalhes">CANCELAR</button>                                
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+                 }
+else if (Model.Usuario.IdUser == User.IdUser && Model.Status == "C" && Convert.ToDateTime(Model.DataTermino) > DateTime.Now)
+                {
+    <div class="bs-docs-section">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="well bs-component">
+                        <form action="~/Compromissos/AtivarComp" method="post" class="form-horizontal">
+                            <h4>Ativar Compromisso</h4>
+                                <p>Deseja ativar o Compromisso ?</p>
+                            @Html.Hidden("id", Model.IdComp)
+                            <button type="submit" class="btn btn-success btn-raised" title="Detalhes">ATIVAR</button>                                
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+                 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 @if(Model.Usuario.IdUser == User.IdUser)

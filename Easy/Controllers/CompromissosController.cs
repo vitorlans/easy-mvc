@@ -227,19 +227,19 @@ namespace Easy.Controllers
             return RedirectToAction("Index", "Compromissos");
 
         }
-        [HttpPost]
-        public ActionResult AlterarStatusComp(int id)
-        {
-            DAOCompromissos dCompromisso = new DAOCompromissos();
-            Compromissos Compromisso = new Compromissos();
-            Compromisso = dCompromisso.SelecionarCompromissoId(id);
+        //[HttpPost]
+        //public ActionResult AlterarStatusComp(int id)
+        //{
+        //    DAOCompromissos dCompromisso = new DAOCompromissos();
+        //    Compromissos Compromisso = new Compromissos();
+        //    Compromisso = dCompromisso.SelecionarCompromissoId(id);
 
-            //Usuario User = (Usuario)Session["Usuario"];
-            Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+        //    //Usuario User = (Usuario)Session["Usuario"];
+        //    Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
 
-            dCompromisso.AlterarStatusComp(Compromisso, User);
-            return RedirectToAction("EditarCompromisso", "Compromissos");
-        }
+        //    dCompromisso.AlterarStatusComp(Compromisso, User);
+        //    return RedirectToAction("EditarCompromisso", "Compromissos");
+        //}
 
         [HttpGet]
         public ActionResult UrlConfirma(string codigo, int id) {
@@ -262,6 +262,34 @@ namespace Easy.Controllers
             comp.DataTermino = dt1.ToString();
 
             return View("Add", comp);
+        }
+        [HttpPost]
+        public ActionResult CancelarComp(string id)
+        {
+            Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+            DAOCompromissos daoComp = new DAOCompromissos();
+            Compromissos Comp = new Compromissos();
+
+            Comp = daoComp.SelecionarCompromissoId(int.Parse(id));
+            daoComp.CancelarComp(Comp, User);
+            DAOCompromissos.VerificaStatusComp(Comp);
+            Session["AddCompromisso"] = 3;
+            Session.Timeout = 1;
+            return RedirectToAction("Index", "Compromissos");
+        }
+        [HttpPost]
+        public ActionResult AtivarComp(string id)
+        {
+            Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+            DAOCompromissos daoComp = new DAOCompromissos();
+            Compromissos Comp = new Compromissos();
+
+            Comp = daoComp.SelecionarCompromissoId(int.Parse(id));
+            daoComp.AtivarComp(Comp, User);
+            DAOCompromissos.VerificaStatusComp(Comp);
+            Session["AddCompromisso"] = 4;
+            Session.Timeout = 1;
+            return RedirectToAction("Index", "Compromissos");
         }
     }
 }
