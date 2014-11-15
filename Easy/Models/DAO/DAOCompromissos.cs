@@ -10,7 +10,7 @@ namespace Easy.Models
 {
     public class DAOCompromissos
     {
-        //Status será inserido como (T)erminado, (C)ancelado, (P)róximo ou em (A)ndamento
+        //Status será inserido como (T)erminado, (C)ancelado, (P)róximo ou em (O)correndo
         public static string VerificaStatusComp(Compromissos Comp)
         {
             string status = Comp.Status;
@@ -28,8 +28,8 @@ namespace Easy.Models
                     {
                         if (DateTime.Parse(Comp.DataInicio) < DateTime.Now && DateTime.Parse(Comp.DataTermino) > DateTime.Now)
                         {
-                            status = "O";
-                            sqlAlterarStatusComp = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'O' where idcomp = @IDCOMP", Connection.Conectar());
+                            status = "A";
+                            sqlAlterarStatusComp = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'A' where idcomp = @IDCOMP", Connection.Conectar());
                         }
                         else
                         {
@@ -37,8 +37,11 @@ namespace Easy.Models
                             sqlAlterarStatusComp = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'P' where idcomp = @IDCOMP", Connection.Conectar());
                         }
                     }
-                    sqlAlterarStatusComp.Parameters.AddWithValue("IDCOMP", Comp.IdComp);
-                    sqlAlterarStatusComp.ExecuteNonQuery();
+                    if (Comp.Status != status)
+                    {
+                        sqlAlterarStatusComp.Parameters.AddWithValue("IDCOMP", Comp.IdComp);
+                        sqlAlterarStatusComp.ExecuteNonQuery();
+                    }
                 }
             }
             catch
@@ -46,43 +49,36 @@ namespace Easy.Models
             }
             return status;
         }
-        //public void TerminarCompromisso(Compromissos Compromisso, Usuario User)
-        //{
-        //    //Somente o criador do compromisso poderá alterar o status do mesmo
-        //    if (Compromisso.Usuario.IdUser == User.IdUser)
-        //    {
-        //        try
-        //        {
-        //            SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'T' where idcomp = @IDCOMP", Connection.Conectar());
-        //            sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
-        //            sqlTerminarCompromisso.ExecuteNonQuery();
-        //        }
-        //        catch (SqlException sqlExcp)
-        //        {
-        //        }
-        //        catch(Exception Erro)
-        //        {
-        //        }
-        //        Connection.Desconectar();
-        //    }
-        //}
-        public void AlterarStatusComp(Compromissos Compromisso, Usuario User)
+        public void CancelarComp(Compromissos Comp, Usuario User)
         {
             //Somente o criador do compromisso poderá alterar o status do mesmo
-            if (Compromisso.Usuario.IdUser == User.IdUser)
+            if (Comp.Usuario.IdUser == User.IdUser)
             {
                 try
                 {
-                    SqlCommand sqlComando = new SqlCommand();
-                    sqlComando.Connection = Connection.Conectar();
-                    
-                    if(Compromisso.Status == "A")
-                        sqlComando.CommandText = "UPDATE TBCOMPROMISSOS SET STATUS = 'C' WHERE IDCOMP = @IDCOMP";
-                    else
-                        sqlComando.CommandText = "UPDATE TBCOMPROMISSOS SET STATUS = 'A' WHERE IDCOMP = @IDCOMP";
-
-                    sqlComando.Parameters.AddWithValue("IDCOMP", Compromisso.IdComp);
-                    sqlComando.ExecuteNonQuery();
+                    SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'C' where idcomp = @IDCOMP", Connection.Conectar());
+                    sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Comp.IdComp);
+                    sqlTerminarCompromisso.ExecuteNonQuery();
+                }
+                catch (SqlException sqlExcp)
+                {
+                }
+                catch (Exception Erro)
+                {
+                }
+                Connection.Desconectar();
+            }
+        }
+        public void AtivarComp(Compromissos Comp, Usuario User)
+        {
+            //Somente o criador do compromisso poderá alterar o status do mesmo
+            if (Comp.Usuario.IdUser == User.IdUser)
+            {
+                try
+                {
+                    SqlCommand sqlTerminarCompromisso = new SqlCommand("UPDATE TBCOMPROMISSOS SET STATUS = 'P' where idcomp = @IDCOMP", Connection.Conectar());
+                    sqlTerminarCompromisso.Parameters.AddWithValue("IDCOMP", Comp.IdComp);
+                    sqlTerminarCompromisso.ExecuteNonQuery();
                 }
                 catch (SqlException sqlExcp)
                 {
@@ -138,26 +134,26 @@ namespace Easy.Models
 
                         ListaComp[x].Status = DAOCompromissos.VerificaStatusComp(ListaComp[x]);
 
-                        string dtIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortDateString();
-                        string dtFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortDateString();
-                        string hrIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortTimeString();
-                        string hrFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortTimeString();
+                        //string dtIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortDateString();
+                        //string dtFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortDateString();
+                        //string hrIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortTimeString();
+                        //string hrFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortTimeString();
 
 
 
-                        if (dtIni == dtFim)
-                        {
-                            ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
-                            ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
-                            ListaComp[x].DataTermino = hrFim;
-                        }
-                        else
-                        {
-                            ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
-                            ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
-                            ListaComp[x].DataTermino = Convert.ToDateTime(ListaComp[x].DataTermino.ToString()).ToLongDateString() + " às " + hrIni.ToString();
-                            ListaComp[x].DataTermino = Compromissos.FormataTexto(ListaComp[x].DataTermino);
-                        }
+                        //if (dtIni == dtFim)
+                        //{
+                        //    ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
+                        //    ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
+                        //    ListaComp[x].DataTermino = hrFim;
+                        //}
+                        //else
+                        //{
+                        //    ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
+                        //    ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
+                        //    ListaComp[x].DataTermino = Convert.ToDateTime(ListaComp[x].DataTermino.ToString()).ToLongDateString() + " às " + hrIni.ToString();
+                        //    ListaComp[x].DataTermino = Compromissos.FormataTexto(ListaComp[x].DataTermino);
+                        //}
 
                         x++;
                     }
@@ -382,5 +378,10 @@ namespace Easy.Models
             Connection.Desconectar();
             return lista;
         }
+        public static void RemoverVincPart(int id)
+        {
+            //deletar vinculos da base
+        }
+
     }
 }

@@ -14,19 +14,23 @@
                         <div class="form-group">
                           <label for="inputNome" class="col-lg-2 control-label">Nome</label>
                           <div class="col-lg-10">
-                          @Html.TextBoxFor(model => model.Nome, new { @id="inputNome", @maxlength = "50", @placeholder="Nome", @class = "form-control" })
+                          @Html.TextBoxFor(model => model.Nome, new { @id="inputNome", @maxlength = "30", @placeholder="Nome", @class = "form-control" })
                            </div>
                         </div>
                           <div class="form-group">
                           <label for="inputEmail" class="col-lg-2 control-label">Email</label>
                           <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Email, new { @id="inputEmail", @placeholder="Email", @class = "form-control", @type="email" })
-                              <div class="checkbox">
+                             @Html.TextBoxFor(model => model.Email, new { @id="inputEmail", @maxlength = "80", @placeholder="Email", @class = "form-control", @type="email" })
+                         <div id="status">
+                                <div class="checkbox">
+                                  @if(Easy.Models.Usuario.VerificaSeOUsuarioEstaLogado().LiberaConvite == "S"){
                               <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist">Usuario do Sistema</label>
-                                  <div class="checkbox">
-                              <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv">Permissão - Envio de Convite</label>
-                            </div>
-                            </div>
+                               <div class="checkbox">
+                                    <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv">Permissão - Envio de Convite</label>
+                                </div>
+                                  }
+                                </div>
+                             </div>
                             </div>
                           </div>    
         
@@ -37,35 +41,35 @@
                           <div class="form-group">
                           <label for="inputEnd" class="col-lg-2 control-label">Endereço</label>
                           <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Endereco, new { @id="inputEnd", @placeholder="Endereço", @class = "form-control", @type="text" })
+                             @Html.TextBoxFor(model => model.Endereco, new { @id="inputEnd", @maxlength = "50", @placeholder="Endereço", @class = "form-control", @type="text" })
                           </div>
                         </div>
                           
                           <div class="form-group">
                           <label for="inputBairro" class="col-lg-2 control-label">Bairro</label>
                           <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Bairro, new { @id="inputBairro", @placeholder="Bairro", @class = "form-control", @type="text" })
+                             @Html.TextBoxFor(model => model.Bairro, new { @id="inputBairro", @maxlength = "50", @placeholder="Bairro", @class = "form-control", @type="text" })
                           </div>
                         </div>
 
                           <div class="form-group">
                           <label for="inputCid" class="col-lg-2 control-label">Cidade</label>
                           <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Cidade, new { @id="inputCidade", @placeholder="Cidade", @class = "form-control", @type="text" })
+                             @Html.TextBoxFor(model => model.Cidade, new { @id="inputCidade", @maxlength = "50", @placeholder="Cidade", @class = "form-control", @type="text" })
                           </div>
                         </div>
 
                              <div class="form-group">
                           <label for="inputCep" class="col-lg-2 control-label">Cep</label>
                           <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Cep, new { @id="inputCep", @class = "form-control", @type="text" })
+                             @Html.TextBoxFor(model => model.Cep, new { @id="inputCep", @maxlength = "9", @class = "form-control", @type="text" })
                           </div>
                         </div>
 
                           <div class="form-group">
                           <label for="inputTelefone" class="col-lg-2 control-label">Telefone</label>
                           <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Telefone, new { @id="inputTel", @class = "form-control", @type="tel" })
+                             @Html.TextBoxFor(model => model.Telefone, new { @id="inputTel", @maxlength = "20", @class = "form-control", @type="tel" })
                           </div>
                         </div>
 
@@ -84,3 +88,31 @@
                 </div>
               </div>
  </div>           
+<script>
+
+ $(document).ready(function () {
+        $("#status").hide();
+        $("#inputEmail").blur(function () {
+
+            $.ajax({
+                url: "/Contatos/AutenticaEmail",
+                data: {
+                    email: $("#inputEmail").val(),
+                },
+                dataType: "json",
+                type: "GET",
+                async: true,
+                success: function (dados) {
+                    if (dados.OK) {
+                        $("#status").show();
+                    }
+                    else {
+
+                        $("#status").hide();
+
+                    }
+                }
+            });
+        });
+    });
+</script>

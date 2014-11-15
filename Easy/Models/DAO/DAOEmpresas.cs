@@ -38,17 +38,13 @@ namespace Easy.Models
         public List<Empresas> ListarEmpresas(string login)
         {
 
-            var UserEmp = UserEmpresa(login);
-
             List<Empresas> lista = new List<Empresas>();
 
             try
             {
-                var x = 0;
-                foreach (var i in UserEmp)
-                {
 
-                    SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBEMPRESAS where IdEmpr=" + UserEmp[x].IdEmp.ToString(), Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT TBEMP.*, TBUSU.EMAIL FROM VUSUAEMPR VEMP	INNER JOIN TBEMPRESAS TBEMP ON TBEMP.IDEMPR = VEMP.IDEMPR INNER JOIN TBUSUARIOS TBUSU ON TBUSU.IDUSER = VEMP.IDUSER WHERE TBEMP.STATUS = 'A' and TBUSU.IDUSER = @iduser", Connection.Conectar());
+                    sqlExec.Parameters.AddWithValue("iduser", login);
                     SqlDataReader dr = sqlExec.ExecuteReader();
 
                     while (dr.Read())
@@ -64,52 +60,22 @@ namespace Easy.Models
                             }
                             );
                     }
-                    x++;
                 }
-            }
             catch { }
-
-            return lista;
-        }
-
-        private List<VinculoEmpresa> UserEmpresa(string login)
-        {
-            List<VinculoEmpresa> lista = new List<VinculoEmpresa>();
-            SqlCommand sqlExec = new SqlCommand("SELECT * FROM VUSUAEMPR where IDUSER=" + login, Connection.Conectar());
-            SqlDataReader dr = sqlExec.ExecuteReader();
-            while (dr.Read())
-            {
-                lista.Add
-                        (
-                        new VinculoEmpresa
-                        {
-                            IdUser = int.Parse(dr["IDUSER"].ToString()),
-                            IdEmp = int.Parse(dr["IDEMPR"].ToString()),
-                        });
-            }
 
             return lista;
         }
 
         public void VinculaEmpresa(Usuario user)
         {
-            SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" + "'" + user.Email + "'", Connection.Conectar());
-            SqlDataReader dr = sqlExec.ExecuteReader();
-            while (dr.Read())
-            {
-                user.IdUser = int.Parse(dr["IDUSER"].ToString());
-                      
-
-            }
-    
-            string strInserir = "insert into VUSUAEMPR values (@iduser, @empr)";
+           string strInserir = "insert into VUSUAEMPR values (@iduser, @empr)";
 
 
             SqlCommand inserirUsuario2 = new SqlCommand(strInserir, Connection.Conectar());
 
 
             inserirUsuario2.Parameters.AddWithValue("iduser", user.IdUser);
-            inserirUsuario2.Parameters.AddWithValue("empr", 1);
+            inserirUsuario2.Parameters.AddWithValue("empr", Empresas.RecuperaEmpresaCookie().IdEmpresa);
 
             inserirUsuario2.ExecuteNonQuery();
 

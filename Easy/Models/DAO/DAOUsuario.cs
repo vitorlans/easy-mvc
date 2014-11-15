@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
+using Easy.Controllers;
 
 namespace Easy.Models
 {
@@ -12,18 +13,15 @@ namespace Easy.Models
         public List<Usuario> ListaUsuarios(string login)
         {
 
-            var meusContatos = MeusContatos(login);
-
+            var emp = Empresas.RecuperaEmpresaCookie();
             List<Usuario> lista = new List<Usuario>();
 
             try
             {
-                var x = 0;
-                foreach (var i in meusContatos)
-                {
-
-                    SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IdUser=" + meusContatos[x].IdUser2.ToString(), Connection.Conectar());
-                    SqlDataReader dr = sqlExec.ExecuteReader();
+                SqlCommand sqlExec = new SqlCommand("SELECT VCONT.*, USUA.EMAIL, USUA.IMAGEM, USUA.USUARIOSISTEMA, USUA.LIBERACONVITE FROM VUSUACONT vcont INNER JOIN TBUSUARIOS USUA ON USUA.IDUSER = VCONT.IDUSER2 WHERE  VCONT.IDUSER = @iduser and VCONT.IDEMPR = @idemp", Connection.Conectar());
+                    sqlExec.Parameters.AddWithValue("iduser", login);
+                    sqlExec.Parameters.AddWithValue("idemp", emp.IdEmpresa);
+                     SqlDataReader dr = sqlExec.ExecuteReader();
 
                     while (dr.Read())
                     {
@@ -31,11 +29,9 @@ namespace Easy.Models
                             (
                             new Usuario
                             {
-                                IdUser = int.Parse(dr["IDUSER"].ToString()),
+                                IdUser = int.Parse(dr["IDUSER2"].ToString()),
                                 Nome = dr["NOME"].ToString(),
-                                Sobrenome = dr["SOBRENOME"].ToString(),
                                 Email = dr["EMAIL"].ToString(),
-                                Senha = dr["SENHA"].ToString(),
                                 Endereco = dr["ENDERECO"].ToString(),
                                 Bairro = dr["BAIRRO"].ToString(),
                                 Cidade = dr["CIDADE"].ToString(),
@@ -43,16 +39,12 @@ namespace Easy.Models
                                 Telefone = dr["TELEFONE"].ToString(),
                                 UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                                 LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                                Status = dr["STATUS"].ToString(),
-                                DataCriacao = dr["DT_CRIACAO"].ToString(),
-                                Imagem = dr["IMAGEM"].ToString(),
-
+                                Imagem = dr["IMAGEM"].ToString()
                             }
                             );
                     }
-                    x++;
                 }
-            }
+            
             catch { }
             Connection.Desconectar();
 
@@ -62,17 +54,15 @@ namespace Easy.Models
         public List<Usuario> ListaUsuarios(string login, string letra)
         {
 
-            var meusContatos = MeusContatos(login);
-
+            var emp = Empresas.RecuperaEmpresaCookie();
             List<Usuario> lista = new List<Usuario>();
 
             try
             {
-                var x = 0;
-                foreach (var i in meusContatos)
-                {
 
-                    SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IdUser=" + meusContatos[x].IdUser2.ToString() + " and NOME like '"+letra+"%'", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT VCONT.*, USUA.EMAIL, USUA.IMAGEM, USUA.USUARIOSISTEMA, USUA.LIBERACONVITE FROM VUSUACONT vcont INNER JOIN TBUSUARIOS USUA ON USUA.IDUSER = VCONT.IDUSER2 WHERE  VCONT.IDUSER = @iduser and VCONT.IDEMPR = @idemp" + " and VCONT.NOME like '" + letra + "%'", Connection.Conectar());
+                    sqlExec.Parameters.AddWithValue("iduser", login);
+                    sqlExec.Parameters.AddWithValue("idemp", emp.IdEmpresa);
                     SqlDataReader dr = sqlExec.ExecuteReader();
 
                     while (dr.Read())
@@ -81,11 +71,9 @@ namespace Easy.Models
                             (
                             new Usuario
                             {
-                                IdUser = int.Parse(dr["IDUSER"].ToString()),
+                                IdUser = int.Parse(dr["IDUSER2"].ToString()),
                                 Nome = dr["NOME"].ToString(),
-                                Sobrenome = dr["SOBRENOME"].ToString(),
                                 Email = dr["EMAIL"].ToString(),
-                                Senha = dr["SENHA"].ToString(),
                                 Endereco = dr["ENDERECO"].ToString(),
                                 Bairro = dr["BAIRRO"].ToString(),
                                 Cidade = dr["CIDADE"].ToString(),
@@ -93,15 +81,10 @@ namespace Easy.Models
                                 Telefone = dr["TELEFONE"].ToString(),
                                 UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                                 LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                                Status = dr["STATUS"].ToString(),
-                                DataCriacao = dr["DT_CRIACAO"].ToString(),
-                                Imagem = dr["IMAGEM"].ToString(),
-
+                                Imagem = dr["IMAGEM"].ToString()
                             }
                             );
                     }
-                    x++;
-                }
             }
             catch { }
             Connection.Desconectar();
@@ -112,17 +95,14 @@ namespace Easy.Models
         public List<Usuario> ListaUsuariosPesquisa(string login, string pesquisa)
         {
 
-            var meusContatos = MeusContatos(login);
-
+            var emp = Empresas.RecuperaEmpresaCookie();
             List<Usuario> lista = new List<Usuario>();
 
             try
             {
-                var x = 0;
-                foreach (var i in meusContatos)
-                {
-
-                    SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IdUser=" + meusContatos[x].IdUser2.ToString() + " and NOME like '%" + pesquisa + "%'", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT VCONT.*, USUA.EMAIL, USUA.IMAGEM, USUA.USUARIOSISTEMA, USUA.LIBERACONVITE FROM VUSUACONT vcont INNER JOIN TBUSUARIOS USUA ON USUA.IDUSER = VCONT.IDUSER2 WHERE  VCONT.IDUSER = @iduser and VCONT.IDEMPR = @idemp" + " and VCONT.NOME like '%" + pesquisa + "%'", Connection.Conectar());
+                    sqlExec.Parameters.AddWithValue("iduser", login);
+                    sqlExec.Parameters.AddWithValue("idemp", emp.IdEmpresa);
                     SqlDataReader dr = sqlExec.ExecuteReader();
 
                     while (dr.Read())
@@ -131,10 +111,9 @@ namespace Easy.Models
                             (
                             new Usuario
                             {
-                                IdUser = int.Parse(dr["IDUSER"].ToString()),
+                                IdUser = int.Parse(dr["IDUSER2"].ToString()),
                                 Nome = dr["NOME"].ToString(),
-                                Sobrenome = dr["SOBRENOME"].ToString(),
-                                Senha = dr["SENHA"].ToString(),
+                                Email = dr["EMAIL"].ToString(),
                                 Endereco = dr["ENDERECO"].ToString(),
                                 Bairro = dr["BAIRRO"].ToString(),
                                 Cidade = dr["CIDADE"].ToString(),
@@ -142,15 +121,11 @@ namespace Easy.Models
                                 Telefone = dr["TELEFONE"].ToString(),
                                 UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                                 LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                                Status = dr["STATUS"].ToString(),
-                                DataCriacao = dr["DT_CRIACAO"].ToString(),
-                                Imagem = dr["IMAGEM"].ToString(),
-
+                                Imagem = dr["IMAGEM"].ToString()   
                             }
                             );
                     }
-                    x++;
-                }
+                
             }
             catch { }
             Connection.Desconectar();
@@ -159,13 +134,55 @@ namespace Easy.Models
         }
 
 
-        public Usuario RecuperaUsuario(string id)
+        public Usuario RecuperaContato(string id)
         {
 
             Usuario user = new Usuario();
             try
             {
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IDUSER=" + id, Connection.Conectar());
+                var emp = Empresas.RecuperaEmpresaCookie();
+                SqlCommand sqlExec = new SqlCommand("SELECT VCONT.*, USUA.EMAIL, USUA.IMAGEM, USUA.USUARIOSISTEMA, USUA.LIBERACONVITE FROM VUSUACONT vcont INNER JOIN TBUSUARIOS USUA ON USUA.IDUSER = VCONT.IDUSER2 WHERE  VCONT.IDUSER2 = @iduser2 and VCONT.IDEMPR = @idempr", Connection.Conectar());
+                sqlExec.Parameters.AddWithValue("iduser2", id);
+                sqlExec.Parameters.AddWithValue("idempr", emp.IdEmpresa);
+                SqlDataReader dr = sqlExec.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    user =
+                          (
+                          new Usuario
+                          {
+                              IdUser = int.Parse(dr["IDUSER2"].ToString()),
+                              Nome = dr["NOME"].ToString(),
+                              Email = dr["EMAIL"].ToString(),
+                              Endereco = dr["ENDERECO"].ToString(),
+                              Bairro = dr["BAIRRO"].ToString(),
+                              Cidade = dr["CIDADE"].ToString(),
+                              Cep = dr["CEP"].ToString(),
+                              Telefone = dr["TELEFONE"].ToString(),
+                              UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
+                              LiberaConvite = dr["LIBERACONVITE"].ToString(),
+                              Imagem = dr["IMAGEM"].ToString()
+                          }
+                          );
+                }
+
+
+            }
+            catch { }
+            Connection.Desconectar();
+
+            return user;
+
+        }
+
+        public Usuario RecuperaUsuarioEmail(string email)
+        {
+
+            Usuario user = new Usuario();
+            try
+            {
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL="+"'"+email+"'", Connection.Conectar());
                 SqlDataReader dr = sqlExec.ExecuteReader();
 
                 while (dr.Read())
@@ -203,13 +220,13 @@ namespace Easy.Models
 
         }
 
-        public Usuario RecuperaUsuarioEmail(string email)
+        public Usuario RecuperaUsuario(string id)
         {
 
             Usuario user = new Usuario();
             try
             {
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" +"'"+email+"'", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where IDUSER=" + id , Connection.Conectar());
                 SqlDataReader dr = sqlExec.ExecuteReader();
 
                 while (dr.Read())
@@ -250,55 +267,78 @@ namespace Easy.Models
         public void CriarUsuario(Usuario user, string login)
         {
 
-            user.DataCriacao = DateTime.Now.ToString();
-            user.Status = "A";
-            user.Senha = Criptografia.GerarSenha();
-
-            try
+         try
             {
                 if (VerificaExistencia(user) == false)
                 {
 
+                    user.DataCriacao = DateTime.Now.ToString();
+                    user.Status = "A";
+                    user.Senha = Criptografia.GerarSenha();
+                    var random = new Random();
+                    var num = random.Next(6);
+                    user.Imagem = "http://localhost:58623/Content/img/contato" + num + ".png";
 
-                    string strInserir = "insert into TBUSUARIOS values (@nome, @sobrenome, @email, @senha, @endereco, @bairro, @cidade, @cep, @telefone, @usuariosistema, @liberaconvite, @status, @datacriacao, @imagem)";
+                    string strInserir = "insert into TBUSUARIOS (NOME, EMAIL, SENHA, USUARIOSISTEMA, LIBERACONVITE, STATUS, DT_CRIACAO, IMAGEM) values (@nome, @email, @senha, @usuariosistema, @liberaconvite, @status, @datacriacao, @imagem)";
 
                     SqlCommand inserirUsuario = new SqlCommand(strInserir, Connection.Conectar());
 
-
-
                     inserirUsuario.Parameters.AddWithValue("nome", user.Nome);
-                    inserirUsuario.Parameters.AddWithValue("sobrenome", (object)user.Sobrenome ?? DBNull.Value);
                     inserirUsuario.Parameters.AddWithValue("email", user.Email);
                     inserirUsuario.Parameters.AddWithValue("senha", user.Senha);
-                    inserirUsuario.Parameters.AddWithValue("endereco", (object)user.Endereco ?? DBNull.Value);
-                    inserirUsuario.Parameters.AddWithValue("bairro", (object)user.Bairro ?? DBNull.Value);
-                    inserirUsuario.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
-                    inserirUsuario.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
-                    inserirUsuario.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
                     inserirUsuario.Parameters.AddWithValue("usuariosistema", user.UsuarioSistema);
                     inserirUsuario.Parameters.AddWithValue("liberaconvite", user.LiberaConvite);
                     inserirUsuario.Parameters.AddWithValue("status", user.Status);
                     inserirUsuario.Parameters.AddWithValue("datacriacao", user.DataCriacao);
                     inserirUsuario.Parameters.AddWithValue("imagem", (object)user.Imagem ?? DBNull.Value);
 
-
-
                     inserirUsuario.ExecuteNonQuery();
+                    var rec = RecuperaUsuarioEmail(user.Email);
+                    user.IdUser = rec.IdUser;
                     DAOEmpresas Demp = new DAOEmpresas();
                     Demp.VinculaEmpresa(user);
                     VinculaUsuario(login, user);
 
+                    if (user.UsuarioSistema == "S")
+                    {
+                        EmailController ec = new EmailController();
+                        ec.EnviarEmailSistema(user);
+                    }
+
                 }
                 else
                 {
+                    var rec = RecuperaUsuarioEmail(user.Email);
+                    user.IdUser = rec.IdUser;
                     VinculaUsuario(login, user);
                 }
-                Connection.Desconectar();
 
             }
-            catch (SqlException) { }
+            catch (SqlException) {
+
+            }
 
         }
+
+        public void AlterarSenha(string id, string senha)
+        {
+
+            try
+            {
+
+                string strInserir = "update TBUSUARIOS  set SENHA = @senha where IDUSER = @iduser";
+
+                SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
+                updateUsuario.Parameters.AddWithValue("senha", senha);
+                updateUsuario.Parameters.AddWithValue("iduser", id);
+
+                
+                updateUsuario.ExecuteNonQuery();
+            }
+
+            catch (SqlException) { }
+        }
+
 
         public void AtualizarUsuario(Usuario user)
         {
@@ -306,7 +346,7 @@ namespace Easy.Models
             try
             {
 
-                string strInserir = "update TBUSUARIOS  set NOME = @nome, SOBRENOME = @sobrenome, EMAIL = @email, SENHA = @senha, ENDERECO = @endereco, BAIRRO = @bairro, CIDADE = @cidade, CEP = @cep, TELEFONE = @telefone, USUARIOSISTEMA = @usuariosistema, LIBERACONVITE = @liberaconvite, STATUS = @status, DT_CRIACAO = @datacriacao, IMAGEM = @imagem where IDUSER = @iduser";
+                string strInserir = "update TBUSUARIOS  set NOME = @nome, SOBRENOME = @sobrenome, ENDERECO = @endereco, BAIRRO = @bairro, CIDADE = @cidade, CEP = @cep, TELEFONE = @telefone where IDUSER = @iduser";
 
                 SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
 
@@ -314,105 +354,160 @@ namespace Easy.Models
 
                 updateUsuario.Parameters.AddWithValue("nome", user.Nome);
                 updateUsuario.Parameters.AddWithValue("sobrenome", (object)user.Sobrenome ?? DBNull.Value);
-                updateUsuario.Parameters.AddWithValue("email", user.Email);
-                updateUsuario.Parameters.AddWithValue("senha", user.Senha);
                 updateUsuario.Parameters.AddWithValue("endereco", (object)user.Endereco ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("bairro", (object)user.Bairro ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
-                updateUsuario.Parameters.AddWithValue("usuariosistema", user.UsuarioSistema);
-                updateUsuario.Parameters.AddWithValue("liberaconvite", user.LiberaConvite);
-                updateUsuario.Parameters.AddWithValue("status", user.Status);
-                updateUsuario.Parameters.AddWithValue("datacriacao", user.DataCriacao);
-                updateUsuario.Parameters.AddWithValue("imagem", (object)user.Imagem ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("iduser", (object)user.IdUser ?? DBNull.Value);
 
 
                 updateUsuario.ExecuteNonQuery();
-                DAOEmpresas Demp = new DAOEmpresas();
             }
 
             catch (SqlException) { }
         }
-        
+
+        public void AtualizaPermissaoSistema(Usuario user)
+        {
+
+            try
+            {
+
+                string strInserir = "update TBUSUARIOS  set USUARIOSISTEMA = @usuariosistema where IDUSER = @iduser";
+
+                SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
+
+                updateUsuario.Parameters.AddWithValue("usuariosistema", user.UsuarioSistema);
+
+                updateUsuario.Parameters.AddWithValue("iduser", user.IdUser);
+
+                updateUsuario.ExecuteNonQuery();
+
+                if (user.UsuarioSistema == "S")
+                {
+                    user = RecuperaUsuario(user.IdUser.ToString());
+                    EmailController ec = new EmailController();
+                    ec.EnviarEmailSistema(user);
+                }
+                else {
+
+                    user = RecuperaUsuario(user.IdUser.ToString());
+                    EmailController ec = new EmailController();
+                    ec.EnviarEmailDesativa(user); 
+                }
+            }
+
+            catch (SqlException) { }
+        }
+
+        public void AtualizaPermissaoConvite(Usuario user)
+        {
+
+            try
+            {
+
+                string strInserir = "update TBUSUARIOS  set LIBERACONVITE = @liberaconvite where IDUSER = @iduser";
+
+                SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
+
+                updateUsuario.Parameters.AddWithValue("liberaconvite", user.LiberaConvite);
+
+                updateUsuario.Parameters.AddWithValue("iduser", user.IdUser);
+
+                updateUsuario.ExecuteNonQuery();
+            }
+
+            catch (SqlException) { }
+        }
+        public void AtualizarContato(Usuario user)
+        {
+
+            try
+            {
+
+                string strInserir = "update VUSUACONT set NOME = @nome, ENDERECO = @endereco, BAIRRO = @bairro, CIDADE = @cidade, CEP = @cep, TELEFONE = @telefone where IDUSER2 = @iduser2 and IDEMPR="+Empresas.RecuperaEmpresaCookie().IdEmpresa;
+
+                SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
+
+
+                updateUsuario.Parameters.AddWithValue("nome", user.Nome);
+                updateUsuario.Parameters.AddWithValue("endereco", (object)user.Endereco ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("bairro", (object)user.Bairro ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("iduser2", (object)user.IdUser ?? DBNull.Value);
+
+
+                updateUsuario.ExecuteNonQuery();
+            }
+
+            catch (SqlException) { }
+        }
+
         private void VinculaUsuario(string login, Usuario user)
         {
 
-            SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" + "'" + user.Email + "'", Connection.Conectar());
-            SqlDataReader dr = sqlExec.ExecuteReader();
-            while (dr.Read())
-            {
-                user =
-                      (
-                      new Usuario
-                      {
-                          IdUser = int.Parse(dr["IDUSER"].ToString())
-                      }
-                      );
+            var emp = Empresas.RecuperaEmpresaCookie();
 
-            }
+            string strInsert = "insert into VUSUACONT values (@iduser, @iduser2, @idempr, @nome, @endereco, @bairro, @cidade, @cep, @telefone)";
 
-            string strInserir2 = "insert into VUSUACONT values (@iduser, @iduser2)";
+            SqlCommand inserirUsuario1 = new SqlCommand(strInsert, Connection.Conectar());
 
+            inserirUsuario1.Parameters.AddWithValue("iduser", login);
+            inserirUsuario1.Parameters.AddWithValue("iduser2", user.IdUser);
+            inserirUsuario1.Parameters.AddWithValue("idempr", emp.IdEmpresa);
+            inserirUsuario1.Parameters.AddWithValue("nome", user.Nome);
+            inserirUsuario1.Parameters.AddWithValue("endereco", (object)user.Endereco ?? DBNull.Value);
+            inserirUsuario1.Parameters.AddWithValue("bairro", (object)user.Bairro ?? DBNull.Value);
+            inserirUsuario1.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
+            inserirUsuario1.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
+            inserirUsuario1.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
 
-
-            SqlCommand inserirUsuario2 = new SqlCommand(strInserir2, Connection.Conectar());
-
-
-            inserirUsuario2.Parameters.AddWithValue("iduser", login);
-            inserirUsuario2.Parameters.AddWithValue("iduser2", user.IdUser);
-
-            inserirUsuario2.ExecuteNonQuery();
+            inserirUsuario1.ExecuteNonQuery();
             Connection.Desconectar();
 
         }
 
+        public bool ApagarVinculo(Usuario user,string login)
+        {
+            var emp = Empresas.RecuperaEmpresaCookie();
+            SqlCommand sqlExec = new SqlCommand("DELETE FROM VUSUACONT where IDUSER2 = @iduser2 and IDUSER= @iduser and IDEMPR = @idempr", Connection.Conectar());
+            sqlExec.Parameters.AddWithValue("iduser2", user.IdUser);
+            sqlExec.Parameters.AddWithValue("iduser", login);
+            sqlExec.Parameters.AddWithValue("idempr", emp.IdEmpresa);
 
+            sqlExec.ExecuteNonQuery();
+
+            return true;
+        }
 
 
         private bool VerificaExistencia(Usuario user)
         {
-
-            SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=" + "'" + user.Email + "'", Connection.Conectar());
+            SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL = @email", Connection.Conectar());
+            sqlExec.Parameters.AddWithValue("email", user.Email);
             SqlDataReader dr = sqlExec.ExecuteReader();
             if (dr.Read())
-                return true;
-
-            else
-                return false;
-
-        }
-
-
-        private List<VinculoUsuario> MeusContatos(string login)
-        {
-            List<VinculoUsuario> lista = new List<VinculoUsuario>();
-            SqlCommand sqlExec = new SqlCommand("SELECT * FROM VUSUACONT where IDUSER=" + login, Connection.Conectar());
-            SqlDataReader dr = sqlExec.ExecuteReader();
-            while (dr.Read())
             {
-                lista.Add
-                        (
-                        new VinculoUsuario
-                        {
-                            IdUser = int.Parse(dr["IDUSER"].ToString()),
-                            IdUser2 = int.Parse(dr["IDUSER2"].ToString()),
-                        });
+                return true;
             }
-            Connection.Desconectar();
-
-            return lista;
+            else
+            {
+                return false;
+            }
         }
 
 
+      
         public bool AutenticarUsuarioDB(string email, string senha)
         {
 
             try
             {
 
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=@email and SENHA=@senha and USUARIOSISTEMA='S'", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=@email and SENHA=@senha and USUARIOSISTEMA='S' and (STATUS = 'A'  or STATUS = 'S') ", Connection.Conectar());
                 sqlExec.Parameters.AddWithValue("email", (object)email ?? DBNull.Value);
                 sqlExec.Parameters.AddWithValue("senha", (object)senha ?? DBNull.Value);
 
@@ -420,24 +515,56 @@ namespace Easy.Models
                 if (dr.Read())
                 {
 
+                    Connection.Desconectar();
                     return true;
                 }
                 else
                 {
+                    Connection.Desconectar();
                     return false;
 
                 }
             }
             catch (Exception)
             {
+                Connection.Desconectar();
                 return false;
 
           }
-            Connection.Desconectar();
 
         }
 
 
+        public bool AutenticaEmail(string email)
+        {
+
+            try
+            {
+
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=@email and USUARIOSISTEMA='S'", Connection.Conectar());
+                sqlExec.Parameters.AddWithValue("email", (object)email ?? DBNull.Value);
+
+                SqlDataReader dr = sqlExec.ExecuteReader();
+                if (dr.Read())
+                {
+
+                    Connection.Desconectar();
+                    return true;
+                }
+                else
+                {
+                    Connection.Desconectar();
+                    return false;
+
+                }
+            }
+            catch (Exception)
+            {
+                Connection.Desconectar();
+                return false;
+
+            }
+        }
 
     }
 

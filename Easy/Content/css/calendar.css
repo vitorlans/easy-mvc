@@ -24,7 +24,6 @@
 #handstampcalendar tr {background-color:transparent !important;}
 #handstampcalendar td {background-color:transparent !important;}
 .fc-event {background-color:transparent;font-size:16px;font-weight:normal;padding-left:5px;color:#000;}
-.fc-time {display: none !important}
 .fc-title {font-size:.88em;}
 .fc-event {margin-bottom:10px !important;}
 .fc-header {background-color: #fff !important; margin-bottom:0;}

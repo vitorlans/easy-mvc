@@ -24,6 +24,7 @@ namespace Easy.Controllers
             var email = new EmailCompromisso
             {
                 Para = participantes,
+                Quem  = comp.Usuario.Nome+ " convidou você para o",
                 Assunto = "Compromisso -"+ comp.Titulo,
                 Titulo = comp.Titulo,
                 Descricao = comp.Descricao,
@@ -48,16 +49,16 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnviarEmailSistema()
+        public ActionResult EnviarEmailSistema(Usuario user)
         {
             var email = new EmailSistema
             {
-                Para = "vitor_hs@live.com",
+                Para = user.Email,
                 Assunto = "Bem Vindo",
-                Titulo = "Bem Vindo ao Easy Peoples",
+                Titulo = "Bem Vindo a "+Empresas.RecuperaEmpresaCookie().NomeEmpresa,
                 Descricao = "Você foi convidado, a participar de nosso Sistema. Abaixo seus dados de Acesso Inicial:",
-                Login = "vitor_hs@live.com",
-                Senha = "google123",
+                Login = user.Email,
+                Senha = user.Senha,
                 Mensagem = "Você pode alterar sua senha a qualquer momento, basta acessar seu perfil"
 
             };
@@ -72,7 +73,7 @@ namespace Easy.Controllers
             catch
             {
 
-                return RedirectToAction("Index", "Calendario");
+                return RedirectToAction("Index", "Home");
 
             }
         }
@@ -86,7 +87,7 @@ namespace Easy.Controllers
                 Para = user.Email,
                 Assunto = "Recuperar - Nova Senha",
                 Titulo = "Bem Vindo ao Easy Peoples",
-                Descricao = "Recentimente foi solicitado um pedido de alteração de senha. Abaixo seus novos dados de Acesso:",
+                Descricao = "Recentemente foi solicitado um pedido de alteração de senha. Abaixo seus novos dados de Acesso:",
                 Login = user.Email,
                 Senha = user.Senha,
                 Mensagem = "Você pode alterar sua senha a qualquer momento, basta acessar seu perfil"
@@ -109,6 +110,35 @@ namespace Easy.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult EnviarEmailDesativa(Usuario user)
+        {
+
+            var email = new EmailDesativa
+            {
+                Para = user.Email,
+                Assunto = "Sua Conta foi desativada - Sistema",
+                Titulo = "Seu acesso ao sistema foi desativado",
+                Descricao = "Permissões de Acesso ao sistema foram removidas, sendo assim não tera mais acesso ao sistema",
+                Login = user.Email,
+                Mensagem = "Caso esteja incorreto esta nova configuração, peço que entre em contato com seu Adminstrador. EASY"
+
+            };
+
+            try
+            {
+
+                email.Send();
+                return RedirectToAction("Index", "Login");
+
+            }
+            catch
+            {
+
+                return RedirectToAction("Recuperar", "Login");
+
+            }
+        }
 
 
 

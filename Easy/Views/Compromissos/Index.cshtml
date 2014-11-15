@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Easy.Models.Compromissos>
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<Easy.Models.Compromissos>
 
 @{
     ViewBag.Title = "Index";
@@ -27,7 +28,7 @@
     <div class="navbar-inverse-collapse">
         @using(Html.BeginForm("Index", "Compromissos", FormMethod.Get, new { @class="navbar-form navbar-left" }))
         {
-            @Html.TextBox("search", null, new { @class="form-control col-lg-8", @placeholder="Pesquisar..", @onKeyPress="return submitenter(this,event)" } )
+            @Html.TextBox("search", null, new { @class="form-control col-lg-8", @placeholder="Título do Compromisso...", @onKeyPress="return submitenter(this,event)" } )
         }
         <ul class="nav navbar-nav">
             <li class="dropdown">
@@ -77,68 +78,70 @@
                 </td>
             </tr>
             <tr class="">
-                <td >
+                <td class="Status">
                     @if (item.Status == "C")
                     {
-                        <div class="ClasseRed" title="Cancelado">
-                        </div>
+                        <i class=" ClasseRed mdi-action-alarm" title="Cancelado"></i>
                     }
                     else if (item.Status == "T")
                     {
-                        <div class="ClasseGreen" title="Concluído">
-                        </div>
+                          <i class=" ClasseGreen mdi-action-alarm" title="Terminado"></i>
                     }
-                    else if (item.Status == "O")
+                    else if (item.Status == "A")
                     {
-                        <div class="ClasseYellow" title="Ocorrendo">
-                        </div>
+                        <i class=" ClasseYellow mdi-action-alarm" title="Em Andamento"></i>
                     }
                     else
                     {
-                        <div title="Próximo">
-                        </div>
+                        <i class=" ClasseDefault mdi-action-alarm" title="Próximo"></i>
                     }
                 </td>
                 <td class="well-sm">
-                    <div class="well">
+                    <div class="well" style="max-width:500px">
                         <div class="div-tarefas">
                             <b>@Html.DisplayFor(modelItem => item.Titulo)</b>
-
                         </div>
-                        <div style="height: 6px"></div>
+                        <div style="height: 6px;"></div>
                         @Html.DisplayFor(modelItem => item.Descricao)
                     </div>
                 </td>
-                <td>
+                <td style="width:200px">
                     @if (item.Usuario.IdUser == User.IdUser)
                     {
-                        <form action="~/Compromissos/EditarCompromisso" method="get">
+                        <form action="~/Compromissos/EditarCompromisso" method="post">
                             @Html.Hidden("id", item.IdComp)
-                            <div class="btn-group color_button" style="margin-left: 0%; float: left">
-                                <button type="submit" class="btn btn-default" title="Editar"><i class="texto2 icon-material-create"></i></button>
+                            <div class="btn-group color_button" style="margin-left: 7%; float: left">
+                                <button type="submit" class="btn btn-default" title="Editar"><i class="texto2 ClasseAlta icon-material-create"></i></button>
                             </div>
                         </form>
                     }
                     else
                     {
-                        <form action="~/Compromissos/EditarCompromisso" method="get">
+                        <form action="~/Compromissos/EditarCompromisso" method="post">
                             @Html.Hidden("id", item.IdComp)
-                            <div class="btn-group color_button" style="margin-left: 0%; float: left">
-                                <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 icon-material-content-paste"></i></button>
+                            <div class="btn-group color_button" style="margin-left: 7%; float: left">
+                                <button type="submit" class="btn btn-default" title="Detalhes"><i class="texto2 ClasseAlta mdi-action-description"></i></button>
                             </div>
                         </form>
                     }
+                    <form action="~/Compromissos/EditarCompromisso" method="post">
+                            @Html.Hidden("id", item.IdComp)
+                            <div class="btn-group color_button" style="margin-left: 7%; float: left">
+                                <button type="submit" class="btn btn-default" title="Notas"><i class="texto2 ClasseAlta mdi-maps-rate-review"></i></button>
+                            </div>
+                    </form>
                 </td>
             </tr>
         }
 
-    </table>
+    </table>   
 }
 else
 {    
     <h3>Você não possui Compromissos! Por favor redefina a busca ou adicione um novo compromisso.</h3>
 }
-
+Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.Sort, currentFilter = ViewBag.Filtro }))
 <script>
 
     $(document).ready(function () {
@@ -159,7 +162,18 @@ else
             $("#hidValida").val() = 0;
         });
     }
-
+    else if ($("#hidValida").val() == 3) {
+        $(document).ready(function () {
+            $.snackbar({ content: "O Compromisso foi Cancelado. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
+        });
+    }
+    else if ($("#hidValida").val() == 4) {
+        $(document).ready(function () {
+            $.snackbar({ content: "O Compromisso foi Ativado. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
+        });
+    }
     $(document).ready(function () {
         $(".HideComentario").hide();
     });;
@@ -176,26 +190,32 @@ else
 
 </script>
 <style>
+    .Status {
+        width:10%;
+        height:60px;
+    }
     .ClasseRed {
-        background-color: red;
-        float:left;
-        width:5px;
-        height:57px;
-        margin-right:0PX;
+        margin:auto;
+        color:red;
+        font-size:25px;
     }
     .ClasseGreen {
-        background-color: green;
-        float:left;
-        width:5px;
-        height:57px;
-        margin-right:0PX;
+        margin:auto;
+        color:green;
+        font-size:25px;
     }
     .ClasseYellow {
-        background-color: yellow;
-        float:left;
-        width:5px;
-        height:57px;
-        margin-right:0PX;
+        margin:auto;
+        color:yellow;
+        font-size:25px;
+    }
+    .ClasseAlta {
+        font-size:15px;
+    }
+    .ClasseDefault {
+        margin:auto;
+        color:blue;
+        font-size:25px;
     }
 </style>
 @{
