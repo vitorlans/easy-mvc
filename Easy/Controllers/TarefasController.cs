@@ -107,7 +107,7 @@ namespace Easy.Controllers
             return RedirectToAction("Index", "Tarefas");
         }
 
-        //GET 
+        [HttpPost] 
         public ActionResult EditTarefa(string id)
         {
             Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
@@ -176,7 +176,16 @@ namespace Easy.Controllers
 
 
         }
-        
+
+        [HttpPost]
+        public JsonResult ConcluirTarefa(int idTare)
+        {
+            DAOTarefas dtar = new DAOTarefas();
+            dtar.ConcluirTarefa(idTare);
+
+            return Json( new {success = true});
+        }
+
         [HttpPost]
         public JsonResult BuscaRelacionado(string busca, int max)
         {

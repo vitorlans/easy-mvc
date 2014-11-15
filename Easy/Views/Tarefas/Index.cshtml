@@ -84,11 +84,11 @@
                 @foreach (var item in Model)
                 {
 
-                    <tr class="">
+                    <tr class="" id="@item.IdTarefa">
                         <td>
-                            <div class="checkbox">
+                            <div class="checkbox" title="Concluir Tarefa">
                                 <label>
-                                    <input type="checkbox">
+                                    <input class="conf" type="checkbox" name="@("confirmar"+@item.IdTarefa)" id="@("id"+@item.IdTarefa)" value="@item.IdTarefa">
                                 </label>
                             </div>
                         </td>
@@ -112,7 +112,7 @@
                             }
                         </td>
                         <td>
-                            <form action="~/Tarefas/EditTarefa" method="get">
+                            <form action="~/Tarefas/EditTarefa" method="post">
                                 @Html.Hidden("id", item.IdTarefa)
                                 @if(ViewBag.Id == item.Criador.IdUser){
                                 <div class="btn-group color_button" style="margin-left: 0%">
@@ -177,6 +177,32 @@
 }
 
 <script>
+
+    $(document).ready(function () {
+
+            $(".conf").click(function () {
+
+                var name = this.name;
+                var id = $("input[name = " + name + "]").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Tarefas/ConcluirTarefa",
+                    dateType: "json",
+                    data: { idTare: "" + id + "" },
+                    success: function (data) {
+                        $.snackbar({ content: "A Tarefa foi Concluida com Sucesso.", timeout: 8000 });
+                        var tr = $("#id"+id+"").closest('tr');
+
+                        tr.fadeOut(400, function () {
+                            tr.remove();
+                        });
+                    },
+                    error: function (xhr) {
+                    }
+                });
+            });
+    });
 
     $(document).ready(function () {
         $("#btteste").click(function () {

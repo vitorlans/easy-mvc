@@ -97,6 +97,7 @@ namespace Easy.Models
                 SqlDataReader dr = sqlExec.ExecuteReader();
                 bool status = true;
                 string data;
+                string email = "";
 
                 while (dr.Read())
                 {
@@ -116,6 +117,11 @@ namespace Easy.Models
                     else
                         data = dr["Dt_Fim"].ToString();
 
+                    if (relac.IdUser != 0)
+                    {
+                        email = relac.Email.ToString().Trim();
+                    }
+
                     lsTaf.Add
                     (
                         new Tarefas
@@ -127,7 +133,7 @@ namespace Easy.Models
                             Prioridade = dr["Prioridade"].ToString(),
                             Status = status,
                             Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) },
-                            Relacionado = relac.Email.ToString().Trim()
+                            Relacionado = email
                         }
                     );
                 }
@@ -150,28 +156,49 @@ namespace Easy.Models
             {
                 try
                 {
+                    string data = null;
+                    string sql = "";
+
                     DAOUsuario dUser = new DAOUsuario();
-                    Usuario idRelac = dUser.RecuperaUsuarioEmail(tar.Relacionado.ToString().Trim());
+                    Usuario idRelac = new Usuario();
+
+                    if (tar.Relacionado != null)
+                    {
+                        idRelac = dUser.RecuperaUsuarioEmail(tar.Relacionado.ToString().Trim());
+                    }
+
                     Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
                     Empresas emp = Empresas.RecuperaEmpresaCookie();
-             
-                    string data = null;
+
 
                     if (tar.DtFim != null)
                         data = Convert.ToDateTime(tar.DtFim).ToString();
-                    
 
-                    SqlCommand sqlExec = new SqlCommand
-                    (
-                        "INSERT INTO TBTAREFAS VALUES("+
-                                                    "'"+tar.Descricao+"',"+
-                                                    "'"+Convert.ToDateTime(tar.DtInicio)+"',"+
-                                                    "'"+data+"'," +
-                                                    "'"+tar.Prioridade+"',"+
-                                                    "'A',"+
-                                                    ""+user.IdUser+","+
-                                                    ""+idRelac.IdUser+","+emp.IdEmpresa+" )", Connection.Conectar()
-                    );
+                    if (idRelac.IdUser != 0)
+                    {
+                        sql = "INSERT INTO TBTAREFAS VALUES(" +
+                                                    "'" + tar.Descricao + "'," +
+                                                    "'" + Convert.ToDateTime(tar.DtInicio) + "'," +
+                                                    "'" + data + "'," +
+                                                    "'" + tar.Prioridade + "'," +
+                                                    "'A'," +
+                                                    "" + user.IdUser + "," +
+                                                    "" + idRelac.IdUser + "," + emp.IdEmpresa + " )";
+                    }
+                    else
+                    {
+                        sql = "INSERT INTO TBTAREFAS VALUES(" +
+                                                    "'" + tar.Descricao + "'," +
+                                                    "'" + Convert.ToDateTime(tar.DtInicio) + "'," +
+                                                    "'" + data + "'," +
+                                                    "'" + tar.Prioridade + "'," +
+                                                    "'A'," +
+                                                    "" + user.IdUser + "," +
+                                                    "NULL," + emp.IdEmpresa + " )";
+                    }
+                    
+                    SqlCommand sqlExec= new SqlCommand(sql, Connection.Conectar());
+
                     sqlExec.ExecuteNonQuery();
                 }
                 catch (SqlException sqlEx)
@@ -183,6 +210,12 @@ namespace Easy.Models
 
         public void AtualizaTarefa(Tarefas tar)
         {
+            DAOUsuario duser = new DAOUsuario();
+
+            string email = (string)tar.Relacionado ?? "";
+
+            Usuario user = duser.RecuperaUsuarioEmail(email.Trim());
+
             string status = "";
             if (tar != null)
             {
@@ -214,7 +247,11 @@ namespace Easy.Models
                     sqlExec.Parameters.AddWithValue("fim", (object)tar.DtFim ?? DBNull.Value);
                     sqlExec.Parameters.AddWithValue("prior", tar.Prioridade);
                     sqlExec.Parameters.AddWithValue("status", status);
-                    sqlExec.Parameters.AddWithValue("relac", 1);
+
+                    if(user.IdUser != 0)
+                        sqlExec.Parameters.AddWithValue("relac", user.IdUser);
+                    else
+                        sqlExec.Parameters.AddWithValue("relac", DBNull.Value);
 
                     sqlExec.Parameters.AddWithValue("id", tar.IdTarefa);
 
@@ -228,6 +265,20 @@ namespace Easy.Models
             }
         }
 
+        public void ConcluirTarefa(int id)
+        {
+            try
+            {
+                SqlCommand sqlExec = new SqlCommand("UPDATE TBTAREFAS SET STATUS = 'C' WHERE IDTARE = " + id + "", Connection.Conectar());
+
+                sqlExec.ExecuteNonQuery();
+            }
+            catch (SqlException sqlE)
+            {
+            }
+
+            Connection.Desconectar();
+        }
 
         //TESTE SOBRE RELACÇÃO DE USUARIOS NA INSERÇÃO DE TAREFAS
 
