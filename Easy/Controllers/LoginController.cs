@@ -57,6 +57,8 @@ namespace Easy.Controllers
             Session["Usuario"] = null;
             Autenticacao.RemoverCookieAutenticacao();
 
+            Session["snackl"] = "2";
+
             return RedirectToAction("Index");
         }
 
@@ -73,10 +75,13 @@ namespace Easy.Controllers
             user.Senha = Criptografia.GerarSenha();
             if (user != null)
             {
-                DUser.AtualizarUsuario(user);
+                DUser.AlterarSenha(user.IdUser.ToString(), user.Senha);
                 EmailController c = new EmailController();
                 c.EnviarEmailRecuperar(user);
             }
+
+            Session["snackl"] = "1";
+
             return RedirectToAction("Index","Login");
         }
 

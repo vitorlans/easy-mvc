@@ -42,7 +42,7 @@ namespace Easy.Controllers
                     {
                         id= LstComp[x].IdComp.ToString(), 
                         allday = false,
-                        title=  "Comp: "+LstComp[x].Titulo,
+                        title=  "Comp - "+LstComp[x].Titulo,
                         description = LstComp[x].Descricao,
                         start = cd,
                         end = cd2,
@@ -81,7 +81,7 @@ namespace Easy.Controllers
                     new Calendario
                     {
                         id = LstTaref[y].IdTarefa.ToString(),
-                        title = "Tarefa :"+LstTaref[y].Descricao,
+                        title = "Tar - "+LstTaref[y].Descricao,
                         start = dt,
                         end = dt2,
                         url = "http://localhost:58623/Tarefas?search=" + LstTaref[y].Descricao.ToString(),
@@ -99,18 +99,7 @@ namespace Easy.Controllers
             return Json(row, JsonRequestBehavior.AllowGet);
         }
 
-
-        [HttpPost]
-        public JsonResult NovoCompromisso(string dia)
-        {
-            return Json(new
-            {
-                OK = true,
-                Mensagem = "Usuário Autenticado. Redirecionando...",
-                Local = "112"
-            },JsonRequestBehavior.AllowGet);
-            
-        }
+      
 
     }
 }

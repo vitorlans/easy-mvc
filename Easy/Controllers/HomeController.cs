@@ -29,6 +29,8 @@ namespace Easy.Controllers
 
             DAOUsuario duser = new DAOUsuario();
             duser.AtualizarUsuario(user);
+
+            Session["snackp"] = "1";
             return View(user);
         }
 

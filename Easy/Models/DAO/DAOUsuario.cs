@@ -276,7 +276,7 @@ namespace Easy.Models
                     user.Status = "A";
                     user.Senha = Criptografia.GerarSenha();
                     var random = new Random();
-                    var num = random.Next(5);
+                    var num = random.Next(6);
                     user.Imagem = "http://localhost:58623/Content/img/contato" + num + ".png";
 
                     string strInserir = "insert into TBUSUARIOS (NOME, EMAIL, SENHA, USUARIOSISTEMA, LIBERACONVITE, STATUS, DT_CRIACAO, IMAGEM) values (@nome, @email, @senha, @usuariosistema, @liberaconvite, @status, @datacriacao, @imagem)";
@@ -368,7 +368,58 @@ namespace Easy.Models
             catch (SqlException) { }
         }
 
+        public void AtualizaPermissaoSistema(Usuario user)
+        {
 
+            try
+            {
+
+                string strInserir = "update TBUSUARIOS  set USUARIOSISTEMA = @usuariosistema where IDUSER = @iduser";
+
+                SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
+
+                updateUsuario.Parameters.AddWithValue("usuariosistema", user.UsuarioSistema);
+
+                updateUsuario.Parameters.AddWithValue("iduser", user.IdUser);
+
+                updateUsuario.ExecuteNonQuery();
+
+                if (user.UsuarioSistema == "S")
+                {
+                    user = RecuperaUsuario(user.IdUser.ToString());
+                    EmailController ec = new EmailController();
+                    ec.EnviarEmailSistema(user);
+                }
+                else {
+
+                    user = RecuperaUsuario(user.IdUser.ToString());
+                    EmailController ec = new EmailController();
+                    ec.EnviarEmailDesativa(user); 
+                }
+            }
+
+            catch (SqlException) { }
+        }
+
+        public void AtualizaPermissaoConvite(Usuario user)
+        {
+
+            try
+            {
+
+                string strInserir = "update TBUSUARIOS  set LIBERACONVITE = @liberaconvite where IDUSER = @iduser";
+
+                SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
+
+                updateUsuario.Parameters.AddWithValue("liberaconvite", user.LiberaConvite);
+
+                updateUsuario.Parameters.AddWithValue("iduser", user.IdUser);
+
+                updateUsuario.ExecuteNonQuery();
+            }
+
+            catch (SqlException) { }
+        }
         public void AtualizarContato(Usuario user)
         {
 

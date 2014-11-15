@@ -6,19 +6,17 @@ using Postal;
 
 namespace Easy.Models
 {
-    public class EmailCompromisso: Email
+    public class EmailDesativa : Email
     {
- 
         public string Para { get; set; }
         public string Assunto { get; set; }
         public string Titulo { get; set; }
-        public string Descricao { get; set; } 
+        public string Descricao { get; set; }
         public string Quando { get; set; }
         public string Mensagem { get; set; }
-        public string Quem { get; set; }
         public string UrlAceita { get; set; }
         public string UrlRejeita { get; set; }
-
-
+        public string Login { get; set; }
+        public string Senha { get; set; }
     }
 }

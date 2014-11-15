@@ -218,6 +218,7 @@
     <Compile Include="Models\DAO\DAOEmpresas.cs" />
     <Compile Include="Models\DAO\DAOTarefas.cs" />
     <Compile Include="Models\DAO\DAOUsuario.cs" />
+    <Compile Include="Models\Email\EmailDesativa.cs" />
     <Compile Include="Models\Email\EmailRecuperar.cs" />
     <Compile Include="Models\Email\EmailCompromisso.cs" />
     <Compile Include="Models\Email\EmailSistema.cs" />
@@ -418,6 +419,7 @@
     <Content Include="Views\Emails\EmailRecuperar.cshtml" />
     <Content Include="Views\Home\Perfil.cshtml" />
     <Content Include="Views\Contatos\Add.cshtml" />
+    <Content Include="Views\Emails\EmailDesativa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

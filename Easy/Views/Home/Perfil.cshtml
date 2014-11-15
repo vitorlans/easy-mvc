@@ -1,123 +1,136 @@
 ﻿@model Easy.Models.Usuario
 @{
     ViewBag.Title = "Meu Perfil";
+
+    int valida = 0;
+
+    if (Session["snackp"] != null)
+    {
+        valida = int.Parse(Session["snackp"].ToString());
+    }
+
+
+    Session.Remove("snackp");
 }
+<input id="hidValida" value="@valida" type="hidden"/>
+
 
 <div class="bs-docs-section">
-              <div class="row" style="">
-                <div class="col-lg-9">
-                  <div class="well bs-component">
-                    <form class="form-horizontal" style="" method="post">
-                      <fieldset>
+    <div class="row" style="">
+        <div class="col-lg-9">
+            <div id="status1" class="alert alert-success"></div>
+              <div class="well bs-component">
+                <form class="form-horizontal" style="" method="post">
+                    <fieldset>
                         <legend>Perfil</legend>
-                         @Html.ValidationSummary(true)
-                         <div class="form-group">
+                        @Html.ValidationSummary(true)
+                        <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
-                            <img style="width:30%;height:30%" src="@Model.Imagem" alt="icon">
-                        </div>
+                                <img style="width:30%;height:30%" src="@Model.Imagem" alt="icon">
                             </div>
-                          <hr />
-                        <div class="form-group">
-                          <label for="inputNome" class="col-lg-2 control-label">Nome</label>
-                          <div class="col-lg-10">
-                          @Html.TextBoxFor(model => model.Nome, new { @id="inputNome", @maxlength = "30", @placeholder="Nome", @class = "form-control" })
-                          @Html.HiddenFor(model => model.IdUser) 
-                          @Html.HiddenFor(model => model.Imagem) 
-                          </div>
                         </div>
+                        <hr />
                         <div class="form-group">
-                          <label for="inputNome" class="col-lg-2 control-label">Sobrenome</label>
-                          <div class="col-lg-10">
-                          @Html.TextBoxFor(model => model.Sobrenome, new { @id="inputSobrenome", @maxlength = "30", @placeholder="Sobrenome", @class = "form-control" })
-                           </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-                          <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Email, new { @id="inputEmail1", @maxlength = "80", @placeholder="Email", @class = "form-control", @type="email", @readonly=true})
+                            <label for="inputNome" class="col-lg-2 control-label">Nome</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Nome, new { @id = "inputNome", @maxlength = "30", @placeholder = "Nome", @class = "form-control" })
+                                @Html.HiddenFor(model => model.IdUser)
+                                @Html.HiddenFor(model => model.Imagem)
                             </div>
-                          </div>    
-        
+                        </div>
+                        <div class="form-group">
+                            <label for="inputNome" class="col-lg-2 control-label">Sobrenome</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Sobrenome, new { @id = "inputSobrenome", @maxlength = "30", @placeholder = "Sobrenome", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Email, new { @id = "inputEmail1", @maxlength = "80", @placeholder = "Email", @class = "form-control", @type = "email", @readonly = true })
+                            </div>
+                        </div>
+
                         <br />
-                         <h4>Adicionais</h4>
-                          <hr />
+                        <h4>Adicionais</h4>
+                        <hr />
 
-                          <div class="form-group">
-                          <label for="inputEnd" class="col-lg-2 control-label">Endereço</label>
-                          <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Endereco, new { @id="inputEnd", @maxlength = "50", @placeholder="Endereço", @class = "form-control", @type="text" })
-                          </div>
-                        </div>
-                          
-                          <div class="form-group">
-                          <label for="inputBairro" class="col-lg-2 control-label">Bairro</label>
-                          <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Bairro, new { @id="inputBairro", @maxlength = "50", @placeholder="Bairro", @class = "form-control", @type="text" })
-                          </div>
-                        </div>
-
-                          <div class="form-group">
-                          <label for="inputCid" class="col-lg-2 control-label">Cidade</label>
-                          <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Cidade, new { @id="inputCidade", @maxlength = "50", @placeholder="Cidade", @class = "form-control", @type="text" })
-                          </div>
-                        </div>
-
-                             <div class="form-group">
-                          <label for="inputCep" class="col-lg-2 control-label">Cep</label>
-                          <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Cep, new { @id="inputCep", @maxlength = "9", @class = "form-control", @type="text" })
-                          </div>
-                        </div>
-
-                          <div class="form-group">
-                          <label for="inputTelefone" class="col-lg-2 control-label">Telefone</label>
-                          <div class="col-lg-10">
-                             @Html.TextBoxFor(model => model.Telefone, new { @id="inputTel", @maxlength = "20", @class = "form-control", @type="tel" })
-                          </div>
-                        </div>
-                       
                         <div class="form-group">
-                          <div class="col-lg-10 col-lg-offset-2">
-                            <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
-                          </div>
-                        </div>
-                      </fieldset>
-                    </form>
-                    
-                  </div>
-                      <br />
-                    <div >
-    <div id="status" class="alert alert-info"></div>
-</div>
-                    <form class="well form-horizontal" style="" method="post" action="javascript:function()">
-                      <fieldset>
-                        <legend>Alterar Senha</legend>
-                             <div class="form-group">
-                          <label for="inputNome" class="col-lg-2 control-label">Senha</label>
-                          <div class="col-lg-10">
-                          @Html.PasswordFor(model => model.Senha, new { @id="inputSenha1", @maxlength = "50", @placeholder="Password", @class = "form-control" })
-                              <input type="hidden" id="iduser" name="iduser" value="@Model.IdUser" />
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="inputNome" class="col-lg-2 control-label">Confirmar Senha</label>
-                          <div class="col-lg-10">
-                          @Html.PasswordFor(model => model.Senha1, new { @id="inputSenha2", @maxlength = "50", @placeholder="Password", @class = "form-control" })
-                           </div>
+                            <label for="inputEnd" class="col-lg-2 control-label">Endereço</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Endereco, new { @id = "inputEnd", @maxlength = "50", @placeholder = "Endereço", @class = "form-control", @type = "text" })
+                            </div>
                         </div>
 
-                           <div class="form-group">
-                          <div class="col-lg-10 col-lg-offset-2">
+                        <div class="form-group">
+                            <label for="inputBairro" class="col-lg-2 control-label">Bairro</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Bairro, new { @id = "inputBairro", @maxlength = "50", @placeholder = "Bairro", @class = "form-control", @type = "text" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputCid" class="col-lg-2 control-label">Cidade</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Cidade, new { @id = "inputCidade", @maxlength = "50", @placeholder = "Cidade", @class = "form-control", @type = "text" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputCep" class="col-lg-2 control-label">Cep</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Cep, new { @id = "inputCep", @maxlength = "9", @class = "form-control", @type = "text" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputTelefone" class="col-lg-2 control-label">Telefone</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Telefone, new { @id = "inputTel", @maxlength = "20", @class = "form-control", @type = "tel" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+            <br />
+            <div>
+                <div id="status" class="alert alert-info"></div>
+            </div>
+            <form class="well form-horizontal" style="" method="post" action="javascript:function()">
+                <fieldset>
+                    <legend>Alterar Senha</legend>
+                    <div class="form-group">
+                        <label for="inputNome" class="col-lg-2 control-label">Senha</label>
+                        <div class="col-lg-10">
+                            @Html.PasswordFor(model => model.Senha, new { @id = "inputSenha1", @maxlength = "50", @placeholder = "Password", @class = "form-control" })
+                            <input type="hidden" id="iduser" name="iduser" value="@Model.IdUser" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNome" class="col-lg-2 control-label">Confirmar Senha</label>
+                        <div class="col-lg-10">
+                            @Html.PasswordFor(model => model.Senha1, new { @id = "inputSenha2", @maxlength = "50", @placeholder = "Password", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-10 col-lg-offset-2">
                             <input type="submit" id="botao-salvar" value="Alterar" class="btn btn-primary">
-                          </div>
                         </div>
-                          </fieldset>
-                      </form>
+                    </div>
+                </fieldset>
+            </form>
 
-                </div>
-              </div>
- </div>           
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -125,9 +138,10 @@
 <script src="~/Scripts/jquery-1.8.2.js" type="text/javascript"></script>
 
 <script>
-
     $(document).ready(function () {
         $("#status").hide();
+        $("#status1").hide();
+
         $("#botao-salvar").click(function () {
 
             $.ajax({
@@ -165,9 +179,15 @@
             });
         });
     });
+    if ($("#hidValida").val() == 1) {
+        $(document).ready(function () {
+            $("#status1").html("Dados do Perfil atualizados com Sucesso");
+            $("#status1").show();
+            setTimeout(function () { $("#status1").hide() }, 3000);
+            $("#hidValida").val() = 0;
+        });
+    }
 </script>
-
-
 
 @*<script type="text/javascript">
 

@@ -1,7 +1,20 @@
 ﻿@model IEnumerable<Easy.Models.Usuario>
 @{
     ViewBag.Title = "Contatos";
+    
+        int valida = 0;
+
+    if (Session["snackc"] != null)
+    {
+        valida = int.Parse(Session["snackc"].ToString());
+    }
+
+        
+    Session.Remove("snackc");
 }
+
+<input id="hidValida" value="@valida" type="hidden"/>
+
 <br />
 <div class="row">
     <h2>Contatos</h2>
@@ -92,5 +105,19 @@
         $('.saveButton').click(function(){
             $(this).closest('form')[0].submit();
             });
+    });
+
+    if ($("#hidValida").val() == 1) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Contato Adicionado com Sucesso.", timeout: 3000 });
+            $("#hidValida").val() = 0;
         });
+    } else if ($("#hidValida").val() == 2) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Contato Excluido com Sucesso.", timeout: 3000 });
+            $("#hidValida").val() = 0;
+        });
+
+    }
+
 </script>

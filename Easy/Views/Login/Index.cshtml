@@ -1,12 +1,23 @@
-﻿@{
+﻿@model Easy.Models.Usuario
+@{
     Layout = "~/Views/Shared/_Login.cshtml";
     ViewBag.Title = "Login de Acesso";
 
+    int valida = 0;
+
+    if (Session["snackl"] != null)
+    {
+        valida = int.Parse(Session["snackl"].ToString());
+    }
+
+
+    Session.Remove("snackl");
 }
-@model Easy.Models.Usuario
+
+<input id="hidValida" value="@valida" type="hidden"/>
+
 <h1>Quem é você?</h1>
 <p>&nbsp;</p>
-
 <div style="width: 74%">
     <div id="status" class="alert alert-info"></div>
 </div>
@@ -35,7 +46,7 @@
                                     @Html.TextBoxFor(model => model.Senha, new { @name = "inputSenha", @id = "inputSenha", @placeholder = "Senha", @class = "form-control", @type = "password" })
                                     <br />
                                     <p>
-                                        @Html.ActionLink("Esqueceu sua senha?","Recuperar","Login",null)
+                                        @Html.ActionLink("Esqueceu sua senha?", "Recuperar", "Login", null)
                                     </p>
                                 </div>
 
@@ -108,3 +119,20 @@
         });
     });
 </script>
+<script>
+
+    if ($("#hidValida").val() == 1) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Senha Redefinida, Peço que verifique o Email Cadastrado(CXE/SPM).", timeout: 5000 });
+            $("#hidValida").val() = 0;
+        });
+    } else if ($("#hidValida").val() == 2) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Deslogado com Sucesso. Tenha um Bom dia", timeout: 3000 });
+            $("#hidValida").val() = 0;
+        });
+
+    }
+
+
+</script>    

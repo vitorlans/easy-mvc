@@ -1,7 +1,19 @@
 ﻿@model Easy.Models.Usuario
 @{
     ViewBag.Title = "Detalhes";
+
+    int valida = 0;
+
+    if (Session["snack"] != null)
+    {
+        valida = int.Parse(Session["snack"].ToString());
+    }
+
+        
+    Session.Remove("snack");
 }
+
+<input id="hidValida" value="@valida" type="hidden"/>
 
 <div class="bs-docs-section">
     <div class="row" style="">
@@ -28,6 +40,8 @@
                                 @Html.TextBoxFor(model => model.Email, new { @id = "inputEmail", @maxlength = "80", @placeholder = "Email", @class = "form-control", @type = "email", @readonly = true })
                                 @Html.HiddenFor(model => model.Imagem)
                                 @Html.HiddenFor(model => model.IdUser)
+                                @Html.HiddenFor(model => model.UsuarioSistema)
+                                @Html.HiddenFor(model => model.LiberaConvite)
                             </div>
                         </div>
 
@@ -127,3 +141,19 @@
 
     </div>
 </div>
+<script>
+
+    if ($("#hidValida").val() == 1) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Permissões Atualizadas.", timeout: 3000 });
+            $("#hidValida").val() = 0;
+        });
+    } else if ($("#hidValida").val() == 2) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Dados do contato atualizado. Verifique as informações.", timeout: 3000 });
+            $("#hidValida").val() = 0;
+        });
+
+    }
+
+</script>    
