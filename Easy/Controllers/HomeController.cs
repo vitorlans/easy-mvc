@@ -64,7 +64,12 @@ namespace Easy.Controllers
                 JsonRequestBehavior.AllowGet);
             }
         }
-        
+
+        public ActionResult Configuracoes()
+        {
+            return View();
+        }
+
         }
     }
 

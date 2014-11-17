@@ -150,6 +150,107 @@ namespace Easy.Models
             return lsTaf;
         }
 
+        public List<Tarefas> ListaTarefasAvancada(string status, string prior, string dtinicio, string dtfim)
+        {
+            DAOUsuario dUser = new DAOUsuario();
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            Empresas emp = Empresas.RecuperaEmpresaCookie();
+
+            List<Tarefas> list = new List<Tarefas>();
+            string sql="";
+            bool statusTar = true;
+            string data;
+            string email = "";
+
+            if(status != "")
+            {
+                if(status == "Ativas")
+                    sql = " STATUS = 'A' ";
+
+                else if(status == "Concluídas")
+                    sql = " STATUS = 'C'";
+
+                else if(status == "Canceladas")
+                    sql = " STATUS = 'I'";
+
+                
+                if(prior != "")
+                {
+                    if(prior == "Baixa")
+                        sql += " AND PRIORIDADE = 'B' ";
+
+                    else if(prior == "Media")
+                        sql += " AND PRIORIDADE = 'M' ";
+
+                    else if(prior == "Alta")
+                        sql += " AND PRIORIDADE = 'A' ";
+                }
+
+                
+                if(dtinicio != "")
+                {
+                    sql += " AND DT_INICIO >= '"+dtinicio+"' ";
+                }
+
+                if(dtfim != "")
+                {
+                    sql += " AND DT_FIM <= '"+dtfim+"' ";
+                }
+            }
+
+            try
+            {
+
+                SqlCommand sqlBusca = new SqlCommand("SELECT * FROM TBTAREFAS WHERE "+sql+" AND IDUSER = "+user.IdUser+" AND IDEMPR = "+emp.IdEmpresa+" ", Connection.Conectar());
+                SqlDataReader dr = sqlBusca.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    Usuario relac = dUser.RecuperaUsuario(dr["IDUSERDEST"].ToString());
+
+                    if (dr["Status"].ToString() == "A")
+                    {
+                        statusTar = true;
+                    }
+                    else if (dr["Status"].ToString() == "I" || dr["Status"].ToString() == "C")
+                    {
+                        statusTar = false;
+                    }
+
+                    if (dr["Dt_Fim"].ToString() != "")
+                        data = Convert.ToDateTime(dr["Dt_Fim"].ToString()).ToShortDateString();
+                    else
+                        data = dr["Dt_Fim"].ToString();
+
+                    if (relac.IdUser != 0)
+                    {
+                        email = relac.Email.ToString().Trim();
+                    }
+
+                    list.Add
+                      (
+                          new Tarefas
+                          {
+                              IdTarefa = int.Parse(dr["IdTare"].ToString()),
+                              Descricao = dr["Descricao"].ToString(),
+                              DtInicio = Convert.ToDateTime(dr["Dt_Inicio"].ToString()).ToShortDateString(),
+                              DtFim = data,
+                              Prioridade = dr["Prioridade"].ToString(),
+                              Status = statusTar,
+                              Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) },
+                              Relacionado = email
+                          }
+                      );
+                }
+            }
+            catch(SqlException exsql)
+            {
+            }
+
+            Connection.Desconectar();
+            return list;
+        }
+
         public void AddTarefa(Tarefas tar)
         {
             if (tar != null)
@@ -309,6 +410,28 @@ namespace Easy.Models
             Connection.Desconectar();
 
             return listUs;
+        }
+
+        public List<string> ListaDadosInicial() //ALTERAR IDUSERS E IDEMPRS
+        {
+            List<string> listS = new List<string>();
+
+            SqlCommand sqlBusca = new SqlCommand("SELECT Total1 = (SELECT count(*)Total1 FROM TBTAREFAS WHERE STATUS = 'A' AND IDUSER = 1 AND IDEMPR = 1 OR STATUS = 'A' AND IDUSERDEST = 1 AND IDEMPR = 1), "+ 
+	                                             " Total2 = (SELECT count(*)Total2 FROM TBTAREFAS WHERE DT_FIM < GETDATE() AND STATUS = 'A' AND IDUSER = 1 AND IDEMPR = 1 OR STATUS = 'A' AND IDUSERDEST = 1 AND IDEMPR = 1), "+
+	                                             " Total3 = (SELECT count(*)Total1 FROM TBCOMPROMISSOS WHERE STATUS = 'A' AND IDUSER = 1 AND IDEMPR = 1 ), "+
+	                                             " Total4 = (SELECT count(*)Total1 FROM TBCOMPROMISSOS WHERE DT_FIM < GETDATE() AND STATUS = 'A' AND IDUSER = 1 AND IDEMPR = 1)", Connection.Conectar());
+            
+            SqlDataReader dr = sqlBusca.ExecuteReader();
+
+            if (dr.Read())
+            {
+                listS.Add(dr["Total1"].ToString());
+                listS.Add(dr["Total2"].ToString());
+                listS.Add(dr["Total3"].ToString());
+                listS.Add(dr["Total4"].ToString());
+            }
+
+            return listS;
         }
     }
 }

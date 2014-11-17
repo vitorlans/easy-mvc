@@ -64,7 +64,11 @@ namespace Easy.Controllers
             foreach (var i in LstTaref)
             {
                 var dt = string.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(LstTaref[y].DtInicio));
-                var dt2 = string.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(LstTaref[y].DtFim));
+                string dt2 = "";
+                if (LstTaref[y].DtFim != null && LstTaref[y].DtFim != "")
+                {
+                    dt2 = string.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(LstTaref[y].DtFim));
+                }
 
                 //var hr = Convert.ToDateTime(LstTaref[y].DtInicio).ToShortTimeString();
                 //var hr2 = Convert.ToDateTime(LstTaref[y].DtFim).ToShortTimeString();

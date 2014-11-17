@@ -8,6 +8,7 @@
     listaPrior.Add(new SelectListItem { Text = "Baixa", Value = "B", Selected=true });
     listaPrior.Add(new SelectListItem { Text = "Média", Value = "M" });
     listaPrior.Add(new SelectListItem { Text = "Alta", Value = "A" });
+    
 }
 
 <div class="bs-docs-section">
@@ -92,6 +93,13 @@
 
 <script type="text/javascript">
 
+    function DataAtual() {
+        var now = new Date();
+        var data = now.getDay + '/' + now.getMonth + '/' + now.getYear;
+
+        return data;
+    }
+
     $(document).ready(function () {
 
         $("#tcomplete").autocomplete(
@@ -129,7 +137,8 @@
         todayHighlight: 1,
         startView: 2,
         forceParse: 0,
-        showMeridian: 1
+        showMeridian: 1,
+        startDate: '+0d'
     });
     $('.form_date').datetimepicker({
         language: 'pt-BR',
@@ -139,7 +148,8 @@
         todayHighlight: 1,
         startView: 2,
         minView: 2,
-        forceParse: 0
+        forceParse: 0,
+        startDate: '+0d'
     });
     $('.form_time').datetimepicker({
         language: 'pt-BR',

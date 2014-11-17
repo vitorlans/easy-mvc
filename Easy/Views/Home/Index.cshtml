@@ -1,7 +1,134 @@
 ﻿@{
     ViewBag.Title = "Pagina Inicial";
+
+    Easy.Models.DAOTarefas dtar = new Easy.Models.DAOTarefas();
+    List<string> listaDados = new List<string>();
+    listaDados.AddRange(dtar.ListaDadosInicial());
+
+    var tarefasA = listaDados[0].ToString();
+    var tarefasAt = listaDados[1].ToString();
+    var compA = listaDados[2].ToString();
+    var compAt = listaDados[3].ToString();
+    
 }
 @section featured {
+
+    <div>
+    <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-3">
+                    <i class="fa fa-comments fa-5x"></i>
+                  </div>
+                  <div class="col-xs-9 text-right">
+                    <div class="huge">@compA</div>
+                    <div>Compromissos Ativos!</div>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+
+                                <div class="panel-footer">
+
+                                    <span class="pull-left">Ver Detalhes</span>
+
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                                    <div class="clearfix"></div>
+
+                                </div>
+
+                            </a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-3">
+                    <i class="fa fa-tasks fa-5x"></i>
+                  </div>
+                  <div class="col-xs-9 text-right">
+                    <div class="huge">@tarefasA</div>
+                    <div>Tarefas Ativas</div>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+
+                                <div class="panel-footer">
+
+                                    <span class="pull-left">Ver Detalhes</span>
+
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                                    <div class="clearfix"></div>
+
+                                </div>
+
+                            </a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-3">
+                    <i class="fa fa-shopping-cart fa-5x"></i>
+                  </div>
+                  <div class="col-xs-9 text-right">
+                    <div class="huge">@compAt</div>
+                    <div>Compromissos Vencidos</div>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+
+                                <div class="panel-footer">
+
+                                    <span class="pull-left">Ver Detalhes</span>
+
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                                    <div class="clearfix"></div>
+
+                                </div>
+
+                            </a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-3">
+                    <i class="fa fa-support fa-5x"></i>
+                  </div>
+                  <div class="col-xs-9 text-right">
+                    <div class="huge">@tarefasAt</div>
+                    <div>Tarefas Atrasadas</div>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+
+                                <div class="panel-footer">
+
+                                    <span class="pull-left">Ver Detalhes</span>
+
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                                    <div class="clearfix"></div>
+
+                                </div>
+
+                            </a>
+            </div>
+          </div>
+        </div>
+        </div>
    <!-- <section class="featured">
         <div class="content-wrapper">
             <div class="title"> ,  
