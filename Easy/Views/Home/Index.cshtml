@@ -5,10 +5,18 @@
     List<string> listaDados = new List<string>();
     listaDados.AddRange(dtar.ListaDadosInicial());
 
-    var tarefasA = listaDados[0].ToString();
-    var tarefasAt = listaDados[1].ToString();
-    var compA = listaDados[2].ToString();
-    var compAt = listaDados[3].ToString();
+    var tarefasA = "0";
+    var tarefasAt = "0";
+    var compA = "0";
+    var compAt = "0";
+    
+    if(listaDados.Count > 0)
+    {
+        tarefasA = listaDados[0].ToString();
+        tarefasAt = listaDados[1].ToString();
+        compA = listaDados[2].ToString();
+        compAt = listaDados[3].ToString();
+    }
     
 }
 @section featured {

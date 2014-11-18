@@ -65,11 +65,28 @@ namespace Easy.Controllers
             }
         }
 
+        
         public ActionResult Configuracoes()
         {
-            return View();
+            ParametrosSistema param = new ParametrosSistema();
+            
+            return View(param.ListaParametros());
         }
 
+        [HttpPost]
+        public JsonResult AtualizarParametro(string idParam, bool valorParam)
+        {
+            ParametrosSistema param = new ParametrosSistema();
+
+            if (valorParam)
+                param.AtualizarParametro(int.Parse(idParam), false);
+            else
+                param.AtualizarParametro(int.Parse(idParam), true);
+
+            return Json(new { success = true });
+
         }
+
     }
+}
 

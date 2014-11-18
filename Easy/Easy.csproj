@@ -422,6 +422,7 @@
     <Content Include="Views\Home\Perfil.cshtml" />
     <Content Include="Views\Contatos\Add.cshtml" />
     <Content Include="Views\Emails\EmailDesativa.cshtml" />
+    <Content Include="Views\Home\Configuracoes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

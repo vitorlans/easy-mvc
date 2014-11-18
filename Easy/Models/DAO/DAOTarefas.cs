@@ -414,21 +414,33 @@ namespace Easy.Models
 
         public List<string> ListaDadosInicial() //ALTERAR IDUSERS E IDEMPRS
         {
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            Empresas emp = Empresas.RecuperaEmpresaCookie();
+
             List<string> listS = new List<string>();
 
-            SqlCommand sqlBusca = new SqlCommand("SELECT Total1 = (SELECT count(*)Total1 FROM TBTAREFAS WHERE STATUS = 'A' AND IDUSER = 1 AND IDEMPR = 1 OR STATUS = 'A' AND IDUSERDEST = 1 AND IDEMPR = 1), "+ 
-	                                             " Total2 = (SELECT count(*)Total2 FROM TBTAREFAS WHERE DT_FIM < GETDATE() AND STATUS = 'A' AND IDUSER = 1 AND IDEMPR = 1 OR STATUS = 'A' AND IDUSERDEST = 1 AND IDEMPR = 1), "+
-	                                             " Total3 = (SELECT count(*)Total1 FROM TBCOMPROMISSOS WHERE STATUS = 'A' AND IDUSER = 1 AND IDEMPR = 1 ), "+
-	                                             " Total4 = (SELECT count(*)Total1 FROM TBCOMPROMISSOS WHERE DT_FIM < GETDATE() AND STATUS = 'A' AND IDUSER = 1 AND IDEMPR = 1)", Connection.Conectar());
-            
-            SqlDataReader dr = sqlBusca.ExecuteReader();
-
-            if (dr.Read())
+            if (user != null && emp != null)
             {
-                listS.Add(dr["Total1"].ToString());
-                listS.Add(dr["Total2"].ToString());
-                listS.Add(dr["Total3"].ToString());
-                listS.Add(dr["Total4"].ToString());
+                SqlCommand sqlBusca = new SqlCommand("SELECT Total1 = (SELECT count(*)Total1 FROM TBTAREFAS WHERE STATUS = 'A' AND IDUSER = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " OR STATUS = 'A' AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " ), " +
+                                                     " Total2 = (SELECT count(*)Total2 FROM TBTAREFAS WHERE DT_FIM < GETDATE() AND STATUS = 'A' AND IDUSER = " + user.IdUser + " AND IDEMPR = 1 OR STATUS = 'A' AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + "), " +
+                                                     " Total3 = (SELECT COUNT(*) FROM TBCOMPROMISSOS COMP " +
+                                                                               " LEFT JOIN VCOMPUSER VUSER ON COMP.IDCOMP = VUSER.IDCOMP " +
+                                                                               "      WHERE  COMP.IDUSER = " + user.IdUser + " AND COMP.STATUS IN ('A', 'P') AND COMP.IDEMPR = " + emp.IdEmpresa + " " +
+                                                                               "      OR  VUSER.IDUSER = " + user.IdUser + " AND COMP.STATUS IN ('A', 'P') AND COMP.IDEMPR = " + emp.IdEmpresa + "), " +
+                                                     " Total4 = (SELECT COUNT(*) FROM TBCOMPROMISSOS COMP " +
+                                                                               " LEFT JOIN VCOMPUSER VUSER ON COMP.IDCOMP = VUSER.IDCOMP " +
+                                                                               "     WHERE  COMP.IDUSER = " + user.IdUser + " AND COMP.STATUS = 'T' AND COMP.IDEMPR = " + emp.IdEmpresa + " " +
+                                                                               "       OR  VUSER.IDUSER = " + user.IdUser + " AND COMP.STATUS = 'T' AND COMP.IDEMPR = " + emp.IdEmpresa + ")", Connection.Conectar());
+
+                SqlDataReader dr = sqlBusca.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    listS.Add(dr["Total1"].ToString());
+                    listS.Add(dr["Total2"].ToString());
+                    listS.Add(dr["Total3"].ToString());
+                    listS.Add(dr["Total4"].ToString());
+                }
             }
 
             return listS;
