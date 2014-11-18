@@ -52,7 +52,7 @@ namespace Easy.Models
             Empresas Emp = Empresas.RecuperaEmpresaCookie();
             DAOUsuario DUser = new DAOUsuario();
             DAOEmpresas DEmp = new DAOEmpresas();
-            string strSelect = "SELECT NT.* FROM TBNOTAS NT, VCOMPNOTA CN WHERE IDUSER = " + User.IdUser +" AND IDEMPR = " + Emp.IdEmpresa + " AND CN.IDCOMP = " + idComp;
+            string strSelect = "SELECT NT.* FROM TBNOTAS NT, VCOMPNOTA CN WHERE NT.IDUSER = "+ User.IdUser +" AND NT.IDEMPR = "+ Emp.IdEmpresa +" AND CN.IDCOMP = " + idComp + " AND CN.IDNOTA = NT.IDNOTA";
             SqlCommand sqlComando = new SqlCommand(strSelect, Connection.Conectar());
             SqlDataReader dr = sqlComando.ExecuteReader();
 

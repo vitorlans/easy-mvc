@@ -42,7 +42,10 @@
                     @Html.DisplayFor(modelItem => item.DescricaoNota)
                 </td>
                 <td>
-
+                    <i class="mdi-image-edit">@Html.ActionLink("EditarNota", "Compromissos", new { id=item.IdNota })</i>
+                </td>
+                <td>
+                    @Html.ActionLink("ExcluirNota", "Compromissos", new { id=item.IdNota })
                 </td>
             </tr>
         }
