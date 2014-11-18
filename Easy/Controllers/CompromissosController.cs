@@ -282,7 +282,7 @@ namespace Easy.Controllers
         public ActionResult AddNota(Notas Nota)
         {
             string idcomp = Session["sltnota"].ToString();
-            if (Nota.DescricaoNota != null)
+            if (Nota.DescricaoNota != null && idcomp != "")
             {
                 try
                 {
