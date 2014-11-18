@@ -118,6 +118,12 @@
             $("#hidValida").val() = 0;
         });
 
+    } else if ($("#hidValida").val() == 3) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Você já possui este Contato Verifique em sua Lista.", timeout: 3000 });
+            $("#hidValida").val() = 0;
+        });
+
     }
 
 </script>

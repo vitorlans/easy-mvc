@@ -279,8 +279,9 @@ namespace Easy.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddNota(Notas Nota, string idcomp)
+        public ActionResult AddNota(Notas Nota)
         {
+            string idcomp = Session["sltnota"].ToString();
             if (Nota.DescricaoNota != null)
             {
                 try
@@ -295,6 +296,15 @@ namespace Easy.Controllers
                 catch{ }
             }
             return RedirectToAction("Index", "Compromissos");
+        }
+
+
+        public JsonResult CapturaId(string idcomp) {
+
+            idcomp = idcomp.Substring(1);
+            Session["sltnota"] = idcomp;
+
+            return Json(idcomp, JsonRequestBehavior.AllowGet);
         }
     }
 }

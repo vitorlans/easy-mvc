@@ -264,7 +264,7 @@ namespace Easy.Models
 
         }
 
-        public void CriarUsuario(Usuario user, string login)
+        public bool CriarUsuario(Usuario user, string login)
         {
 
          try
@@ -305,17 +305,20 @@ namespace Easy.Models
                         ec.EnviarEmailSistema(user);
                     }
 
+                    return true;
                 }
                 else
                 {
                     var rec = RecuperaUsuarioEmail(user.Email);
                     user.IdUser = rec.IdUser;
                     VinculaUsuario(login, user);
+                    return true;
                 }
 
             }
             catch (SqlException) {
 
+                return false;
             }
 
         }

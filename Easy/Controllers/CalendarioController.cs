@@ -14,6 +14,8 @@ namespace Easy.Controllers
 
         public ActionResult Index()
         {
+
+            Session["paramCal"] = "agendaDay";
             return View();
         }
 
