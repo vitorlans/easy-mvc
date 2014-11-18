@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Easy.Models.Notas>
+@{
+    var Nota = new Easy.Models.Notas();
+
+    var Comp = new Easy.Models.Compromissos();
+    
+}
+
+<div style="padding: 50px 50px;">
+    @using (Html.BeginForm("AddNota", "Compromissos", null, FormMethod.Post, new { @class = "form-horizontal" }))
+    { 
+        <fieldset>
+            <legend>Adicionar Notas</legend>
+            <div class="form-group">
+                <label for="textArea" class="col-lg-2 control-label">Nota</label>
+                <div class="col-lg-10">
+                    <input  type="hidden" name="idcomp" id="idcomp" value="@Session["sltnota"]"/>
+                    @Html.TextAreaFor(model => Nota.DescricaoNota, new { @class = "form-control", rows = "3", id = "textArea", @maxlength = "100" })
+                    <span class="help-block">A Nota deve ser breve, contendo no máximo 100 caracteres.</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <input type="submit" class="btn btn-primary" value="Anotar" />
+                </div>
+            </div>
+        </fieldset>
+}
+    <hr />
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescricaoNota)
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        }
+    </table>
+</div>

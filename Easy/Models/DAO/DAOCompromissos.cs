@@ -96,6 +96,7 @@ namespace Easy.Models
             List<Compromissos> ListaComp;
             ListaComp = new List<Compromissos>();
             Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+            Empresas Emp = Empresas.RecuperaEmpresaCookie();
 
             try
             {
@@ -107,11 +108,11 @@ namespace Easy.Models
                     if (y == 1)
                     {
                         strSelect = "SELECT * FROM TBCOMPROMISSOS CO, VCOMPUSER UC, TBUSUARIOS US WHERE CO.IDCOMP = UC.IDCOMP " +
-                            "AND UC.IDUSER = US.IDUSER AND UC.IDUSER = " + User.IdUser;
+                            "AND UC.IDUSER = US.IDUSER AND UC.IDUSER = " + User.IdUser + " AND CO.IDEMPR = " + Emp.IdEmpresa;
                     }
                     else
                     {
-                        strSelect = "SELECT * FROM TBCOMPROMISSOS WHERE IDUSER = " + User.IdUser;
+                        strSelect = "SELECT * FROM TBCOMPROMISSOS WHERE IDUSER = " + User.IdUser + " AND IDEMPR = " + Emp.IdEmpresa;
                     }
                     SqlCommand sqlComando = new SqlCommand(strSelect, Connection.Conectar());
                     SqlDataReader dr = sqlComando.ExecuteReader();
@@ -133,27 +134,6 @@ namespace Easy.Models
                             );
 
                         ListaComp[x].Status = DAOCompromissos.VerificaStatusComp(ListaComp[x]);
-
-                        //string dtIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortDateString();
-                        //string dtFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortDateString();
-                        //string hrIni = Convert.ToDateTime(ListaComp[x].DataInicio).ToShortTimeString();
-                        //string hrFim = Convert.ToDateTime(ListaComp[x].DataTermino).ToShortTimeString();
-
-
-
-                        //if (dtIni == dtFim)
-                        //{
-                        //    ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
-                        //    ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
-                        //    ListaComp[x].DataTermino = hrFim;
-                        //}
-                        //else
-                        //{
-                        //    ListaComp[x].DataInicio = Convert.ToDateTime(ListaComp[x].DataInicio.ToString()).ToLongDateString() + " às " + hrIni.ToString() + " até ";
-                        //    ListaComp[x].DataInicio = Compromissos.FormataTexto(ListaComp[x].DataInicio);
-                        //    ListaComp[x].DataTermino = Convert.ToDateTime(ListaComp[x].DataTermino.ToString()).ToLongDateString() + " às " + hrIni.ToString();
-                        //    ListaComp[x].DataTermino = Compromissos.FormataTexto(ListaComp[x].DataTermino);
-                        //}
 
                         x++;
                     }
@@ -378,9 +358,17 @@ namespace Easy.Models
             Connection.Desconectar();
             return lista;
         }
-        public static void RemoverVincPart(int id)
+        public void RemoverVincPart(int id)
         {
-            //deletar vinculos da base
+            try
+            {
+                SqlCommand sqlComando = new SqlCommand("DELETE FROM VCOMPUSER WHERE IDCOMP = " + id, Connection.Conectar());
+                sqlComando.ExecuteNonQuery();
+
+            }
+            catch (SqlException e) { }
+            Connection.Desconectar();
+
         }
 
     }
