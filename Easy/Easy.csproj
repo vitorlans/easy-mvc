@@ -423,11 +423,8 @@
     <Content Include="Views\Home\Perfil.cshtml" />
     <Content Include="Views\Contatos\Add.cshtml" />
     <Content Include="Views\Emails\EmailDesativa.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Home\Configuracoes.cshtml" />
-=======
     <Content Include="Views\Compromissos\Notas.cshtml" />
->>>>>>> 19b8ecc3f0390721ae68e7bc7c144c7be43c96d4
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
