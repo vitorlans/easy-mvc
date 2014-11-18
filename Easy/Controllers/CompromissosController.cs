@@ -103,29 +103,27 @@ namespace Easy.Controllers
         [HttpPost]
         public ActionResult Add(Compromissos Compromisso, string participantes)
         {
-            if (Compromisso.Titulo != null && Compromisso.Descricao != null && Compromisso.DataInicio != null && Compromisso.DataTermino != null)
+            if (Compromisso.Titulo != null && Compromisso.Descricao != null && Compromisso.DataInicio != null && Compromisso.DataTermino != null && Convert.ToDateTime(Compromisso.DataInicio) < Convert.ToDateTime(Compromisso.DataTermino))
             {
                 try
                 {
-                    //Compromisso.Usuario = (Usuario)Session["Usuario"];
                     Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
                     Compromisso.Usuario = User;
 
                     Empresas Emp = Empresas.RecuperaEmpresaCookie();
                     Compromisso.Empresa = Emp;
 
-                    //Quebrar email por ponto e virgula e  add ao compromisso
                     if (participantes != "")
                     {
                         Compromisso = Compromissos.SplitParticipantes(Compromisso, participantes);
-                        //Compromisso.Participantes.Count(
+
                     }
 
                     DAOCompromissos daoCompromisso = new DAOCompromissos();
                     daoCompromisso.AddCompromisso(Compromisso);
                     Compromisso.IdComp = daoCompromisso.RecuperaIdUltimoCompromisso(Compromisso.Usuario.IdUser);
                     if (Compromisso.Participantes[0] != null)
-                        for (int x = 0; x <= Compromisso.Participantes.Count; x++)
+                        for (int x = 0; x < Compromisso.Participantes.Count; x++)
                             daoCompromisso.AddParticipantesCompromisso(Compromisso, Compromisso.Participantes[x]);
 
                     EmailController EmailC = new EmailController();
@@ -182,25 +180,23 @@ namespace Easy.Controllers
         [HttpPost]
         public ActionResult AtualizarCompromisso(Compromissos CompromissoNovo, string participantes, string id)
         {
-            if (CompromissoNovo.Titulo != null && CompromissoNovo.Descricao != null && CompromissoNovo.DataInicio != null && CompromissoNovo.DataTermino != null)
+            if (CompromissoNovo.Titulo != null && CompromissoNovo.Descricao != null && CompromissoNovo.DataInicio != null && CompromissoNovo.DataTermino != null && Convert.ToDateTime(CompromissoNovo.DataInicio) < Convert.ToDateTime(CompromissoNovo.DataTermino))
             {
                 try
                 {
-                    //Compromisso.Usuario = (Usuario)Session["Usuario"];
                     Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
                     CompromissoNovo.Usuario = User;
 
                     Empresas Emp = Empresas.RecuperaEmpresaCookie();
                     CompromissoNovo.Empresa = Emp;
 
-                    //Quebrar email por ponto e virgula e  add ao compromisso
                     if (participantes != "")
                     {
                         CompromissoNovo = Compromissos.SplitParticipantes(CompromissoNovo, participantes);
-                        //Compromisso.Participantes.Count(
                     }
 
                     DAOCompromissos daoCompromisso = new DAOCompromissos();
+                    daoCompromisso.RemoverVincPart(CompromissoNovo.IdComp);
                     daoCompromisso.EditarCompromisso(CompromissoNovo, User);
                     if (CompromissoNovo.Participantes[0] != null)
                         for (int x = 0; x <= CompromissoNovo.Participantes.Count; x++)
@@ -227,19 +223,6 @@ namespace Easy.Controllers
             return RedirectToAction("Index", "Compromissos");
 
         }
-        //[HttpPost]
-        //public ActionResult AlterarStatusComp(int id)
-        //{
-        //    DAOCompromissos dCompromisso = new DAOCompromissos();
-        //    Compromissos Compromisso = new Compromissos();
-        //    Compromisso = dCompromisso.SelecionarCompromissoId(id);
-
-        //    //Usuario User = (Usuario)Session["Usuario"];
-        //    Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
-
-        //    dCompromisso.AlterarStatusComp(Compromisso, User);
-        //    return RedirectToAction("EditarCompromisso", "Compromissos");
-        //}
 
         [HttpGet]
         public ActionResult UrlConfirma(string codigo, int id) {
@@ -289,6 +272,28 @@ namespace Easy.Controllers
             DAOCompromissos.VerificaStatusComp(Comp);
             Session["AddCompromisso"] = 4;
             Session.Timeout = 1;
+            return RedirectToAction("Index", "Compromissos");
+        }
+        public ActionResult Notas()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddNota(Notas Nota, string idcomp)
+        {
+            if (Nota.DescricaoNota != null)
+            {
+                try
+                {
+                    DAONotas dNota = new DAONotas();
+                    Compromissos Comp = new Compromissos();
+                    Comp.IdComp = int.Parse(idcomp);
+                    dNota.AdicionarNota(Nota);
+                    Nota.IdNota = dNota.RecuperaIdUltimaNota(Nota.Usuario.IdUser);
+                    dNota.VincNotaComp(Nota, Comp);
+                }
+                catch{ }
+            }
             return RedirectToAction("Index", "Compromissos");
         }
     }

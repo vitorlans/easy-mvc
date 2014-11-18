@@ -216,6 +216,7 @@
     <Compile Include="Models\DAO\DAOComentarios.cs" />
     <Compile Include="Models\DAO\DAOCompromissos.cs" />
     <Compile Include="Models\DAO\DAOEmpresas.cs" />
+    <Compile Include="Models\DAO\DAONotas.cs" />
     <Compile Include="Models\DAO\DAOTarefas.cs" />
     <Compile Include="Models\DAO\DAOUsuario.cs" />
     <Compile Include="Models\Email\EmailDesativa.cs" />
@@ -420,6 +421,7 @@
     <Content Include="Views\Home\Perfil.cshtml" />
     <Content Include="Views\Contatos\Add.cshtml" />
     <Content Include="Views\Emails\EmailDesativa.cshtml" />
+    <Content Include="Views\Compromissos\Notas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
