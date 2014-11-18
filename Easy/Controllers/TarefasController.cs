@@ -82,6 +82,19 @@ namespace Easy.Controllers
             return View(x.ToPagedList(pageNumber, pageSize));
         }
 
+        [HttpPost]
+        public ActionResult Index(string select1, string select2, string select3, string inputDefault1, string inputDefault2, int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            ViewBag.Id = user.IdUser;
+
+            DAOTarefas dTar = new DAOTarefas();
+
+            return View(dTar.ListaTarefasAvancada(select1, select2, inputDefault1, inputDefault2).ToPagedList(pageNumber, pageSize));
+        }
+
         public ActionResult AdicionarTarefa()
         {
             return View();
@@ -216,7 +229,7 @@ namespace Easy.Controllers
         public ActionResult AddCal(string data) {
 
             Tarefas tare = new Tarefas();
-            var dt =Convert.ToDateTime(data);
+            var dt =Convert.ToDateTime(data).ToShortDateString();
 
             tare.DtInicio = dt.ToString();
             return View("AdicionarTarefa", tare);

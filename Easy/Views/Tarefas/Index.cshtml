@@ -4,6 +4,12 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Gerenciamento de Tarefas";
+    
+    List<SelectListItem> listaStatus = new List<SelectListItem>();
+    listaStatus.Add(new SelectListItem { Text = "Ativas", Value = "B", Selected=true });
+    listaStatus.Add(new SelectListItem { Text = "Concluidas", Value = "M" });
+    listaStatus.Add(new SelectListItem { Text = "Canceladas", Value = "A" });
+    
     string classe = "";
     int valida = 0;
 
@@ -23,9 +29,15 @@
 <a href="~/Tarefas/AdicionarTarefa" style="margin-left: 90%" class="btn btn-fab btn-primary btn-raised icon-material-add"></a>
 <br />
 <br />
+
+<div class="checkbox">
+    <label>
+        <input class="advanced_check" type="checkbox">Utilizar Filtros Avançados
+    </label>
+</div>
 <!--Filtros -->
 <div class="navbar navbar-inverse">
-
+    <div id="basic_filter">
     <div class="navbar-inverse-collapse">
         @using(Html.BeginForm("Index", "Tarefas", FormMethod.Get, new { @class="navbar-form navbar-left" }))
         {
@@ -61,7 +73,75 @@
         </ul>
          <!--&nbsp &nbsp &nbsp &nbsp <input type="submit" class="btn btn-primary" value="Filtrar" /> -->
     </div>
+    </div>
+    @using(Html.BeginForm("Index", "Tarefas", FormMethod.Post))
+    {
+    <div id="advanced_filter">
+    <div class="navbar-inverse-collapse form-advanced">
+       <div class="form-group inline-divs">
+            <div class="col-lg-10">
+                <div class="margin-divs">
+               Status:
+               <select class="form-control form-advanced color-default" id="select1" name="select1">
+                    <option>Ativas</option>
+                    <option>Concluídas</option>
+                    <option>Canceladas</option>
+                </select>
+                </div>
+            </div>
+        </div>
+          <div class="form-group inline-divs">
+            <div class="col-lg-10">
+                <div class="margin-divs">
+                Prioridade:<select class="form-control form-advanced color-default" id="select2" name="select2">
+                    <option>Baixa</option>
+                    <option>Média</option>
+                    <option>Alta</option>
+                </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group inline-divs">
+            <div class="col-lg-10">
+                <div class="margin-divs">
+                Tarefa:<select class="form-control form-advanced color-default" id="select3" name="select3">
+                    <option>Própria</option>
+                    <option>Recebida</option>
+                    <option>Ambas</option>
+                </select>
+                </div>
+            </div>
+        </div>
+       <div class="form-group inline-divs">
+                <div class="col-lg-10 ">
+                <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1">
+                    <input type="text" class="form-control form-advanced dtIni" id="inputDefault1" name="inputDefault1" readonly="true" size="20" placeholder ="Data Inicial.."/> 
+                    <span class="add-on"><i class="icon-th icon-material-today"></i></span>
+                </div>
+		        <input type="hidden" id="dtp_input1" value="" /><br/>
+            </div>
+        </div>
+
+        <div class="form-group inline-divs">
+                <div class="col-lg-10"> 
+                <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1">
+                        <input type="text" class="form-control form-advanced dtIni", id="inputDefault2" name="inputDefault2" readonly="true" size="20" placeholder ="Data Final.."/>
+                    <span class="add-on"><i class="icon-th icon-material-today"></i></span>&nbsp&nbsp
+                </div>
+		        <input type="hidden" id="dtp_input2" value="" /><br/>
+            </div>
+        </div>
+        <div class="form-group inline-divs">
+            <div class="col-lg-10">
+                <input type="submit" value="Filtrar" />
+            </div>
+        </div>
+         <!--&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp<input type="submit" class="btn btn-primary" value="Filtrar" />-->
+    </div>
+    </div>
+    }
 </div>
+
 <!--Fim-->
 <div class="bs-docs-section">
     <div class="row" style="">
@@ -98,17 +178,44 @@
                                 @Html.DisplayFor(modelItem => item.Descricao)&nbsp&nbsp&nbsp
                                 </div>
                             </div>
-                            @if (item.Prioridade == "A")
-                            {
-                                <div title="Prioridade Alta" class="div-simples">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="mdi-action-question-answer"></i> &nbsp <i class="text-danger mdi-image-assistant-photo"></i></div>
-                            }
-                            else if (item.Prioridade == "M")
-                            {
-                                <div title="Prioridade Média" class="div-simples">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="mdi-action-question-answer"></i> &nbsp <i class="texto-amarelo mdi-image-assistant-photo"></i></div>
-                            }
-                            else
-                            {
-                                <div title="Prioridade Baixa" class="div-simples">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="mdi-action-question-answer"></i> &nbsp <i class="text-success mdi-image-assistant-photo"></i></div>
+                            @{
+                                DateTime now = DateTime.Now;
+                                DateTime dtfim = now;
+                                
+                                if(item.DtFim != "")
+                                {
+                                    dtfim = DateTime.Parse(item.DtFim);
+                                }
+                                
+                                if (item.Prioridade == "A")
+                                {
+                                                    
+                                    if(now > dtfim){
+                                        <div title="Tarefa está Atrasada" class="div-simples text-warning">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Alta" class="text-danger mdi-image-assistant-photo"></i></div>
+                                     }
+                                    else
+                                    {
+                                        <div title="Tarefa em Andamento" class="div-simples">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Alta" class="text-danger mdi-image-assistant-photo"></i></div>
+                                    }
+                                }
+                                else if (item.Prioridade == "M")
+                                {
+                                    if(now > dtfim){
+                                        <div title="Tarefa está Atrasada" class="div-simples text-warning">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Média" class="texto-amarelo mdi-image-assistant-photo"></i></div>
+                                    }
+                                    else{
+                                        <div title="Tarefa em Andamento" class="div-simples">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Média" class="texto-amarelo mdi-image-assistant-photo"></i></div>
+                                    }
+                                }
+                                else
+                                {
+                                    if(now > dtfim){
+                                        <div title="Tarefa está Atrasada" class="div-simples text-warning">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Baixa" class="text-success mdi-image-assistant-photo"></i></div>
+                                    }
+                                    else{
+                                        <div title="Tarefa em Andamento" class="div-simples">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Baixa" class="text-success mdi-image-assistant-photo"></i></div>
+                                    }
+                                }
                             }
                         </td>
                         <td>
@@ -237,6 +344,21 @@
         $(this).tab('show')
     })
 
+    $(".advanced_check").click(function () {
+        $("#basic_filter").toggle();
+        $("#advanced_filter").toggle();
+    });
+
+    $('.form_date').datetimepicker({
+        language: 'pt-BR',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
 </script>
 
 @{

@@ -9,6 +9,18 @@
 
     <title>@ViewBag.Title</title>
 
+    <style type="text/css">
+        #div_fundo {
+            background: url(/Content/img/img_fundo.jpg) no-repeat center center ;
+            -webkit-background-size: 100% 400px;
+            -moz-background-size: 100% 400px;
+            -o-background-size: 100% 400px;
+             background-size: 100% 400px;
+             height: 400px;
+             margin-top: 10px;
+        }
+    </style>
+
      @Styles.Render("~/Content/css")
      @Scripts.Render("~/bundles/modernizr")
 
@@ -16,7 +28,6 @@
 </head>
 
 <body>
-
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/easy")
@@ -29,9 +40,24 @@
         });
 
     </script>
-    @RenderSection("scripts", required: false)      
+    @RenderSection("scripts", required: false)
 
-  <div id="page-content-wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <div id="div_fundo">    
+    <div id="page-content-wrapper">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-3">
@@ -44,6 +70,32 @@
         </div>
       </div>
     </div>
+</div>
+
+
+<!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>EASY Peoples</h1>
+                <p>Agora ficou ainda mais fácil gerenciar suas rotinas. Com EASY Peoples, suas atividades se tornarão cada vez mais simples e práticas </p>
+            </div>
+        </div>
+
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Easy Software 2014</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+     
 </body>
 </html>
 

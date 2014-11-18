@@ -934,9 +934,9 @@ img {
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
   display: block;
-  width: 100% \9;
+  width: 100%;
   max-width: 100%;
-  height: auto;
+  height: 450px;
 }
 .img-rounded {
   border-radius: 6px;
@@ -6277,4 +6277,30 @@ button.close {
 .div-tarefas {
 
     margin: -12px -5px;
+}
+
+.transp {
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+}
+
+#basic_filter {
+    display: block;
+}
+
+#advanced_filter {
+    display: none;
+}
+
+.form-advanced {
+ width: auto;
+}
+
+.inline-divs {
+    display: inline-block;
+    padding: 0px 0px;
+}
+
+.color-default {
+    color: black;
 }
