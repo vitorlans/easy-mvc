@@ -10,7 +10,7 @@ namespace Easy.Models
 {
     public class DAOCompromissos
     {
-        //Status será inserido como (T)erminado, (C)ancelado, (P)róximo ou em (O)correndo
+        //Status será inserido como (T)erminado, (C)ancelado, (P)róximo ou em (A)ndamento
         public static string VerificaStatusComp(Compromissos Comp)
         {
             string status = Comp.Status;

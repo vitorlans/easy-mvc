@@ -297,7 +297,29 @@ namespace Easy.Controllers
             }
             return RedirectToAction("Index", "Compromissos");
         }
+        public ActionResult ExcluirNota(string id)
+        {
+            if (id != "")
+            {
+                DAONotas dNota = new DAONotas();
+                dNota.DeletarNota(id);
+            }
+            return RedirectToAction("Index", "Compromissos");
+        }
+        [HttpGet]
+        public JsonResult EditarNota(string id)
+        {
+            id = id.Substring(1);
 
+            Notas Nota = new Notas();
+
+            if (id != "")
+            {
+                DAONotas dNota = new DAONotas();
+                Nota = dNota.RecuperaNotaID(int.Parse(id));
+            }
+            return Json(Nota, JsonRequestBehavior.AllowGet); 
+        }
 
         public JsonResult CapturaId(string idcomp) {
 
