@@ -309,7 +309,7 @@ namespace Easy.Controllers
         [HttpGet]
         public JsonResult EditarNota(string id)
         {
-            id = id.Substring(1);
+            id = id.Substring(3);
 
             Notas Nota = new Notas();
 

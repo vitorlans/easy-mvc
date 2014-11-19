@@ -223,6 +223,8 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
     })
 
     $('.editnt').click(function () {
+        var f = $(this).attr('href');
+        var fr = $(this).attr('href') + "-f";
 
         $.ajax({
             url: "/Compromissos/EditarNota",
@@ -234,7 +236,8 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
             async: true,
             success: function (dados) {
                 if (dados != null) {
-                    $(".form-control").html(dados.DescricaoNota);
+                    $(f).val(dados.DescricaoNota);
+                    $(fr).show();
 
                 }
         

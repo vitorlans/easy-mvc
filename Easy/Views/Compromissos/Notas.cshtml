@@ -36,10 +36,16 @@
                 <td>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DescricaoNota, new {@class="dc" })
+                    @Html.DisplayFor(modelItem => item.DescricaoNota)
+                     <form id="d-@item.IdNota-f"style="display: none;" action="/Compromissos/AtualizarNota" method="post" >
+                        <input type="text" id="d-@item.IdNota" value="" />
+                        <input type="submit"  value="Att" />
+                        <input id="@item.IdNota" name="id" type="hidden" />
+                    </form>
                 </td>
                 <td>
-                    <a href="#@item.IdNota" class="editnt mdi-image-edit" ></a>
+                    <a href="#d-@item.IdNota" class="editnt mdi-image-edit" ></a>
+                   
                 </td>
                 <td>
                     <a href="/Compromissos/ExcluirNota/@item.IdNota" class="mdi-content-clear"></a>
