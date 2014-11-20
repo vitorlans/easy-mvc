@@ -323,7 +323,7 @@ namespace Easy.Models
 
         }
 
-        public void AlterarSenha(string id, string senha)
+        public bool AlterarSenha(string id, string senha)
         {
 
             try
@@ -337,9 +337,10 @@ namespace Easy.Models
 
                 
                 updateUsuario.ExecuteNonQuery();
+                return true;
             }
 
-            catch (SqlException) { }
+            catch (SqlException) { return false; }
         }
 
 

@@ -13,41 +13,83 @@ namespace Easy.Controllers
         // GET: /Login/
 
         [HttpGet]
-        public JsonResult AutenticacaoDeUsuario(string email, string senha, string Url)
+        public JsonResult AutenticacaoDeUsuario(string email, string senha, string Url, string Ip)
         {
-
-            if (Usuario.AutenticarUsuario(email, senha))
+            if (Autenticacao.RecuperaIPCookie() != Ip)
             {
-                if (Url != null)
+
+                if (Usuario.AutenticarUsuario(email, senha))
                 {
-                    return Json(new
+                    if (Url != null)
                     {
-                        OK = true,
-                        Mensagem = "Usuário Autenticado. Redirecionando...",
-                        Local = Url
-                    },
-                    JsonRequestBehavior.AllowGet);
+                        return Json(new
+                        {
+                            OK = true,
+                            Mensagem = "Usuário Autenticado. Redirecionando...",
+                            Local = Url
+                        },
+                        JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+
+                        return Json(new
+                        {
+                            OK = true,
+                            Mensagem = "Usuário Autenticado. Redirecionando...",
+                            Local = "/Home/Index"
+                        },
+                        JsonRequestBehavior.AllowGet);
+
+                    }
                 }
-                else {
+                else
+                {
+                    if (true)
+                    {
+                        string block = (string)Session["IPBlock"] ?? "0";
+
+                        Int32 blk = Int32.Parse(block);
+                        blk++;
+                        
+                        Session["IPBlock"] = blk.ToString();
+
+                        if (blk > 9)
+                        {
+
+                            Autenticacao.BloqueiaAcesso(Ip);
+                            Session["IPBlock"] = "0";
+                            blk = 0;
+
+                            return Json(new
+                            {
+                                OK = false,
+                                Mensagem = "Seu acesso ao sistema foi Bloqueado. Devido a varias Tentativas. Tente mais tarde ou entre em contato com Adminstração"
+                            },
+                             JsonRequestBehavior.AllowGet);
+
+                        }
+
+                    };
 
                     return Json(new
                     {
-                        OK = true,
-                        Mensagem = "Usuário Autenticado. Redirecionando...",
-                        Local = "/Home/Index"
+                        OK = false,
+                        Mensagem = "Usuário não encontrado. Tente Novamente."
                     },
                     JsonRequestBehavior.AllowGet);
-                    
                 }
             }
-            else
-            {
+            else {
+
                 return Json(new
                 {
                     OK = false,
-                    Mensagem = "Usuário não encontrado. Tente Novamente."
+                    Mensagem = "Seu acesso ao sistema foi suspenso. Devido a varias tentativas sem sucesso ! Tente acesso mais tarde ou Entre em contato com Adminstração",
+                    Cor = true
                 },
-                JsonRequestBehavior.AllowGet);
+                             JsonRequestBehavior.AllowGet);
+
             }
         }
 
@@ -73,16 +115,18 @@ namespace Easy.Controllers
             DAOUsuario DUser = new DAOUsuario();
             var user = DUser.RecuperaUsuarioEmail(email);
             user.Senha = Criptografia.GerarSenha();
-            if (user != null)
+            if (user.Email != null)
             {
                 DUser.AlterarSenha(user.IdUser.ToString(), user.Senha);
-                EmailController c = new EmailController();
-                c.EnviarEmailRecuperar(user);
-            }
-
-            Session["snackl"] = "1";
-
-            return RedirectToAction("Index","Login");
+                   EmailController c = new EmailController();
+                    c.EnviarEmailRecuperar(user);
+                    Session["snackl"] = "1";
+                    return RedirectToAction("Index", "Login");
+                }
+                else {
+                    Session["snackl"] = "3";
+                    return RedirectToAction("Index", "Login");
+                }
         }
 
         public ActionResult Index()
