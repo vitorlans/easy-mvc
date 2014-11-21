@@ -132,12 +132,13 @@ namespace Easy.Models
             catch { }
             Connection.Desconectar();
         }
-        public void AtualizarNota(string id)
+        public void AtualizarNota(string id, string descricao)
         {
             try
             {
                 Notas Nota = new Notas();
                 Nota.IdNota = int.Parse(id);
+                Nota.DescricaoNota = descricao;
                 Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
                 Empresas Emp = Empresas.RecuperaEmpresaCookie();
                 Nota.Usuario = User;

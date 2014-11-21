@@ -134,5 +134,29 @@ namespace Easy.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public ActionResult UrlConfirma(string codigo)
+        {
+
+           
+            return Content("Participação Confirmada");
+        }
+
+        [HttpGet]
+        public ActionResult UrlRejeita(string codigo)
+        {
+
+            char[] strSep1 = { '-' }; //Caracter usado para separar o texto
+            var strArray = codigo.Split(strSep1);//Onde ficará o resultado da separação
+
+            int IdComp = int.Parse(strArray[0]);
+            int IdUser = int.Parse(strArray[1]);
+            DAOCompromissos dComp = new DAOCompromissos();
+            dComp.RemoverVincPartEmail(IdComp, IdUser);
+
+            return Content("Participação Retirada");
+        }
+
     }
 }

@@ -370,6 +370,18 @@ namespace Easy.Models
             Connection.Desconectar();
 
         }
+        public void RemoverVincPartEmail(int idcomp, int iduser)
+        {
+            try
+            {
+                SqlCommand sqlComando = new SqlCommand("DELETE FROM VCOMPUSER WHERE IDCOMP = " + idcomp + "AND IDUSER = " + iduser, Connection.Conectar());
+                sqlComando.ExecuteNonQuery();
+
+            }
+            catch (SqlException e) { }
+            Connection.Desconectar();
+
+        }
 
     }
 }

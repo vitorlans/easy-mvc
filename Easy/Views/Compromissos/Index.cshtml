@@ -195,6 +195,12 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
             $("#hidValida").val() = 0;
         });
     }
+    else if ($("#hidValida").val() == 5) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Não foi possível realizar a ação. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
+        });
+    }
     $(document).ready(function () {
         $(".HideComentario").hide();
     });;
