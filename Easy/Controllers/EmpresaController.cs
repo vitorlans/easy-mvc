@@ -33,10 +33,22 @@ namespace Easy.Controllers
             }
             if (Url != null)
             {
+                ParametrosSistema p = new ParametrosSistema();
+                if (p.ListaParametros()[0].ValorParam == true && ( Url == "/" || Url == "/Home/Index"))
+                {
+                    Url = "/Calendario";
+                }
+
                 return Redirect(Url);
             }
             else
             {
+                ParametrosSistema p = new ParametrosSistema();
+                if (p.ListaParametros()[0].ValorParam == true) {
+                    return RedirectToAction("Index", "Calendario");
+                
+                }
+
                 return RedirectToAction("Index", "Home");
             }
         }

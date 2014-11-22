@@ -85,7 +85,7 @@ namespace Easy.Controllers
                 return Json(new
                 {
                     OK = false,
-                    Mensagem = "Seu acesso ao sistema foi suspenso. Devido a varias tentativas sem sucesso ! Tente acesso mais tarde ou Entre em contato com Adminstração",
+                    Mensagem = "Seu acesso ao sistema foi suspenso, Devido a varias tentativas sem sucesso ! Tente acesso mais tarde ou Entre em contato com Administração",
                     Cor = true
                 },
                              JsonRequestBehavior.AllowGet);

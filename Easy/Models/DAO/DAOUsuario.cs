@@ -276,7 +276,7 @@ namespace Easy.Models
                     user.Status = "A";
                     user.Senha = Criptografia.GerarSenha();
                     var random = new Random();
-                    var num = random.Next(6);
+                    var num = random.Next(5);
                     user.Imagem = "http://localhost:58623/Content/img/contato" + num + ".png";
 
                     string strInserir = "insert into TBUSUARIOS (NOME, EMAIL, SENHA, USUARIOSISTEMA, LIBERACONVITE, STATUS, DT_CRIACAO, IMAGEM) values (@nome, @email, @senha, @usuariosistema, @liberaconvite, @status, @datacriacao, @imagem)";

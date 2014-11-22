@@ -17,8 +17,10 @@ namespace Easy.Controllers
         public ActionResult Index(string id, string sortOrder, string currentFilter, string search, int? page)
         {
             Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
-            ViewBag.Id = user.IdUser;
-
+            if (user != null)
+            {
+                ViewBag.Id = user.IdUser;
+            }
             if (search != null)
                 page = 1;
 

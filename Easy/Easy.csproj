@@ -225,7 +225,6 @@
     <Compile Include="Models\Email\EmailSistema.cs" />
     <Compile Include="Models\Email\EmailTarefas.cs" />
     <Compile Include="Models\Empresas.cs" />
-    <Compile Include="Models\EnvioEmail.cs" />
     <Compile Include="Models\Notas.cs" />
     <Compile Include="Models\ParametrosSistema.cs" />
     <Compile Include="Models\Tarefas.cs" />
@@ -253,7 +252,6 @@
     <Content Include="Content\img\contato2.png" />
     <Content Include="Content\img\contato3.png" />
     <Content Include="Content\img\contato4.png" />
-    <Content Include="Content\img\contato5.png" />
     <Content Include="Content\img\contato0.png" />
     <Content Include="Content\img\img_fundo.jpg" />
     <Content Include="Content\img\ops2.png" />
