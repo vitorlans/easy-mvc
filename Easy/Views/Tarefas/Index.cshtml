@@ -322,6 +322,15 @@
 
                         tr.fadeOut(400, function () {
                             tr.remove();
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/Tarefas/EnviaEmailAjax",
+                                dateType: "json",
+                                data: { idTare: "" + id + "", tipo: "Concluida" },
+                                success: function (data) {
+                                }
+                            });
                         });
                     },
                     error: function (xhr) {

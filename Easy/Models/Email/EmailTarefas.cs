@@ -14,6 +14,7 @@ namespace Easy.Models
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public string Quando { get; set; }
+        public string Prioridade { get; set; }
         public string Mensagem { get; set; }
         public string UrlAceita { get; set; }
         public string UrlRejeita { get; set; }

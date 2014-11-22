@@ -172,20 +172,9 @@ namespace Easy.Controllers
             DAOTarefas daoTaf = new DAOTarefas();
 
             daoTaf.AtualizaTarefa(tar);
-            //email.EnviarTarefaAtualizada(tar);
 
-            /* EmailTarefas eTare = new EmailTarefas();
-
-                eTare.Para = "gigabite.info@gmail.com";
-                eTare.Assunto = "Alteração de Tarefa";
-                eTare.Titulo = "Alteração Realizada em Tarefa";
-                eTare.Descricao = "Algumas alterações foram realizadas em uma Tarefa destinada a você.\nVerifique abaixo as informações:";
-                eTare.Quando = Convert.ToString(DateTime.Now);
-                eTare.Mensagem = "Descrição: "+tar.Descricao+"\nData de Início: "+tar.DtInicio+"\nData de Término: "+tar.DtFim+"\nPrioridade: "+prior;
-                eTare.UrlAceita = "";
-                eTare.UrlRejeita = "";
-            
-                eTare.Send();*/
+            EmailController emailC = new EmailController();
+            emailC.EnviarEmailTarefa(tar, "Alter");
 
             Session["AddTarefa"] = 2;
             return RedirectToAction("Index", "Tarefas");
@@ -197,6 +186,7 @@ namespace Easy.Controllers
         public JsonResult ConcluirTarefa(int idTare)
         {
             DAOTarefas dtar = new DAOTarefas();
+
             dtar.ConcluirTarefa(idTare);
 
             return Json( new {success = true});
@@ -303,6 +293,16 @@ namespace Easy.Controllers
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult EnviaEmailAjax(int idTare , string tipo)
+        {
+            DAOTarefas dtar = new DAOTarefas();
+            EmailController emailC = new EmailController();
+            emailC.EnviarEmailTarefa(dtar.SelecionaTarefaId(idTare), tipo);
+
+            return Json(new { success = true });
         }
 
     }
