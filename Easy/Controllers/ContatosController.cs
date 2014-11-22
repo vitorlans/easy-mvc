@@ -127,11 +127,18 @@ namespace Easy.Controllers
 
             DAOUsuario DUser = new DAOUsuario();
             Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
+            var est = DUser.CriarUsuario(user, Logado.IdUser.ToString());
 
-            DUser.CriarUsuario(user, Logado.IdUser.ToString());
+            if (est == true)
+            {
+                Session["snackc"] = "1";
+            }
+            else
+            {
 
-            Session["snackc"] = "1";
+                Session["snackc"] = "3";
 
+            }
             return RedirectToAction("Index");
 
         }

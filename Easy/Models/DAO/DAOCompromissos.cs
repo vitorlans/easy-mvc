@@ -10,7 +10,7 @@ namespace Easy.Models
 {
     public class DAOCompromissos
     {
-        //Status será inserido como (T)erminado, (C)ancelado, (P)róximo ou em (O)correndo
+        //Status será inserido como (T)erminado, (C)ancelado, (P)róximo ou em (A)ndamento
         public static string VerificaStatusComp(Compromissos Comp)
         {
             string status = Comp.Status;
@@ -363,6 +363,18 @@ namespace Easy.Models
             try
             {
                 SqlCommand sqlComando = new SqlCommand("DELETE FROM VCOMPUSER WHERE IDCOMP = " + id, Connection.Conectar());
+                sqlComando.ExecuteNonQuery();
+
+            }
+            catch (SqlException e) { }
+            Connection.Desconectar();
+
+        }
+        public void RemoverVincPartEmail(int idcomp, int iduser)
+        {
+            try
+            {
+                SqlCommand sqlComando = new SqlCommand("DELETE FROM VCOMPUSER WHERE IDCOMP = " + idcomp + "AND IDUSER = " + iduser, Connection.Conectar());
                 sqlComando.ExecuteNonQuery();
 
             }

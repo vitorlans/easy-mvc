@@ -43,8 +43,7 @@ namespace Easy.Models
             }
             catch { }
             Connection.Desconectar();
-        }
-        
+        } 
         public List<Notas> ListarNotas(int idComp)
         {
             List<Notas> listNotas = new List<Notas>();
@@ -52,8 +51,21 @@ namespace Easy.Models
             Empresas Emp = Empresas.RecuperaEmpresaCookie();
             DAOUsuario DUser = new DAOUsuario();
             DAOEmpresas DEmp = new DAOEmpresas();
-            string strSelect = "SELECT NT.* FROM TBNOTAS NT, VCOMPNOTA CN WHERE IDUSER = " + User.IdUser +" AND IDEMPR = " + Emp.IdEmpresa + " AND CN.IDCOMP = " + idComp;
-            SqlCommand sqlComando = new SqlCommand(strSelect, Connection.Conectar());
+            DAOCompromissos dComp = new DAOCompromissos();
+            Compromissos Comp = new Compromissos();
+            Comp = dComp.SelecionarCompromissoId(idComp);
+            string strSelect;
+
+            if(Comp.Usuario.IdUser == User.IdUser)
+            {
+                strSelect = "SELECT NT.* FROM TBNOTAS NT, VCOMPNOTA CN WHERE NT.IDEMPR = "+ Emp.IdEmpresa +" AND CN.IDCOMP = " + idComp + " AND CN.IDNOTA = NT.IDNOTA";
+            }
+            else
+            {
+                 strSelect = "SELECT NT.* FROM TBNOTAS NT, VCOMPNOTA CN WHERE NT.IDUSER = "+ User.IdUser +" AND NT.IDEMPR = "+ Emp.IdEmpresa +" AND CN.IDCOMP = " + idComp + " AND CN.IDNOTA = NT.IDNOTA";
+
+            }
+                SqlCommand sqlComando = new SqlCommand(strSelect, Connection.Conectar());
             SqlDataReader dr = sqlComando.ExecuteReader();
 
             while (dr.Read())
@@ -86,6 +98,62 @@ namespace Easy.Models
             catch (SqlException e) { }
             Connection.Desconectar();
             return IdNota;
+        }
+        public Notas RecuperaNotaID(int idNota)
+        {
+            Notas Nota = new Notas();
+            Nota.IdNota = idNota;
+            try
+            {
+                SqlCommand sqlComando = new SqlCommand("SELECT * FROM TBNOTAS WHERE IDNOTA = @IDNOTA", Connection.Conectar());
+                sqlComando.Parameters.AddWithValue("IDNOTA", Nota.IdNota);
+                SqlDataReader dr = sqlComando.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    Nota.DescricaoNota = dr["DESCRICAO"].ToString();
+                }
+            }
+            catch (SqlException e) { }
+            Connection.Desconectar();
+            return Nota;
+        }
+        public void DeletarNota(string id)
+        {
+            try
+            {
+                string strInsert = "DELETE FROM VCOMPNOTA WHERE IDNOTA = @IDNOTA";
+                SqlCommand sqlInsere = new SqlCommand(strInsert, Connection.Conectar());
+
+                sqlInsere.Parameters.AddWithValue("IDNOTA", id);
+
+                sqlInsere.ExecuteNonQuery();
+            }
+            catch { }
+            Connection.Desconectar();
+        }
+        public void AtualizarNota(string id, string descricao)
+        {
+            try
+            {
+                Notas Nota = new Notas();
+                Nota.IdNota = int.Parse(id);
+                Nota.DescricaoNota = descricao;
+                Usuario User = Usuario.VerificaSeOUsuarioEstaLogado();
+                Empresas Emp = Empresas.RecuperaEmpresaCookie();
+                Nota.Usuario = User;
+                Nota.Empresa = Emp;
+
+                string strInsert = "UPDATE TBNOTAS SET DESCRICAO = @DESCRICAO WHERE IDNOTA = @IDNOTA";
+                SqlCommand sqlInsere = new SqlCommand(strInsert, Connection.Conectar());
+
+                sqlInsere.Parameters.AddWithValue("DESCRICAO", Nota.DescricaoNota);
+                sqlInsere.Parameters.AddWithValue("IDNOTA", Nota.IdNota);
+
+                sqlInsere.ExecuteNonQuery();
+            }
+            catch { }
+            Connection.Desconectar();
         }
     }
 }

@@ -26,6 +26,22 @@ namespace Easy.Models
 
         }
 
+        public static void BloqueiaAcesso(string block)
+        {
+            //Criando um objeto cookie
+            HttpCookie bloqueio = new HttpCookie("BloqueioAutenticacao");
+
+            //Setando o ID do usuário no cookie
+            bloqueio.Values["IPBLOCK"] = Criptografia.Criptografar(block);
+
+            //Definindo o prazo de vida do cookie
+            bloqueio.Expires = DateTime.Now.AddHours(1);
+
+            //Adicionando o cookie no contexto da aplicação
+            HttpContext.Current.Response.Cookies.Add(bloqueio);
+
+        }
+
         public static void RegistrarEmpresaCookie(Empresas emp){
 
             //Criando um objeto cookie
@@ -60,6 +76,24 @@ namespace Easy.Models
         }
 
 
+         public static string RecuperaIPCookie()
+        {
+            var Ip = HttpContext.
+            Current.
+            Request.
+            Cookies["BloqueioAutenticacao"];
+            if (Ip == null)
+            {
+                return null;
+            }
+            else
+            {
+                string IpRec = Criptografia.Descriptografar(Ip.Values["IPBLOCK"]);
+                return IpRec;
+            }
+        }
+
     }
 
-}
+    }
+

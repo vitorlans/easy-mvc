@@ -18,7 +18,8 @@ namespace Easy.Models
         public string Quem { get; set; }
         public string UrlAceita { get; set; }
         public string UrlRejeita { get; set; }
-
+        public string MaisEmail { get; set; }
+                    
 
     }
 }

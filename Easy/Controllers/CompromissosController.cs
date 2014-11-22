@@ -127,19 +127,19 @@ namespace Easy.Controllers
                             daoCompromisso.AddParticipantesCompromisso(Compromisso, Compromisso.Participantes[x]);
 
                     EmailController EmailC = new EmailController();
-                    EmailC.EnviarEmailCompromisso(Compromisso, participantes);
+                    EmailC.EnviarEmailCompromisso(Compromisso);
                     Session["AddCompromisso"] = 1;
                     Session.Timeout = 1;
                 }
                 catch
                 {
-                    Session["AddCompromisso"] = 0;
+                    Session["AddCompromisso"] = 5;
                     Session.Timeout = 1;
                 }
             }
             else
             {
-                Session["AddCompromisso"] = 0;
+                Session["AddCompromisso"] = 5;
                 Session.Timeout = 1;
             }
             return RedirectToAction("Index", "Compromissos");
@@ -163,11 +163,9 @@ namespace Easy.Controllers
                     participantes += Compromisso.Participantes[x].Email.ToString() + ";";
                     x++;
                 }
-                //if (Compromisso.IdComp != 0 && Compromisso.Usuario.IdUser == User.IdUser)
+                
                 ViewBag.participantes = participantes;
-                    return View(Compromisso);
-                /*else
-                    return RedirectToAction("Index", "Compromissos");*/
+                    return View(Compromisso);                    
             }
             else
                 return RedirectToAction("Index", "Compromissos");
@@ -199,40 +197,31 @@ namespace Easy.Controllers
                     daoCompromisso.RemoverVincPart(CompromissoNovo.IdComp);
                     daoCompromisso.EditarCompromisso(CompromissoNovo, User);
                     if (CompromissoNovo.Participantes[0] != null)
-                        for (int x = 0; x <= CompromissoNovo.Participantes.Count; x++)
+                        for (int x = 0; x < CompromissoNovo.Participantes.Count; x++)
                         {
                             if(CompromissoNovo.Participantes[x] != null)
                                 daoCompromisso.AddParticipantesCompromisso(CompromissoNovo, CompromissoNovo.Participantes[x]);
                         }
+
                     EmailController EmailC = new EmailController();
-                    EmailC.EnviarEmailCompromisso(CompromissoNovo, participantes);
+                    EmailC.EnviarEmailCompromisso(CompromissoNovo);
                     Session["AddCompromisso"] = 2;
                     Session.Timeout = 1;
                 }
                 catch
                 {
-                    Session["AddCompromisso"] = 0;
+                    Session["AddCompromisso"] = 5;
                     Session.Timeout = 1;
                 }
             }
             else
             {
-                Session["AddCompromisso"] = 0;
+                Session["AddCompromisso"] = 5;
                 Session.Timeout = 1;
             }
             return RedirectToAction("Index", "Compromissos");
 
         }
-
-        [HttpGet]
-        public ActionResult UrlConfirma(string codigo, int id) {
-
-
-            return View();
-        
-        
-        }
-
         [HttpPost]
         public ActionResult AddCal(string data1)
         {
@@ -279,9 +268,10 @@ namespace Easy.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddNota(Notas Nota, string idcomp)
+        public ActionResult AddNota(Notas Nota)
         {
-            if (Nota.DescricaoNota != null)
+            string idcomp = Session["sltnota"].ToString();
+            if (Nota.DescricaoNota != null && idcomp != "")
             {
                 try
                 {
@@ -296,5 +286,48 @@ namespace Easy.Controllers
             }
             return RedirectToAction("Index", "Compromissos");
         }
+        public ActionResult ExcluirNota(string id)
+        {
+            if (id != "")
+            {
+                DAONotas dNota = new DAONotas();
+                dNota.DeletarNota(id);
+            }
+            return RedirectToAction("Index", "Compromissos");
+        }
+        [HttpGet]
+        public JsonResult EditarNota(string id)
+        {
+            id = id.Substring(3);
+
+            Notas Nota = new Notas();
+
+            if (id != "")
+            {
+                DAONotas dNota = new DAONotas();
+                Nota = dNota.RecuperaNotaID(int.Parse(id));
+            }
+            return Json(Nota, JsonRequestBehavior.AllowGet); 
+        }
+        [HttpPost]
+        public ActionResult AtualizarNota(string ntId, string ntDesc)
+        {
+            if (ntId!= null)
+            {
+                DAONotas dNota = new DAONotas();
+                dNota.AtualizarNota(ntId, ntDesc);
+            }
+            return RedirectToAction("Index", "Compromissos");
+        }
+        public JsonResult CapturaId(string idcomp) {
+
+            idcomp = idcomp.Substring(1);
+            Session["sltnota"] = idcomp;
+
+            return Json(idcomp, JsonRequestBehavior.AllowGet);
+        }
+
+       
+
     }
 }

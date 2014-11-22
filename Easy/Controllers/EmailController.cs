@@ -19,34 +19,41 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnviarEmailCompromisso(Compromissos comp, string participantes)
+        public ActionResult EnviarEmailCompromisso(Compromissos comp)
         {
-            var email = new EmailCompromisso
+            int x = 0;
+            foreach (var c in comp.Participantes)
             {
-                Para = participantes,
-                Quem  = comp.Usuario.Nome+ " convidou você para o",
-                Assunto = "Compromisso -"+ comp.Titulo,
-                Titulo = comp.Titulo,
-                Descricao = comp.Descricao,
-                Quando = "Início em: " + comp.DataInicio,
-                Mensagem = "Este evento é patrocinado por Easy Peoples",
-                UrlAceita = "http://localhost:0000/Compromissos/UrlConfirma?codigo=",
-                UrlRejeita = "http://google.com"
-            };
-            try
-            {
+                var email = new EmailCompromisso
+                {
+                    Para = comp.Participantes[x].Email,
+                    Quem = comp.Usuario.Nome + " convidou você para o",
+                    Assunto = "Compromisso -" + comp.Titulo,
+                    Titulo = "Compromisso -" + comp.Titulo,
+                    Descricao = comp.Descricao,
+                    Quando = "Início em: " + comp.DataInicio + " até " + comp.DataTermino,
+                    Mensagem = "Este evento é patrocinado por Easy Peoples",
+                    UrlAceita = "http://localhost:58623/Login/UrlConfirma?codigo="+comp.IdComp+"-"+comp.Participantes[x].IdUser,
+                    UrlRejeita = "http://localhost:58623/Login/UrlRejeita?codigo="+comp.IdComp+"-"+comp.Participantes[x].IdUser
+                
+                };
+                try
+                {
+                    email.Send();
 
-                email.Send();
-                return RedirectToAction("Index", "Home");
+                }
+                catch(Exception e)
+                {  
+
+                }
+
+                x++;
 
             }
-            catch
-            {
+            return RedirectToAction("Index", "Home");
 
-                return RedirectToAction("Index", "Calendario");
-
-            }
         }
+        
 
         [HttpPost]
         public ActionResult EnviarEmailSistema(Usuario user)

@@ -33,7 +33,7 @@
                             <div class="form-group">
                                 <label for="inputEnd" class="col-lg-2 control-label">Email</label>
                                 <div class="col-lg-10">
-                                    @Html.TextBoxFor(model => model.Email, new { @name = "inputEmail", @id = "inputEmail", @placeholder = "Email", @class = "form-control", @type = "text" })
+                                    @Html.TextBoxFor(model => model.Email, new { @name = "inputEmail", @id = "inputEmail", @placeholder = "Email", @class = "form-control", @type = "email", @required=true })
                                 </div>
                             </div>
                             <br />
@@ -42,7 +42,7 @@
                             <div class="form-group">
                                 <label for="inputBairro" class="col-lg-2 control-label">Senha</label>
                                 <div class="col-lg-10">
-                                    @Html.TextBoxFor(model => model.Senha, new { @name = "inputSenha", @id = "inputSenha", @placeholder = "Senha", @class = "form-control", @type = "password" })
+                                    @Html.TextBoxFor(model => model.Senha, new { @name = "inputSenha", @id = "inputSenha", @placeholder = "Senha", @class = "form-control", @type = "password", @required=true })
                                     <br />
                                     <p>
                                         @Html.ActionLink("Esqueceu sua senha?", "Recuperar", "Login", null)
@@ -75,6 +75,23 @@
             }
         }
     }
+  
+function myIP() {  
+    if (window.XMLHttpRequest) xmlhttp = new XMLHttpRequest();  
+    else xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");  
+  
+    xmlhttp.open("GET","http://api.hostip.info/get_html.php",false);  
+    xmlhttp.send();  
+  
+    hostipInfo = xmlhttp.responseText.split("\n");  
+  
+    for (i=0; hostipInfo.length >= i; i++) {  
+        ipAddress = hostipInfo[i].split(":");  
+        if ( ipAddress[0] == "IP" ) return ipAddress[1];  
+    }  
+  
+    return false;  
+}  
 
 </script>
 <script>
@@ -88,7 +105,8 @@
                 data: {
                     email: $("#inputEmail").val(),
                     senha: $("#inputSenha").val(),
-                    Url: GetURLParameter('Url')
+                    Url: GetURLParameter('Url'),
+                    Ip: myIP()
                 },
                 dataType: "json",
                 type: "GET",
@@ -101,12 +119,17 @@
                     if (dados.OK) {
                         $("#status").html(dados.Mensagem);
                         $("#status").removeClass("alert-info").addClass("alert-success");
+                        $("#status").removeClass("alert-danger").addClass("alert-success");
+
 
                         setTimeout(function () { window.location.href = dados.Local }, 1000);
                         $("#status").show();
                     }
                     else {
                         $("#status").html(dados.Mensagem);
+                        if (dados.Cor) {
+                            $("#status").removeClass("alert-info").addClass("alert-danger");
+                        }
                         $("#status").show();
                     }
                 },
@@ -130,7 +153,12 @@
             $.snackbar({ content: "Deslogado com Sucesso. Tenha um Bom dia", timeout: 3000 });
             $("#hidValida").val() = 0;
         });
-
+    }
+    else if ($("#hidValida").val() == 3) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Não foi encontrado cadastro com o Email Informado.", timeout: 3000 });
+            $("#hidValida").val() = 0;
+        });
     }
 
 

@@ -18,7 +18,6 @@
 
     var Nota = new Easy.Models.DAONotas();
 
-    int id = 0;
     
     Session.Remove("AddCompromisso");
 }
@@ -129,15 +128,13 @@
                         </form>
                     }
                     
-                            @Html.Hidden("id", item.IdComp)
                             <div class="btn-group color_button" style="margin-left: 7%; float: left">
-                                <i data-toggle="modal" data-target="#largeModal" class="texto2 ClasseAlta mdi-maps-rate-review" style="width:75px;height:36px;cursor:pointer;"></i>
+                                <a  title="Notas" data-toggle="modal" href="#@item.IdComp" class="notaslt texto2 ClasseAlta mdi-maps-rate-review" style="text-decoration:none !important; color:white"></a>
                             </div>
                     
                 </td>
             </tr>
-            id = item.IdComp;
-        }
+            }        
 
     </table>   
 }
@@ -148,20 +145,23 @@ else
 Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
             @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.Sort, currentFilter = ViewBag.Filtro }))
 
-<div id="largeModal" class="modal fade" tabindex="-1" role="dialog">
+                            @foreach (var item in Model){
+
+<div id="@item.IdComp" class="modal fade" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         </div>
-                              @Html.Partial("Notas",Nota.ListarNotas(id))
-                                @{Session["sltnota"] = id ;}
+                          
+                              @Html.Partial("Notas", Nota.ListarNotas(item.IdComp))
+                        
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
 
 <script>
 
@@ -195,6 +195,12 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
             $("#hidValida").val() = 0;
         });
     }
+    else if ($("#hidValida").val() == 5) {
+        $(document).ready(function () {
+            $.snackbar({ content: "Não foi possível realizar a ação. Verifique as informações.", timeout: 8000 });
+            $("#hidValida").val() = 0;
+        });
+    }
     $(document).ready(function () {
         $(".HideComentario").hide();
     });;
@@ -209,6 +215,41 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
         $(this).tab('show')
     })
 
+    $('.notaslt').click(function () {
+
+        $.ajax({
+            url: "/Compromissos/CapturaId",
+            data: {
+                idcomp: $(this).attr('href')
+            },
+            dataType: "json",
+            type: "GET",
+            async: true
+        });
+    })
+
+    $('.editnt').click(function () {
+        var f = $(this).attr('href');
+        var fr = $(this).attr('href') + "-f";
+
+        $.ajax({
+            url: "/Compromissos/EditarNota",
+            data: {
+                id: $(this).attr('href')
+            },
+            dataType: "json",
+            type: "GET",
+            async: true,
+            success: function (dados) {
+                if (dados != null) {
+                    $(f).val(dados.DescricaoNota);
+                    $(fr).show();
+
+                }
+        
+            }
+        })
+    });
 </script>
 <style>
     .Status {
@@ -233,6 +274,7 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
     .ClasseAlta {
         font-size:15px;
     }
+
     .ClasseDefault {
         margin:auto;
         color:blue;

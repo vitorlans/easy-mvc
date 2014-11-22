@@ -27,22 +27,29 @@
         </fieldset>
 }
     <hr />
-    <table>
+    <table class="table table-striped table-hover">
         <tr>
-            <th></th>
-            <th></th>
-            <th></th>
         </tr>
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.DescricaoNota)
+                     <form id="d-@item.IdNota-f"style="display: none;" action="/Compromissos/AtualizarNota" method="post" >
+                        <input type="text" id="d-@item.IdNota" name="ntDesc" value="" />
+                        <input type="submit"  class="btn btn-primary" value="Atualizar" />
+                        <input id="ntId" name="ntId" value="@item.IdNota" type="hidden" />
+                         @Html.HiddenFor(modelitem => item.IdNota)
+                    </form>
                 </td>
                 <td>
-
+                    <a href="#d-@item.IdNota" class="editnt mdi-image-edit" ></a>   
+                </td>
+                <td>
+                    <a href="/Compromissos/ExcluirNota/@item.IdNota" class="mdi-content-clear"></a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.Nome)
                 </td>
             </tr>
         }
