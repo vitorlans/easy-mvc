@@ -10,5 +10,7 @@ namespace Easy.Models
         public int IdComent { get; set; }
         public Tarefas IdTarefa { get; set; }
         public string Comentario { get; set; }
+        public Usuario IdUser { get; set; }
+        public DateTime DataComentario { get; set; }
     }
 }

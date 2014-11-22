@@ -256,6 +256,7 @@
     <Content Include="Content\img\contato5.png" />
     <Content Include="Content\img\contato0.png" />
     <Content Include="Content\img\img_fundo.jpg" />
+    <Content Include="Content\img\ops2.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
@@ -425,6 +426,8 @@
     <Content Include="Views\Emails\EmailDesativa.cshtml" />
     <Content Include="Views\Home\Configuracoes.cshtml" />
     <Content Include="Views\Compromissos\Notas.cshtml" />
+    <Content Include="Views\Tarefas\ListaComent.cshtml" />
+    <Content Include="Views\Shared\Error_Email.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

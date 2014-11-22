@@ -138,7 +138,103 @@ namespace Easy.Controllers
                 return RedirectToAction("Recuperar", "Login");
 
             }
+
+
         }
+
+
+        [HttpPost]
+        public ActionResult EnviarEmailTarefa(Tarefas tar, string tipo)
+        {
+            DAOUsuario dUser = new DAOUsuario();
+            Usuario userEmail = new Usuario();
+            Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
+            Empresas emp = Empresas.RecuperaEmpresaCookie();
+
+            string msg = "";
+
+            string emailDestinatario = user.Email;
+            string nome = user.Nome;
+            string quem = " direcionou uma Tarefa para você.";
+            string assunto = "Direcionamento de Tarefa - ";
+
+            if (tipo == "Alter")
+            {
+                quem = "alterou esta Tarefa. Verifique as novas informações abaixo.";
+                assunto = "Alteração de Tarefa - ";
+            }
+            else if (tipo == "Cancelada")
+            {
+                quem = "cancelou esta Tarefa. Verique as informações.";
+                assunto = "Cancelamento de Tarefa - ";
+            }
+            
+
+            if(tar.Relacionado != null)
+            {
+                userEmail = dUser.RecuperaUsuarioEmail(tar.Relacionado);
+                emailDestinatario = tar.Relacionado;
+                nome = userEmail.Nome;
+            }
+
+            int dia = DateTime.Now.Day;
+            int mes = DateTime.Now.Month;
+            int ano = DateTime.Now.Year;
+
+            DateTime dataManha = new DateTime(ano, mes, dia, 12, 00, 00);
+            DateTime dataTarde = new DateTime(ano, mes, dia, 18, 00, 00);
+            DateTime dataNoite = new DateTime(ano, mes, dia, 23, 59, 59);
+
+            DateTime nowHours = DateTime.Now;
+
+            int comparaManha = DateTime.Compare(nowHours, dataManha);
+            int comparaTarde = DateTime.Compare(nowHours, dataTarde);
+            int comparaNoite = DateTime.Compare(nowHours, dataNoite);
+
+            if (comparaNoite >= 0 && comparaManha < 0 )
+            {
+                msg = "Bom dia ";
+            }
+            else if (comparaManha >= 0 && comparaTarde < 0)
+            {
+                msg = "Boa tarde ";
+            }
+            else if (comparaTarde >= 0 && comparaNoite < 0)
+            {
+                msg = "Boa noite ";
+            }
+            else
+            {
+                msg = "Olá ";
+            }
+
+            var email = new EmailTarefas
+            {
+                Para = emailDestinatario,
+                Bcc = user.Email,
+                Quem = user.Nome + quem,
+                Assunto = assunto + emp.NomeEmpresa,
+                Titulo = assunto + emp.NomeEmpresa,
+                Descricao = tar.Descricao,
+                Quando = "Início em: " + Convert.ToDateTime(tar.DtInicio).ToShortDateString() +". Encerramento: "+tar.DtFim,
+                Mensagem = msg+nome+ "!! Esta atividade foi destina a você, verifique-a pelo link abaixo.",
+                UrlAceita = "http://localhost:0000/Tarefas?search="
+            };
+            try
+            {
+
+                email.Send();
+                return RedirectToAction("Index", "Home");
+
+            }
+            catch
+            {
+
+                return Redirect("~/Shared/Error_Email.cshtml");
+
+            }
+        }
+
 
 
 

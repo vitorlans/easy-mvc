@@ -10,26 +10,6 @@ namespace Easy.Models
     public class DAOTarefas
     {
 
-        public List<string> BuscaEmails(Tarefas tar)
-        {
-            List<string> emails = new List<string>();
-
-            SqlCommand sqlQuery = new SqlCommand
-                        ("SELECT"+
-                         " CRIADOR = (SELECT EMAIL FROM TBUSUARIOS WHERE IDUSER = '"+tar.Criador+"',"+
-                         " RELACIONADO = (SELECT EMAIL FROM TBUSUARIOS WHERE IDUSER = '"+tar.Relacionado+"')"
-                        );
-            SqlDataReader dr = sqlQuery.ExecuteReader();
-
-            while (dr.Read())
-            {
-                emails.Add(dr["CRIADOR"].ToString());
-                emails.Add(dr["RELACIONADO"].ToString());
-            }
-
-            return emails;
-        }
-
         public Tarefas SelecionaTarefaId(int id)
         {
             Tarefas tar = new Tarefas();
@@ -37,15 +17,23 @@ namespace Easy.Models
             Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
             Empresas emp = Empresas.RecuperaEmpresaCookie();
 
+            string relacionado = "";
+
             try
             {
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDTARE = "+id+" AND IDUSER = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " AND STATUS = 'A' OR IDTARE = "+id+" AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " AND STATUS = 'A'", Connection.Conectar());
+                //SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDTARE = "+id+" AND IDUSER = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " AND STATUS = 'A' OR IDTARE = "+id+" AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " AND STATUS = 'A'", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBTAREFAS WHERE IDTARE = " + id + " AND IDUSER = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " OR IDTARE = " + id + " AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " ", Connection.Conectar());
                 SqlDataReader dr = sqlExec.ExecuteReader();
                 bool status = true;
 
                 while (dr.Read())
                 {
-                    Usuario relac = dUser.RecuperaUsuario(dr["IDUSERDEST"].ToString());
+                    Usuario relac = dUser.RecuperaContato(dr["IDUSERDEST"].ToString());
+
+                    if (relac.IdUser != 0)
+                    {
+                        relacionado = relac.Email.ToString().Trim();
+                    }
 
                     if (dr["Status"].ToString() == "A")
                     {
@@ -58,12 +46,12 @@ namespace Easy.Models
 
                     tar.IdTarefa = int.Parse(dr["IDTARE"].ToString());
                     tar.Descricao = dr["DESCRICAO"].ToString();
-                    tar.DtInicio = dr["DT_INICIO"].ToString();
-                    tar.DtFim = dr["DT_FIM"].ToString();
+                    tar.DtInicio = Convert.ToDateTime( dr["DT_INICIO"].ToString() ).ToShortDateString();
+                    tar.DtFim = dr["DT_FIM"].ToString().Replace("00:00:00", "").Trim();
                     tar.Prioridade = dr["PRIORIDADE"].ToString();
-                    tar.Status = status;
+                    tar.Status = dr["Status"].ToString();
                     tar.Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) };
-                    tar.Relacionado = relac.Email.ToString().Trim();
+                    tar.Relacionado = relacionado;
                     tar.Empresa = new Empresas { IdEmpresa = int.Parse(dr["IDEMPR"].ToString()) };
 
                 }
@@ -131,7 +119,7 @@ namespace Easy.Models
                             DtInicio = Convert.ToDateTime(dr["Dt_Inicio"].ToString()).ToShortDateString(),
                             DtFim = data,
                             Prioridade = dr["Prioridade"].ToString(),
-                            Status = status,
+                            Status = dr["Status"].ToString(),
                             Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) },
                             Relacionado = email
                         }
@@ -150,7 +138,7 @@ namespace Easy.Models
             return lsTaf;
         }
 
-        public List<Tarefas> ListaTarefasAvancada(string status, string prior, string dtinicio, string dtfim)
+        public List<Tarefas> ListaTarefasAvancada(string status, string prior, string tarefa, string dtinicio, string dtfim)
         {
             DAOUsuario dUser = new DAOUsuario();
             Usuario user = Usuario.VerificaSeOUsuarioEstaLogado();
@@ -164,14 +152,17 @@ namespace Easy.Models
 
             if(status != "")
             {
-                if(status == "Ativas")
+                if (status == "Ativas")
                     sql = " STATUS = 'A' ";
 
-                else if(status == "Concluídas")
+                else if (status == "Concluídas")
                     sql = " STATUS = 'C'";
 
-                else if(status == "Canceladas")
+                else if (status == "Canceladas")
                     sql = " STATUS = 'I'";
+
+                else if (status == "Atrasadas")
+                    sql = " STATUS = 'A' AND DT_FIM < GETDATE() AND DT_FIM <> '' "; 
 
                 
                 if(prior != "")
@@ -196,6 +187,20 @@ namespace Easy.Models
                 {
                     sql += " AND DT_FIM <= '"+dtfim+"' ";
                 }
+
+                if (tarefa == "Própria")
+                    sql += " AND IDUSER = " + user.IdUser + " AND IDUSERDEST IS NULL";
+
+                else if (tarefa == "Recebida")
+                    sql += " AND IDUSERDEST = " + user.IdUser + " ";
+
+                else if (tarefa == "Destinada")
+                    sql += " AND IDUSER = " + user.IdUser + " AND IDUSERDEST <> " + user.IdUser + " ";
+
+                else if (tarefa == "Todas")
+                    sql += " AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " OR " + sql + " ";
+
+                
             }
 
             try
@@ -236,7 +241,7 @@ namespace Easy.Models
                               DtInicio = Convert.ToDateTime(dr["Dt_Inicio"].ToString()).ToShortDateString(),
                               DtFim = data,
                               Prioridade = dr["Prioridade"].ToString(),
-                              Status = statusTar,
+                              Status = dr["Status"].ToString(),
                               Criador = new Usuario { IdUser = int.Parse(dr["IDUSER"].ToString()) },
                               Relacionado = email
                           }
@@ -320,14 +325,14 @@ namespace Easy.Models
             string status = "";
             if (tar != null)
             {
-                if (tar.Status)
+               /* if (tar.Status)
                 {
                     status = "A";
                 }
                 else if (tar.Status == false)
                 {
                     status = "I";
-                }
+                }*/
 
                 try
                 {
@@ -347,7 +352,7 @@ namespace Easy.Models
                     sqlExec.Parameters.AddWithValue("ini", tar.DtInicio);
                     sqlExec.Parameters.AddWithValue("fim", (object)tar.DtFim ?? DBNull.Value);
                     sqlExec.Parameters.AddWithValue("prior", tar.Prioridade);
-                    sqlExec.Parameters.AddWithValue("status", status);
+                    sqlExec.Parameters.AddWithValue("status", "A");
 
                     if(user.IdUser != 0)
                         sqlExec.Parameters.AddWithValue("relac", user.IdUser);
@@ -383,33 +388,51 @@ namespace Easy.Models
 
         //TESTE SOBRE RELACÇÃO DE USUARIOS NA INSERÇÃO DE TAREFAS
 
-        public List<String> ListaContatoTarefa()
+        public List<String> ListaContatosTarefa()
         {
             Usuario us = Usuario.VerificaSeOUsuarioEstaLogado();
+            Empresas emp = Empresas.RecuperaEmpresaCookie();
+
             List<String> listUs = new List<String>();
 
             SqlCommand sqlBusca = new SqlCommand
             (
-               " SELECT IDUSER, NOME, EMAIL FROM TBUSUARIOS WHERE IDUSER IN "+ 
-                "("+
-	                " SELECT vuser1.IDUSER2 FROM TBUSUARIOS tuser1"+
-		                " INNER JOIN VUSUACONT vuser1 ON vuser1.IDUSER = tuser1.IDUSER"+
-	                " WHERE tuser1.IDUSER = 1 "+
-                ")", Connection.Conectar()
+               " SELECT U.EMAIL FROM TBUSUARIOS U"+
+                " INNER JOIN VUSUACONT VU ON VU.IDUSER2 = U.IDUSER "+
+                " AND VU.IDUSER = "+us.IdUser+" AND VU.IDEMPR = "+emp.IdEmpresa+" ", Connection.Conectar()
             );
 
             SqlDataReader dr = sqlBusca.ExecuteReader();
 
             while (dr.Read())
             {
-                listUs.Add(dr["IDUSER"].ToString());
-                listUs.Add(dr["NOME"].ToString());
-                listUs.Add(dr["EMAIL"].ToString());
+                listUs.Add(dr["Email"].ToString());
             }
 
             Connection.Desconectar();
 
             return listUs;
+        }
+
+        public void AtivaDesativaTarefa(int id, string tipo)
+        {
+            string status = "A";
+
+            if (tipo == "Cancelar")
+            {
+                status = "I";
+            }
+
+            try
+            {
+                SqlCommand sqlUpdate = new SqlCommand("UPDATE TBTAREFAS SET STATUS = '" + status + "' WHERE IDTARE = " + id + " ", Connection.Conectar());
+                sqlUpdate.ExecuteNonQuery();
+
+            }catch(SqlException eSql)
+            {
+            }
+
+            Connection.Desconectar();
         }
 
         public List<string> ListaDadosInicial() //ALTERAR IDUSERS E IDEMPRS
@@ -422,7 +445,7 @@ namespace Easy.Models
             if (user != null && emp != null)
             {
                 SqlCommand sqlBusca = new SqlCommand("SELECT Total1 = (SELECT count(*)Total1 FROM TBTAREFAS WHERE STATUS = 'A' AND IDUSER = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " OR STATUS = 'A' AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " ), " +
-                                                     " Total2 = (SELECT count(*)Total2 FROM TBTAREFAS WHERE DT_FIM < GETDATE() AND STATUS = 'A' AND IDUSER = " + user.IdUser + " AND IDEMPR = 1 OR STATUS = 'A' AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + "), " +
+                                                     " Total2 = (SELECT count(*)Total2 FROM TBTAREFAS WHERE DT_FIM < GETDATE() AND DT_FIM <> '' AND STATUS = 'A' AND IDUSER = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + " OR DT_FIM < GETDATE() AND DT_FIM <> '' AND STATUS = 'A' AND IDUSERDEST = " + user.IdUser + " AND IDEMPR = " + emp.IdEmpresa + "), " +
                                                      " Total3 = (SELECT COUNT(*) FROM TBCOMPROMISSOS COMP " +
                                                                                " LEFT JOIN VCOMPUSER VUSER ON COMP.IDCOMP = VUSER.IDCOMP " +
                                                                                "      WHERE  COMP.IDUSER = " + user.IdUser + " AND COMP.STATUS IN ('A', 'P') AND COMP.IDEMPR = " + emp.IdEmpresa + " " +
@@ -442,6 +465,8 @@ namespace Easy.Models
                     listS.Add(dr["Total4"].ToString());
                 }
             }
+
+            Connection.Desconectar();
 
             return listS;
         }

@@ -92,7 +92,7 @@ namespace Easy.Controllers
 
             DAOTarefas dTar = new DAOTarefas();
 
-            return View(dTar.ListaTarefasAvancada(select1, select2, inputDefault1, inputDefault2).ToPagedList(pageNumber, pageSize));
+            return View(dTar.ListaTarefasAvancada(select1, select2, select3, inputDefault1, inputDefault2).ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult AdicionarTarefa()
@@ -108,6 +108,9 @@ namespace Easy.Controllers
                 DAOTarefas daoTaf = new DAOTarefas();
 
                 daoTaf.AddTarefa(tar);
+
+                EmailController emailC = new EmailController();
+                emailC.EnviarEmailTarefa(tar, "Insert");
                 Session["AddTarefa"] = 1;
                 Session.Timeout = 1;
             }
@@ -220,9 +223,60 @@ namespace Easy.Controllers
             return Json("");
         }
 
-        public ActionResult Comentarios()
+        [HttpPost]
+        public JsonResult AtivaDesativa(int idTar, string tipo)
         {
-            return View();
+            DAOTarefas dTar = new DAOTarefas();
+
+            dTar.AtivaDesativaTarefa(idTar, tipo);
+
+            return Json(new { success = true });
+        }
+
+        public ActionResult Comentarios(int id)
+        {
+            DAOComentarios dComent = new DAOComentarios();
+            
+            return View(dComent.ListaComentarios(id));
+        }
+
+
+        [HttpPost]
+        public ActionResult RetornaPartial2(int id)
+        {
+            Session.Remove("idTarefa1");
+            Session["idTarefa1"] = id;
+            DAOComentarios dComent = new DAOComentarios();
+
+            return PartialView("Comentarios", dComent.ListaComentarios(id));
+        }
+
+
+        [HttpPost]
+        public ActionResult RetornaPartial(int id)
+        {
+            Session.Remove("idTarefa1");
+            Session["idTarefa1"] = id;
+            DAOComentarios dComent = new DAOComentarios();
+
+            return PartialView("ListaComent", dComent.ListaComentarios(id));
+        }
+
+        public ActionResult ListaComent(int id)
+        {
+            DAOComentarios dComent = new DAOComentarios();
+
+            return View(dComent.ListaComentarios(id));
+        }
+
+        [HttpPost]
+        public JsonResult AddComentario(int idTar, string comentTar)
+        {
+            DAOComentarios daoComent = new DAOComentarios();
+
+            daoComent.AdicioonarComentario(idTar, comentTar);
+
+            return Json(new { success = true });
         }
 
         [HttpPost]
@@ -233,6 +287,22 @@ namespace Easy.Controllers
 
             tare.DtInicio = dt.ToString();
             return View("AdicionarTarefa", tare);
+        }
+
+        public JsonResult ValidaContatos(string Relacionado)
+        {
+            DAOTarefas dTar = new DAOTarefas();
+            var list = dTar.ListaContatosTarefa();
+
+            if (Relacionado != "")
+            {
+                if (list.Contains(Relacionado))
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(false, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "AdicionarTarefa";
+    ViewBag.Title = "Editar Tarefa";
 
     List<SelectListItem> listaPrior = new List<SelectListItem>();
     listaPrior.Add(new SelectListItem { Text = "Baixa", Value = "B", Selected=true });
@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label for="inputDefault" class="col-lg-2 control-label">Data de Início</label>
                              <div class="col-lg-10"> 
-                                <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy HH:ii p" data-link-field="dtp_input1">
+                                <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1">
                                      @Html.TextBoxFor(model => model.DtInicio, new { @class="form-control dtIni", id="inputDefault", @readonly=true, @size="20" })
                                      @Html.ValidationMessageFor(model => model.DtInicio, null, new { @class="text-danger"})
                                     <span style="margin-left:90%" class="add-on"><i id="dtinit" class="icon-th icon-material-today"></i></span>&nbsp&nbsp
@@ -48,7 +48,7 @@
                         <div class="form-group">
                             <label for="inputDefault" class="col-lg-2 control-label">Data de Término</label>
                              <div class="col-lg-10"> 
-                                <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy HH:ii p" data-link-field="dtp_input1">
+                                <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1">
                                      @Html.TextBoxFor(model => model.DtFim, new { @class="form-control dtFim", id="inputDefault", @readonly=true, @size="20" })
                                      @Html.ValidationMessageFor(model => model.DtFim)
                                     <span style="margin-left:90%" class="add-on"><i id="dtterm" class="icon-th icon-material-today" ></i></span>&nbsp&nbsp
@@ -68,17 +68,17 @@
                         <label for="select" class="col-lg-2 control-label">Relacionado</label>
                         <div class="col-lg-10">
                             @Html.TextBoxFor(model => model.Relacionado, new {id = "tcomplete", @class ="form-control", @placeholder = "Escolha um contato.." })
-                            @Html.ValidationMessageFor(model => model.Relacionado)
+                            @Html.ValidationMessageFor(model => model.Relacionado, null, new { @class="text-danger" })
                         </div>
                        </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
-                                @{
+                                {
                                     if(Model.Status)
                                     {
                                         <div class="checkbox">
                                         <label>
-                                            @Html.CheckBoxFor(model => model.Status, new { @class = "bs-material" }) Tarefa Ativa
+                                            Html.CheckBoxFor(model => model.Status, new { class = "bs-material" }) Tarefa Ativa
                                         </label>
                                         </div>
                                     }
@@ -86,26 +86,71 @@
                                     {
                                         <div class="checkbox">
                                         <label>
-                                            @Html.CheckBoxFor(model => model.Status, new { @class = "bs-material"}) Tarefa Desativada
+                                            Html.CheckBoxFor(model => model.Status, new { class = "bs-material"}) Tarefa Desativada
                                         </label>
                                         </div>
                                     }
                                 }
                            </div>
-                        </div>
+                        </div> -->
                        <br />
                        <br />
-                       <div class="form-group">
-                            <div class="col-lg-10 col-lg-offset-2">
-                                <input type="submit" class="btn btn-primary" value="Atualizar Tarefa" />
-                            </div>
-                       </div>
+
+                        @if(Model.Status == "A")
+                        {
+                           <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-2">
+                                    <input type="submit" class="btn btn-primary" value="Atualizar Tarefa" />
+                                </div>
+                           </div>
+                        }
+                        else
+                        {
+                           <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-2">
+                                    <input type="button"  id="validaStatus" class="btn btn-danger "  value="Tarefa Cancelada" />                            
+                                </div>
+                           </div>
+                            
+                        }
+
                   </fieldset>
-                }
+    }
             </div>
         </div>
     </div>
 </div>
+
+@if (Model.Status == "A")
+{
+    <div class="bs-docs-section">
+    <div class="row">
+        <div class="col-lg-9">
+                <div class="well bs-component">
+                    <h4>Cancelar Tarefa</h4>
+                        <p>Deseja cancelar a Tarefa ?</p>
+                    <input type="hidden" id="idtr" value="@Model.IdTarefa" />
+                    <button type="button" id="btCancelaTr" class="btn btn-danger btn-raised" title="Detalhes">CANCELAR</button>                                
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+   <div class="bs-docs-section">
+    <div class="row">
+        <div class="col-lg-9">
+                <div class="well bs-component">
+                    <h4>Ativar Tarefa</h4>
+                        <p>Deseja ativar a Tarefa ?</p>
+                    @Html.Hidden("idtr2", Model.IdTarefa)
+                    <button type="button" id="btAtivarTr" class="btn btn-success btn-raised" title="Detalhes">ATIVAR</button>                                
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -113,6 +158,47 @@
 }
 
 <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#btCancelaTr").click(function () {
+
+            var idTar = $("#idtr").val();
+            var tipo = "Cancelar";
+
+            $.ajax({
+                type: "POST",
+                url: "/Tarefas/AtivaDesativa",
+                dateType: "json",
+                data: { idTar: ""+idTar+"", tipo: "" + tipo + "" },
+                success: function (data) {
+                    window.location.reload();
+                    //$.snackbar({ content: "A Tarefa foi Cancelada. Verifique as informações.", timeout: 8000 });
+                }
+            });
+        });
+
+        $("#btAtivarTr").click(function () {
+
+            var idTar = $("#idtr2").val();
+            var tipo = "Ativar";
+
+            $.ajax({
+                type: "POST",
+                url: "/Tarefas/AtivaDesativa",
+                dateType: "json",
+                data: { idTar: idTar, tipo: "" + tipo + "" },
+                success: function (data) {
+                    window.location.reload();
+                    //$.snackbar({ content: "A Tarefa foi Ativada Novamente. Verifique as informações.", timeout: 8000 });
+                }
+            });
+        });
+    });
+
+    $("#validaStatus").click(function () {
+        $.snackbar({ content: "A Tarefa está Cancelada. Ative a Tarefa para poder Edita-la.", style: "toast" , timeout: 3000 });
+    });
 
     $(".btClose1").click(function()
     {

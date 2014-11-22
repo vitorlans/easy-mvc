@@ -81,10 +81,11 @@
        <div class="form-group inline-divs">
             <div class="col-lg-10">
                 <div class="margin-divs">
-               Status:
+               <label class="color-white">Status:</label>
                <select class="form-control form-advanced color-default" id="select1" name="select1">
                     <option>Ativas</option>
                     <option>Concluídas</option>
+                    <option>Atrasadas</option>
                     <option>Canceladas</option>
                 </select>
                 </div>
@@ -93,7 +94,7 @@
           <div class="form-group inline-divs">
             <div class="col-lg-10">
                 <div class="margin-divs">
-                Prioridade:<select class="form-control form-advanced color-default" id="select2" name="select2">
+                <label class="color-white">Prioridade:</label><select class="form-control form-advanced color-default" id="select2" name="select2">
                     <option>Baixa</option>
                     <option>Média</option>
                     <option>Alta</option>
@@ -104,10 +105,11 @@
         <div class="form-group inline-divs">
             <div class="col-lg-10">
                 <div class="margin-divs">
-                Tarefa:<select class="form-control form-advanced color-default" id="select3" name="select3">
+                <label class="color-white">Tarefa:</label><select class="form-control form-advanced color-default" id="select3" name="select3">
                     <option>Própria</option>
                     <option>Recebida</option>
-                    <option>Ambas</option>
+                    <option>Destinada</option>
+                    <option>Todas</option>
                 </select>
                 </div>
             </div>
@@ -115,7 +117,7 @@
        <div class="form-group inline-divs">
                 <div class="col-lg-10 ">
                 <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1">
-                    <input type="text" class="form-control form-advanced dtIni" id="inputDefault1" name="inputDefault1" readonly="true" size="20" placeholder ="Data Inicial.."/> 
+                    <input type="text" class="color-white form-control form-advanced dtIni" id="inputDefault1" name="inputDefault1" readonly="true" size="20" placeholder ="Data Inicial.."/> 
                     <span class="add-on"><i class="icon-th icon-material-today"></i></span>
                 </div>
 		        <input type="hidden" id="dtp_input1" value="" /><br/>
@@ -123,9 +125,9 @@
         </div>
 
         <div class="form-group inline-divs">
-                <div class="col-lg-10"> 
+                <div class="col-lg-10 "> 
                 <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1">
-                        <input type="text" class="form-control form-advanced dtIni", id="inputDefault2" name="inputDefault2" readonly="true" size="20" placeholder ="Data Final.."/>
+                        <input type="text" class="color-white form-control form-advanced dtIni" id="inputDefault2" name="inputDefault2" readonly="true" size="20" placeholder ="Data Final.."/>
                     <span class="add-on"><i class="icon-th icon-material-today"></i></span>&nbsp&nbsp
                 </div>
 		        <input type="hidden" id="dtp_input2" value="" /><br/>
@@ -166,11 +168,23 @@
 
                     <tr class="" id="@item.IdTarefa">
                         <td>
-                            <div class="checkbox" title="Concluir Tarefa">
-                                <label>
-                                    <input class="conf" type="checkbox" name="@("confirmar"+@item.IdTarefa)" id="@("id"+@item.IdTarefa)" value="@item.IdTarefa">
-                                </label>
-                            </div>
+                            @if(item.Status == "A")
+                            {
+                                <div class="checkbox" title="Concluir Tarefa">
+                                    <label>
+                                        <input class="conf" type="checkbox" name="@("confirmar"+@item.IdTarefa)" id="@("id"+@item.IdTarefa)" value="@item.IdTarefa">
+                                    </label>
+                                </div>
+                            }
+                            else if(item.Status == "C")
+                            {                     
+                               <i style ="color: green; font-weight: bold; margin-left: 5px; font-size: 20px" title="Tarefa já Concluída!" class="mdi-navigation-check"></i>
+                            }
+                            else if(item.Status == "I")
+                            {
+                                <i style ="color: red; font-weight: bold; margin-left: 5px; font-size: 20px" title="Tarefa Cancelada!" class="icon-th mdi-navigation-close"></i>
+                            }
+
                         </td>
                         <td>
                             <div class="well">
@@ -210,28 +224,31 @@
                                 else
                                 {
                                     if(now > dtfim){
-                                        <div title="Tarefa está Atrasada" class="div-simples text-warning">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Baixa" class="text-success mdi-image-assistant-photo"></i></div>
+                                        <div title="Tarefa está Atrasada" class="div-simples text-warning">@item.DtInicio - @item.DtFim &nbsp <i id ="@("coment"+@item.IdTarefa)" data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="comentP text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Baixa" class="text-success mdi-image-assistant-photo"></i></div>
                                     }
                                     else{
-                                        <div title="Tarefa em Andamento" class="div-simples">@item.DtInicio - @item.DtFim &nbsp <i data-toggle="modal" data-target="#largeModal" title="Inserir Comentário" class="text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Baixa" class="text-success mdi-image-assistant-photo"></i></div>
+                                        <div title="Tarefa em Andamento" class="div-simples">@item.DtInicio - @item.DtFim &nbsp <i id ="@("coment"+@item.IdTarefa)"data-toggle="modal"  data-target="#largeModal" title="Inserir Comentário" class="comentP text-info mdi-action-question-answer"></i> &nbsp <i title="Prioridade Baixa" class="text-success mdi-image-assistant-photo"></i></div>
                                     }
                                 }
                             }
                         </td>
                         <td>
-                            <form action="~/Tarefas/EditTarefa" method="post">
-                                @Html.Hidden("id", item.IdTarefa)
-                                @if(ViewBag.Id == item.Criador.IdUser){
-                                <div class="btn-group color_button" style="margin-left: 0%">
-                                    <button type="submit" class="btn btn-default"><i class="texto2 icon-material-create"></i></button>
-                                </div>
-                                }
-                                else{
-                                <div class="btn-group color_button" style="margin-left: 0%">
-                                    <button type="button" class="btn btn-default"><i class="texto2 icon-material-lock-outline"></i></button>
-                                </div>
-                                }
-                            </form>
+                            @if(item.Status != "C")
+                            {
+                                <form action="~/Tarefas/EditTarefa" method="post">
+                                    @Html.Hidden("id", item.IdTarefa)
+                                    @if(ViewBag.Id == item.Criador.IdUser){
+                                    <div class="btn-group color_button" style="margin-left: 0%">
+                                        <button type="submit" class="btn btn-default"><i class="texto2 icon-material-create"></i></button>
+                                    </div>
+                                    }
+                                    else{
+                                    <div class="btn-group color_button" style="margin-left: 0%">
+                                        <button type="button" class="btn btn-default"><i class="texto2 icon-material-lock-outline"></i></button>
+                                    </div>
+                                    }
+                                </form>
+                            }
                         </td>
                         <!--<td>
             Html.DisplayFor(modelItem => item.DtInicio)
@@ -266,7 +283,9 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         </div>
-                                @Html.Partial("Comentarios", coment.ListaComentarios(id))
+                        <div id="divcoment">
+                            @Html.Partial("Comentarios")
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                         </div>
@@ -314,7 +333,23 @@
     $(document).ready(function () {
         $("#btteste").click(function () {
             $("#myModal").modal('toogle');
+
         });
+    });
+
+    $(".comentP").click(function(){
+        var x = $(this).attr("id").toString();
+        var id = x.substring(6);
+
+        $.ajax({
+            type: "POST",
+            url: "/Tarefas/RetornaPartial2",
+            data: { id: "" + id + "" },
+            success: function (data) {
+                $("#divcoment").load("/Tarefas/RetornaPartial2", { id: "" + id + "" });
+            }
+
+        })
     });
 
     if ($("#hidValida").val() == 1) {

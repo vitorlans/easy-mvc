@@ -1,49 +1,83 @@
-﻿@model IEnumerable<Easy.Models.Comentarios>
-@{
-    var coment = new Easy.Models.Comentarios();
+﻿@{
+    var coment = new Easy.Models.DAOComentarios();
+    var valid = 0;
+    if(Session["idTarefa1"] != null)
+    {
+        valid = (int)Session["idTarefa1"];
+    }
+
+    var idTarefa = valid;
 }
 
-<div style="padding: 50px 50px;">
-@using (Html.BeginForm("AddComentario", "Tarefas", null, FormMethod.Post, new { @class="form-horizontal"}))
-{
-       
-        <fieldset>
-            <legend>Adicionar Comentário</legend>
-            <div class="form-group">
-                <label for="textArea" class="col-lg-2 control-label">Comentário</label>
-                 <div class="col-lg-10">
-                    @Html.TextAreaFor(model => coment.Comentario, new {@class="form-control", rows="3" , id="textArea", @maxlength="200" })
-                    <span class="help-block">A Comentário deve ser breve, contendo no máximo 200 caracteres.</span>
-                    @Html.ValidationMessageFor(model => coment.Comentario, null, new { @class="text-danger"})
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-10 col-lg-offset-2">
-                    <input type="submit" class="btn btn-primary" value="Comentar" />
-                </div>
-            </div>
-        </fieldset>
-}
+<div style="padding: 50px 50px;">      
+
+<fieldset>
+    <legend>Adicionar Comentário</legend>
+    <div class="form-group">
+        <label for="textArea" class="col-lg-2 control-label">Comentário</label>
+            <div class="col-lg-10">
+                @Html.TextArea("txtArea", new { @class="form-control",  @id="textArea",  @rows = 3, @maxlength="200"})
+            <!--<input type="text" class="form-control"  id="textArea" maxlength="200" />-->
+            <span class="help-block">A Comentário deve ser breve, contendo no máximo 200 caracteres.</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+            <input type="submit" id="btEnviar" class ="btn btn-primary" value="Comentar" />
+        </div>
+        <!--<div class="col-lg-10 col-lg-offset-2">
+            <input type="button" id="btAtualizar" class ="btn btn-primary" value="Atua" />
+        </div>-->
+    </div>
+</fieldset>
+
 <hr />
-<table>
-    <tr>
-        <th>
-        </th>
-        <th>
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.IdComent)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comentario)
-        </td>
-    </tr>
-}
-
-</table>
+    <a href="#" id="mComentarios">Mostrar Comentários..</a>
+    <br />
+    <div id="loadLista" class="esconderDiv">
+       @Html.Partial("ListaComent", coment.ListaComentarios(idTarefa) )
+    </div>
 </div>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $("#btEnviar").click(function(){
+
+            var comentario = $("#textArea").val();
+            var ident = "@Session["idTarefa1"]";
+
+            if (comentario != "") {
+                $.ajax({
+                    type: "POST",
+                    url: "/Tarefas/AddComentario",
+                    dataType: "json",
+                    data: { idTar: ident, comentTar: comentario },
+                    success: function (data) {
+                        $("#textArea").val("");
+                        $("#loadLista").load("/Tarefas/RetornaPartial", { id: "" + ident + "" });
+                    }
+                })
+            }
+        })
+    });
+
+    $("#mComentarios").click(function () {
+        $(".esconderDiv").toggle();
+    });
+
+    $("#btAtualizar").click(function () {
+        alert("Foi");
+        $("#loadLista").load( "/Tarefas/RetornaPartial", { id: 40 });
+        alert("Saiu");
+    });
+
+    $("#btEnviar2").click(function () {
+        var comentario = $("#textArea").val();
+        alert(comentario);
+        alert("id");
+    });
+
+</script>
