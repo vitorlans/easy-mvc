@@ -246,7 +246,7 @@ namespace Easy.Controllers
                 Quando = "Início em: " + Convert.ToDateTime(tar.DtInicio).ToShortDateString() +". Encerramento: "+tar.DtFim,
                 Prioridade = prior,
                 Mensagem = msg+nome+ "!! Esta atividade foi destina a você, verifique-a pelo link abaixo.",
-                UrlAceita = "http://localhost:0000/Tarefas?search="
+                UrlAceita = "http://localhost:58623/Tarefas?search="+tar.Descricao
             };
             try
             {
