@@ -25,7 +25,7 @@
                                 <div class="checkbox">
                                   @if(Easy.Models.Usuario.VerificaSeOUsuarioEstaLogado().LiberaConvite == "S"){
                               <label><input type="checkbox" name="CheckUserSist" id="CheckUserSist">Convidar - Usuario do Sistema</label>
-                               <div class="checkbox">
+                               <div id="pms" class="checkbox">
                                     <label><input type="checkbox" name="CheckEnvConv" id="CheckEnvConv">Permissão - Envio de Convite</label>
                                 </div>
                                   }
@@ -74,7 +74,7 @@
                         </div>
 
           
-                                  
+                            <input type="hidden" name="mais" id="mais" value=""/>        
 
                        
                         <div class="form-group">
@@ -105,10 +105,20 @@
                 success: function (dados) {
                     if (dados.OK) {
                         $('input[type=checkbox]').attr('checked', false);
+                        $('#mais').val(dados.mais);
+
+                        if (dados.mais == "true") {
+                            $('#pms').hide();
+                        } else {
+                            $('#pms').show();
+                        }
                         $("#status").show();
+
                     }
                     else {
                         $("#status").hide();
+                        $('#pms').show();
+
                         $('input[type=checkbox]').attr('checked', false);
 
                     }
