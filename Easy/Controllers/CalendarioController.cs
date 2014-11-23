@@ -22,7 +22,7 @@ namespace Easy.Controllers
         {
 
             DAOCompromissos DAOcomp = new DAOCompromissos();
-            var LstComp = DAOcomp.ListarCompromissosTodos();
+            var LstComp = DAOcomp.ListarCompromissosData();
                          List<Calendario> Lc = new List<Calendario>();
 
                          int x = 0;

@@ -148,7 +148,8 @@ namespace Easy.Models
             Connection.Desconectar();
             return ListaComp;
         }
-        public List<Compromissos> ListarCompromissosTodos()
+        //OlD
+        private List<Compromissos> ListarCompromissosTodos()
         {
             DAOUsuario DUser = new DAOUsuario();
             DAOEmpresas DEmpresa = new DAOEmpresas();
