@@ -42,26 +42,24 @@
 <script type="text/javascript">
 
 
-    $(document).ready(function () {
+    $("#btEnviar").click(function () {
 
-        $("#btEnviar").click(function(){
+        var comentario = $("#textArea").val();
+        var ident = "@Session["idTarefa1"]";
+        alert(ident);
 
-            var comentario = $("#textArea").val();
-            var ident = "@Session["idTarefa1"]";
-
-            if (comentario != "") {
-                $.ajax({
-                    type: "POST",
-                    url: "/Tarefas/AddComentario",
-                    dataType: "json",
-                    data: { idTar: ident, comentTar: comentario },
-                    success: function (data) {
-                        $("#textArea").val("");
-                        $("#loadLista").load("/Tarefas/RetornaPartial", { id: "" + ident + "" });
-                    }
-                })
-            }
-        })
+        if (comentario != "") {
+            $.ajax({
+                type: "POST",
+                url: "/Tarefas/AddComentario",
+                dataType: "json",
+                data: { idTar: ident, comentTar: comentario },
+                success: function (data) {
+                    $("#textArea").val("");
+                    $("#loadLista").load("/Tarefas/RetornaPartial", { id: "" + ident + "" });
+                }
+            })
+        }
     });
 
     $("#mComentarios").click(function () {

@@ -105,10 +105,10 @@ namespace Easy.Controllers
         [HttpPost]
         public ActionResult AdicionarTarefa(Tarefas tar)
         {
+            DAOTarefas daoTaf = new DAOTarefas();
+
             if (ModelState.IsValid)
             {
-                DAOTarefas daoTaf = new DAOTarefas();
-
                 daoTaf.AddTarefa(tar);
 
                 EmailController emailC = new EmailController();

@@ -65,7 +65,7 @@
                         <div class="form-group">
                         <label for="select" class="col-lg-2 control-label">Relacionado</label>
                         <div class="col-lg-10">
-                            @Html.TextBoxFor(model => model.Relacionado, new {id = "tcomplete", @class ="form-control", @placeholder = "Escolha um contato.." })
+                            @Html.TextBoxFor(model => model.Relacionado, new {id = "tcomplete", @class ="form-control", @placeholder = "Digite o email de seu Contato.." })
                             @Html.ValidationMessageFor(model => model.Relacionado, null, new { @class="text-danger" })
                         </div>
                        </div>
