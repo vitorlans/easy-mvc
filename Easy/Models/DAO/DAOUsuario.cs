@@ -264,7 +264,7 @@ namespace Easy.Models
 
         }
 
-        public bool CriarUsuario(Usuario user, string login)
+        public bool CriarUsuario(Usuario user, string login, string mais)
         {
 
          try
@@ -312,6 +312,11 @@ namespace Easy.Models
                     var rec = RecuperaUsuarioEmail(user.Email);
                     user.IdUser = rec.IdUser;
                     VinculaUsuario(login, user);
+                    if (mais == "true") {
+                        DAOEmpresas Demp = new DAOEmpresas();
+                        Demp.VinculaEmpresa(user);
+                    }
+
                     return true;
                 }
 
@@ -488,7 +493,7 @@ namespace Easy.Models
         }
 
 
-        private bool VerificaExistencia(Usuario user)
+        public bool VerificaExistencia(Usuario user)
         {
             SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL = @email", Connection.Conectar());
             sqlExec.Parameters.AddWithValue("email", user.Email);
@@ -545,7 +550,7 @@ namespace Easy.Models
             try
             {
 
-                SqlCommand sqlExec = new SqlCommand("SELECT * FROM TBUSUARIOS where EMAIL=@email and USUARIOSISTEMA='S'", Connection.Conectar());
+                SqlCommand sqlExec = new SqlCommand("SELECT tbusu.* FROM TBUSUARIOS tbusu INNER JOIN VUSUAEMPR VEMPR ON VEMPR.IDUSER = tbusu.IDUSER where tbusu.EMAIL=@email and tbusu.USUARIOSISTEMA='S' and VEMPR.IDEMPR ="+Empresas.RecuperaEmpresaCookie().IdEmpresa, Connection.Conectar());
                 sqlExec.Parameters.AddWithValue("email", (object)email ?? DBNull.Value);
 
                 SqlDataReader dr = sqlExec.ExecuteReader();

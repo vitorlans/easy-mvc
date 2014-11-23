@@ -99,7 +99,7 @@ namespace Easy.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Usuario user, string CheckUserSist, string CheckEnvConv)
+        public ActionResult Add(Usuario user, string CheckUserSist, string CheckEnvConv, string mais)
         {
 
             if (CheckUserSist == null)
@@ -127,7 +127,7 @@ namespace Easy.Controllers
 
             DAOUsuario DUser = new DAOUsuario();
             Usuario Logado = Usuario.VerificaSeOUsuarioEstaLogado();
-            var est = DUser.CriarUsuario(user, Logado.IdUser.ToString());
+            var est = DUser.CriarUsuario(user, Logado.IdUser.ToString(), mais);
 
             if (est == true)
             {
@@ -246,14 +246,30 @@ namespace Easy.Controllers
             JsonRequestBehavior.AllowGet);
 
             }
-            else
+           else
             {
-                return Json(new
+                DAOUsuario Dusu = new DAOUsuario();
+                Usuario u = new Usuario();
+                u.Email = email;
+                if (Dusu.VerificaExistencia(u))
                 {
-                    OK = true
-                },
-                JsonRequestBehavior.AllowGet);
-            
+                    return Json(new
+                    {
+                        OK = true,
+                        mais = "true"
+                    },
+                    JsonRequestBehavior.AllowGet);
+                }
+                else {
+
+                    return Json(new
+                    {
+                        OK = true,
+                        mais = ""
+                    },
+                    JsonRequestBehavior.AllowGet);
+                
+                }
             }
         }
         
