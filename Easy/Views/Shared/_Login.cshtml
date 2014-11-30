@@ -11,18 +11,18 @@
 
     <style type="text/css">
         #div_fundo {
-            background: url(/Content/img/woman.jpg) no-repeat center center ;
+            background: url(/Content/img/woman.jpg) no-repeat center center;
             -webkit-background-size: 100% 650px;
             -moz-background-size: 100% 650px;
             -o-background-size: 100% 650px;
-             background-size: 100% 650px;
-             height: 400px;
-             margin-top: 10px;
+            background-size: 100% 650px;
+            height: 400px;
+            margin-top: 10px;
         }
     </style>
 
-     @Styles.Render("~/Content/css")
-     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 
 
 </head>
@@ -42,40 +42,43 @@
     </script>
     @RenderSection("scripts", required: false)
 
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                
-            </div>
-            <!-- /.navbar-collapse -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+
+            <a style="font-size: 30px; height: 50px !important; padding: 10px 10px;" class="navbar-brand mdi-action-home" href="/"></a>
         </div>
-        <!-- /.container -->
-    </nav>
-    <div id="div_fundo">    
-    <div id="page-content-wrapper">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3">
-           &nbsp;
-          </div>
-          <div class="col-lg-9">
-               @RenderSection("featured", required: false)
-               @RenderBody()
-          </div>
-        </div>
-      </div>
+        @*        <div class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a style="text-align: left" href="/">PRIVACIDADE</a>
+                </li>
+                <li>&nbsp</li>
+            </ul>
+        </div>*@
     </div>
-</div>
+    <div id="div_fundo">
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+                    <div class="col-lg-9">
+                        @RenderSection("featured", required: false)
+                        @RenderBody()
 
+                    </div>
 
-<!-- Page Content -->
+                </div>
+
+            </div>
+
+        </div>
+    <a target="_blank" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/deed.pt">
+        <img style="float: right; margin: 5px 12px 0 0;" alt="CC0" src="https://licensebuttons.net/p/88x31.png"></a>
+    </div>
+    <!-- Page Content -->
     <div class="container">
-
         <div class="row">
             <div class="col-lg-12">
                 <h1>EASY Peoples</h1>
