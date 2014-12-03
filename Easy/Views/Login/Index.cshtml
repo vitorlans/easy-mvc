@@ -19,7 +19,7 @@
 <!--<p>&nbsp;</p>-->
 
 <div style="width: 74%">
-    <div id="status" class="alert alert-info"></div>
+    <div id="status" class="alert alert-info">Bem Vindo</div>
 </div>
 <div>
 
@@ -76,26 +76,17 @@
             }
         }
     }
-  
-function myIP() {  
-    if (window.XMLHttpRequest) xmlhttp = new XMLHttpRequest();  
-    else xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");  
-  
-    xmlhttp.open("GET","http://api.hostip.info/get_html.php",false);  
-    xmlhttp.send();  
-  
-    hostipInfo = xmlhttp.responseText.split("\n");  
-  
-    for (i=0; hostipInfo.length >= i; i++) {  
-        ipAddress = hostipInfo[i].split(":");  
-        if ( ipAddress[0] == "IP" ) return ipAddress[1];  
-    }  
-  
-    return false;  
-}  
 
 </script>
+<script type="text/javascript">
+    var userip = null;
+</script>
+<script type="text/javascript" src="http://l2.io/ip.js?var=userip"></script>
+
 <script>
+    if (userip == null) {
+        userip = "000.000.000";
+    }
 
     $(document).ready(function () {
         $("#status").hide();
@@ -107,7 +98,7 @@ function myIP() {
                     email: $("#inputEmail").val(),
                     senha: $("#inputSenha").val(),
                     Url: GetURLParameter('Url'),
-                    Ip: myIP()
+                    Ip: userip
                 },
                 dataType: "json",
                 type: "GET",
@@ -161,6 +152,4 @@ function myIP() {
             $("#hidValida").val() = 0;
         });
     }
-
-
 </script>    
