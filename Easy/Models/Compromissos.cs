@@ -30,32 +30,32 @@ namespace Easy.Models
             c = primeira + c.Substring(1);
             return c;
         }
-        public static Compromissos SplitParticipantes(Compromissos Comp, string participantes)//Como separar/dividir uma string em array/variáveis usando C# (C Sharp)
+        public static Compromissos SplitParticipantes(Compromissos Comp, string _participantes)//Como separar/dividir uma string em array/variáveis usando C# (C Sharp)
         {
-            int j = participantes.Length;
-            string caracter = participantes.Substring(j - 1, 1);
+            int _iParticipantes = _participantes.Length;
+            string _caracter = _participantes.Substring(_iParticipantes - 1, 1);
 
-            if (caracter == ";")
-                participantes = participantes.Substring(0, j - 1);
+            if (_caracter == ";")
+                _participantes = _participantes.Substring(0, _iParticipantes - 1);
 
-            string[] strArray;
+            string[] _strArray;
             DAOUsuario dUser = new DAOUsuario();
-            if (participantes.Contains(";") || participantes.Contains(" "))
+            if (_participantes.Contains(";") || _participantes.Contains(" "))
             {
                 char[] strSep1 = { ';' }; //Caracter usado para separar o texto
-                strArray = participantes.Split(strSep1);//Onde ficará o resultado da separação
+                _strArray = _participantes.Split(strSep1);//Onde ficará o resultado da separação
 
 
-                for (int count = 0; count < strArray.Length; count++)
+                for (int _count = 0; _count < _strArray.Length; _count++)
                 {
-                    Comp.Participantes.Add(new Usuario { Email = strArray[count] });
-                    if (dUser.RecuperaUsuarioEmail(Comp.Participantes[count].Email) != null)
-                        Comp.Participantes[count] = dUser.RecuperaUsuarioEmail(Comp.Participantes[count].Email);
+                    Comp.Participantes.Add(new Usuario { Email = _strArray[_count] });
+                    if (dUser.RecuperaUsuarioEmail(Comp.Participantes[_count].Email) != null)
+                        Comp.Participantes[_count] = dUser.RecuperaUsuarioEmail(Comp.Participantes[_count].Email);
                 }
             }
             else
             {
-                Comp.Participantes.Add(new Usuario { Email = participantes });
+                Comp.Participantes.Add(new Usuario { Email = _participantes });
                 Comp.Participantes[0] = dUser.RecuperaUsuarioEmail(Comp.Participantes[0].Email);
             }
             return Comp;

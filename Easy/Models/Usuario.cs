@@ -27,6 +27,8 @@ namespace Easy.Models
         public string Status { get; set; }
         public string DataCriacao {get;set;}
         public string Imagem { get; set; }
+        public string DataNasc { get; set; }
+        public string Apelido { get; set; }
 
         public static bool AutenticarUsuario(string email, string senha) { 
         

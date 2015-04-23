@@ -39,7 +39,9 @@ namespace Easy.Models
                                 Telefone = dr["TELEFONE"].ToString(),
                                 UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                                 LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                                Imagem = dr["IMAGEM"].ToString()
+                                Imagem = dr["IMAGEM"].ToString(),
+                                DataNasc = dr["DT_NASC"].ToString(),
+                                Apelido = dr["APELIDO"].ToString()
                             }
                             );
                     }
@@ -81,7 +83,9 @@ namespace Easy.Models
                                 Telefone = dr["TELEFONE"].ToString(),
                                 UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                                 LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                                Imagem = dr["IMAGEM"].ToString()
+                                Imagem = dr["IMAGEM"].ToString(),
+                                DataNasc = dr["DT_NASC"].ToString(),
+                                Apelido = dr["APELIDO"].ToString()
                             }
                             );
                     }
@@ -121,7 +125,9 @@ namespace Easy.Models
                                 Telefone = dr["TELEFONE"].ToString(),
                                 UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                                 LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                                Imagem = dr["IMAGEM"].ToString()   
+                                Imagem = dr["IMAGEM"].ToString(),
+                                DataNasc = dr["DT_NASC"].ToString(),
+                                Apelido = dr["APELIDO"].ToString()   
                             }
                             );
                     }
@@ -162,7 +168,9 @@ namespace Easy.Models
                               Telefone = dr["TELEFONE"].ToString(),
                               UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                               LiberaConvite = dr["LIBERACONVITE"].ToString(),
-                              Imagem = dr["IMAGEM"].ToString()
+                              Imagem = dr["IMAGEM"].ToString(),
+                              DataNasc = dr["DT_NASC"].ToString(),
+                              Apelido = dr["APELIDO"].ToString()
                           }
                           );
                 }
@@ -206,7 +214,8 @@ namespace Easy.Models
                               Status = dr["STATUS"].ToString(),
                               DataCriacao = dr["DT_CRIACAO"].ToString(),
                               Imagem = dr["IMAGEM"].ToString(),
-
+                              DataNasc = dr["DT_NASC"].ToString(),
+                              Apelido = dr["APELIDO"].ToString()
                           }
                           );
                 }
@@ -250,6 +259,8 @@ namespace Easy.Models
                               Status = dr["STATUS"].ToString(),
                               DataCriacao = dr["DT_CRIACAO"].ToString(),
                               Imagem = dr["IMAGEM"].ToString(),
+                              DataNasc = dr["DT_NASC"].ToString(),
+                              Apelido = dr["APELIDO"].ToString()
 
                           }
                           );
@@ -279,7 +290,7 @@ namespace Easy.Models
                     var num = random.Next(5);
                     user.Imagem = "http://localhost:58623/Content/img/contato" + num + ".png";
 
-                    string strInserir = "insert into TBUSUARIOS (NOME, EMAIL, SENHA, USUARIOSISTEMA, LIBERACONVITE, STATUS, DT_CRIACAO, IMAGEM) values (@nome, @email, @senha, @usuariosistema, @liberaconvite, @status, @datacriacao, @imagem)";
+                    string strInserir = "insert into TBUSUARIOS (NOME, EMAIL, SENHA, USUARIOSISTEMA, LIBERACONVITE, STATUS, DT_CRIACAO, IMAGEM, DT_NASC, APELIDO) values (@nome, @email, @senha, @usuariosistema, @liberaconvite, @status, @datacriacao, @imagem, @dt_nasc, @apelido)";
 
                     SqlCommand inserirUsuario = new SqlCommand(strInserir, Connection.Conectar());
 
@@ -291,6 +302,8 @@ namespace Easy.Models
                     inserirUsuario.Parameters.AddWithValue("status", user.Status);
                     inserirUsuario.Parameters.AddWithValue("datacriacao", user.DataCriacao);
                     inserirUsuario.Parameters.AddWithValue("imagem", (object)user.Imagem ?? DBNull.Value);
+                    inserirUsuario.Parameters.AddWithValue("dt_nasc", user.DataNasc);
+                    inserirUsuario.Parameters.AddWithValue("apelido", user.Apelido);
 
                     inserirUsuario.ExecuteNonQuery();
                     var rec = RecuperaUsuarioEmail(user.Email);
@@ -355,7 +368,7 @@ namespace Easy.Models
             try
             {
 
-                string strInserir = "update TBUSUARIOS  set NOME = @nome, SOBRENOME = @sobrenome, ENDERECO = @endereco, BAIRRO = @bairro, CIDADE = @cidade, CEP = @cep, TELEFONE = @telefone where IDUSER = @iduser";
+                string strInserir = "update TBUSUARIOS  set NOME = @nome, SOBRENOME = @sobrenome, ENDERECO = @endereco, BAIRRO = @bairro, CIDADE = @cidade, CEP = @cep, TELEFONE = @telefone, DT_NASC = @dt_nasc, APELIDO = @apelido where IDUSER = @iduser";
 
                 SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
 
@@ -368,8 +381,10 @@ namespace Easy.Models
                 updateUsuario.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("dt_nasc", (object)user.DataNasc ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("apelido", (object)user.Apelido ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("iduser", (object)user.IdUser ?? DBNull.Value);
-
+                
 
                 updateUsuario.ExecuteNonQuery();
             }
@@ -435,7 +450,7 @@ namespace Easy.Models
             try
             {
 
-                string strInserir = "update VUSUACONT set NOME = @nome, ENDERECO = @endereco, BAIRRO = @bairro, CIDADE = @cidade, CEP = @cep, TELEFONE = @telefone where IDUSER2 = @iduser2 and IDEMPR="+Empresas.RecuperaEmpresaCookie().IdEmpresa;
+                string strInserir = "update VUSUACONT set NOME = @nome, ENDERECO = @endereco, BAIRRO = @bairro, CIDADE = @cidade, CEP = @cep, TELEFONE = @telefone, DT_NASC = @dt_nasc, APELIDO = @apelido where IDUSER2 = @iduser2 and IDEMPR="+Empresas.RecuperaEmpresaCookie().IdEmpresa;
 
                 SqlCommand updateUsuario = new SqlCommand(strInserir, Connection.Conectar());
 
@@ -446,6 +461,8 @@ namespace Easy.Models
                 updateUsuario.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("dt_nasc", (object)user.DataNasc ?? DBNull.Value);
+                updateUsuario.Parameters.AddWithValue("apelido", (object)user.Apelido ?? DBNull.Value);
                 updateUsuario.Parameters.AddWithValue("iduser2", (object)user.IdUser ?? DBNull.Value);
 
 
@@ -460,7 +477,7 @@ namespace Easy.Models
 
             var emp = Empresas.RecuperaEmpresaCookie();
 
-            string strInsert = "insert into VUSUACONT values (@iduser, @iduser2, @idempr, @nome, @endereco, @bairro, @cidade, @cep, @telefone)";
+            string strInsert = "insert into VUSUACONT values (@iduser, @iduser2, @idempr, @nome, @endereco, @bairro, @cidade, @cep, @telefone, @dt_nasc, @apelido)";
 
             SqlCommand inserirUsuario1 = new SqlCommand(strInsert, Connection.Conectar());
 
@@ -473,6 +490,8 @@ namespace Easy.Models
             inserirUsuario1.Parameters.AddWithValue("cidade", (object)user.Cidade ?? DBNull.Value);
             inserirUsuario1.Parameters.AddWithValue("cep", (object)user.Cep ?? DBNull.Value);
             inserirUsuario1.Parameters.AddWithValue("telefone", (object)user.Telefone ?? DBNull.Value);
+            inserirUsuario1.Parameters.AddWithValue("dt_nasc", (object)user.DataNasc ?? DBNull.Value);
+            inserirUsuario1.Parameters.AddWithValue("apelido", (object)user.Apelido ?? DBNull.Value);
 
             inserirUsuario1.ExecuteNonQuery();
             Connection.Desconectar();
