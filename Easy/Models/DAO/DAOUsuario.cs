@@ -40,7 +40,7 @@ namespace Easy.Models
                                 UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                                 LiberaConvite = dr["LIBERACONVITE"].ToString(),
                                 Imagem = dr["IMAGEM"].ToString(),
-                                DataNasc = dr["DT_NASC"].ToString(),
+                                DataNasc = DateTime.Parse(dr["DT_NASC"].ToString()).ToShortDateString(),
                                 Apelido = dr["APELIDO"].ToString()
                             }
                             );
@@ -169,7 +169,7 @@ namespace Easy.Models
                               UsuarioSistema = dr["USUARIOSISTEMA"].ToString(),
                               LiberaConvite = dr["LIBERACONVITE"].ToString(),
                               Imagem = dr["IMAGEM"].ToString(),
-                              DataNasc = dr["DT_NASC"].ToString(),
+                              DataNasc = DateTime.Parse(dr["DT_NASC"].ToString()).ToShortDateString().ToString(),
                               Apelido = dr["APELIDO"].ToString()
                           }
                           );

@@ -44,7 +44,18 @@
                                 @Html.HiddenFor(model => model.LiberaConvite)
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="inputDefault" class="col-lg-2 control-label">Data de Nascimento</label>
+                            <div class="col-lg-10">
+                                <div class="controls input-append date form_date" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input1">
+                                    @Html.TextBoxFor(model => model.DataNasc, new { @class = "form-control dtFim", id = "inputDefault", @readonly = true, @size = "20" })
+                                    @Html.ValidationMessageFor(model => model.DataNasc, null, new { @class = "text-danger" })
+                                    <span style="margin-left: 90%" class="add-on"><i class="icon-th icon-material-today"></i></span>&nbsp&nbsp
+                                    <span class="add-on"><i class="icon-material-close btClose2"></i></span>
+                                </div>
+                                <input type="hidden" id="dtp_input2" value="" /><br />
+                            </div>
+                        </div>
                         <br />
                         <h4>Adicionais</h4>
                         <hr />
@@ -83,7 +94,12 @@
                                 @Html.TextBoxFor(model => model.Telefone, new { @id = "inputTel", @maxlength = "20", @class = "form-control", @type = "tel" })
                             </div>
                         </div>
-
+                        <div class="form-group">
+                          <label for="inputApelido" class="col-lg-2 control-label">Apelido</label>
+                          <div class="col-lg-10">
+                             @Html.TextBoxFor(model => model.Apelido, new { @id="inputApel", @maxlength = "50", @class = "form-control", @type="text" })
+                          </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
                                 <input type="submit" value="Atualizar" class="btn btn-primary" />
@@ -141,7 +157,47 @@
 
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")   
+    @Scripts.Render( "~/bundles/jqueryui" )
+    @Scripts.Render("~/bundles/bootdt")
+
+}
+
 <script>
+    $('.form_datetime').datetimepicker({
+        language: 'pt-BR',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        startDate: "+1d"
+    });
+    $('.form_date').datetimepicker({
+        language: 'pt-BR',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_time').datetimepicker({
+        language: 'pt-BR',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0
+    });
 
     if ($("#hidValida").val() == 1) {
         $(document).ready(function () {
